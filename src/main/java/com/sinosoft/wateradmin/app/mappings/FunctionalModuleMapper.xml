@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 功能模块xml, added by lvzhixue ,2017-11-08-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IFunctionalModuleDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.FunctionalModule" >
+    <id column="FM_ID" property="fmId" jdbcType="INTEGER" />
+    <result column="FM_NAME" property="fmName" jdbcType="VARCHAR" />
+    <result column="FM_CODE" property="fmCode" jdbcType="VARCHAR" />
+    <result column="PAR_FM_ID" property="parFmId" jdbcType="INTEGER" />
+    <result column="FM_ACCESS_ADDRESS" property="fmAccessAddress" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="SEQ_NO" property="seqNo" jdbcType="INTEGER" /><!--顺序号-->
+    <result column="FM_DEPTH" property="fmDepth" jdbcType="INTEGER" /><!--层级深度-->
+    <result column="FM_TYPE" property="fmType" jdbcType="INTEGER" /><!--类型-->
+  </resultMap>
+
+  <!--包含模块所属的角色列表-->
+  <resultMap id="ModuleRoleMap" type="com.sinosoft.wateradmin.app.bean.FunctionalModule"  extends="BaseResultMap">
+    <collection property="roleList" ofType="com.sinosoft.wateradmin.app.bean.Role">
+      <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+      <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+      <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    FM_ID, FM_NAME, FM_CODE, PAR_FM_ID, FM_ACCESS_ADDRESS, REMARK,SEQ_NO,FM_DEPTH,FM_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select 
+    <include refid="Base_Column_List" />
+    from FUNCTIONAL_MODULE
+    where FM_ID = #{fmId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据角色编号获取该角色可以操作的系统 added by lvzhixue 2017-11-16-->
+  <select id="selectSystemListByRoleId" resultMap="BaseResultMap">
+    select DISTINCT(fm.FM_ID), fm.FM_NAME, fm.FM_CODE, fm.PAR_FM_ID, fm.FM_ACCESS_ADDRESS, fm.REMARK,SEQ_NO,FM_DEPTH,FM_TYPE
+    from role r
+    inner join role_module rm
+    on r.role_id = rm.role_id
+    inner join functional_module fm
+    on rm.fm_id = fm.fm_id
+    where fm.fm_depth = 0  and fm.fm_type != 1 and r.role_id in
+    <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+     order by seq_no
+  </select>
+
+  <!-- 根据给定的fm_id查询该节点及其所有子节点  added by lvzhixue 2017-11-16-->
+  <select id="selectChildNodeByfmId" resultMap="BaseResultMap" parameterType="INTEGER">
+    select FM_ID,
+    FM_NAME,
+    FM_CODE,
+    PAR_FM_ID,
+    FM_ACCESS_ADDRESS,
+    REMARK,
+    SEQ_NO,
+    FM_DEPTH,
+    FM_TYPE
+    from functional_module
+    where par_fm_id = #{fmId,jdbcType=INTEGER}
+    order by seq_no
+
+  </select>
+
+
+  <!-- 根据给定的fm_id,fm_type查询该节点下其所有子节点  added by lvzhixue 2017-11-22-->
+  <select id="selectChildNodeByfmIdAndType" resultMap="BaseResultMap" parameterType="map">
+    select FM_ID,
+    FM_NAME,
+    FM_CODE,
+    PAR_FM_ID,
+    FM_ACCESS_ADDRESS,
+    REMARK,
+    SEQ_NO,
+    FM_DEPTH,
+    FM_TYPE
+    from functional_module
+    where par_fm_id = #{fmId,jdbcType=INTEGER} and fm_type = #{fmType,jdbcType=INTEGER}
+    order by seq_no
+
+  </select>
+
+
+  <!-- 根据给定的fm_id递归查询该节点及其所有子节点  added by lvzhixue 2017-11-16-->
+  <select id="selectAllChildNodeByfmId" resultMap="BaseResultMap" parameterType="INTEGER">
+    select * from functional_module start with fm_id= #{fmId,jdbcType=INTEGER} connect by prior fm_id =  par_fm_id;
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from FUNCTIONAL_MODULE
+    where FM_ID = #{fmId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.FunctionalModule" >
+    <selectKey keyProperty="fmId" resultType="INTEGER" order="BEFORE">
+      select SEQ_FUNCTIONALMODULE_FMID.nextval as fmId from dual
+    </selectKey>
+
+    insert into FUNCTIONAL_MODULE (FM_ID, FM_NAME, FM_CODE,
+      PAR_FM_ID, FM_ACCESS_ADDRESS, REMARK, SEQ_NO, FM_DEPTH, FM_TYPE
+      )
+    values (#{fmId,jdbcType=INTEGER}, #{fmName,jdbcType=VARCHAR}, #{fmCode,jdbcType=VARCHAR},
+      #{parFmId,jdbcType=INTEGER}, #{fmAccessAddress,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+      #{seqNo,jdbcType=INTEGER},#{fmDepth,jdbcType=INTEGER},#{fmType,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.FunctionalModule" >
+    insert into FUNCTIONAL_MODULE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fmId != null" >
+        FM_ID,
+      </if>
+      <if test="fmName != null" >
+        FM_NAME,
+      </if>
+      <if test="fmCode != null" >
+        FM_CODE,
+      </if>
+      <if test="parFmId != null" >
+        PAR_FM_ID,
+      </if>
+      <if test="fmAccessAddress != null" >
+        FM_ACCESS_ADDRESS,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fmId != null" >
+        #{fmId,jdbcType=INTEGER},
+      </if>
+      <if test="fmName != null" >
+        #{fmName,jdbcType=VARCHAR},
+      </if>
+      <if test="fmCode != null" >
+        #{fmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="parFmId != null" >
+        #{parFmId,jdbcType=INTEGER},
+      </if>
+      <if test="fmAccessAddress != null" >
+        #{fmAccessAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.FunctionalModule" >
+    update FUNCTIONAL_MODULE
+    <set >
+      <if test="fmName != null" >
+        FM_NAME = #{fmName,jdbcType=VARCHAR},
+      </if>
+      <if test="fmCode != null" >
+        FM_CODE = #{fmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="parFmId != null" >
+        PAR_FM_ID = #{parFmId,jdbcType=INTEGER},
+      </if>
+      <if test="fmAccessAddress != null" >
+        FM_ACCESS_ADDRESS = #{fmAccessAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="seqNo != null" >
+        SEQ_NO = #{seqNo,jdbcType=INTEGER},
+      </if>
+      <if test="fmDepth != null" >
+        FM_DEPTH = #{fmDepth,jdbcType=INTEGER},
+      </if>
+      <if test="fmType != null" >
+        FM_TYPE = #{fmType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where FM_ID = #{fmId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.FunctionalModule" >
+    update FUNCTIONAL_MODULE
+    set FM_NAME = #{fmName,jdbcType=VARCHAR},
+      FM_CODE = #{fmCode,jdbcType=VARCHAR},
+      PAR_FM_ID = #{parFmId,jdbcType=INTEGER},
+      FM_ACCESS_ADDRESS = #{fmAccessAddress,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where FM_ID = #{fmId,jdbcType=INTEGER}
+  </update>
+</mapper>

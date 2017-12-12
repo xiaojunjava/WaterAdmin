@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IAppUavDeviceDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.AppUavDevice" >
+    <id column="UAV_ID" property="uavId" jdbcType="INTEGER" />
+    <result column="UAV_CODE" property="uavCode" jdbcType="VARCHAR" />
+    <result column="UAV_MODEL" property="uavModel" jdbcType="VARCHAR" />
+    <result column="PURCHASE_DATE" property="purchaseDate" jdbcType="DATE" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    UAV_ID, UAV_CODE, UAV_MODEL, PURCHASE_DATE, STATUS
+  </sql>
+
+  <sql id="Base_Table">
+    APP_UAV_DEVICE
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_UAV_DEVICE
+    where UAV_ID = #{uavId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据条件查询数据 added by lvzhixue 2017-11-24 17:36-->
+  <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.AppUavDevice">
+    select <include refid="Base_Column_List"/>  from <include refid="Base_Table"/> where 1=1
+    <if test="uavId != null and  uavId !=''">
+      and UAV_ID=#{uavId,jdbcType=INTEGER}
+    </if>
+    <if test="uavCode != null and  uavCode !=''">
+      and UAV_CODE like CONCAT(CONCAT('%', #{uavCode,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="uavModel != null and  uavModel !=''">
+      and UAV_MODEL like CONCAT(CONCAT('%', #{uavModel,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="purchaseDate != null and  purchaseDate !=''">
+      and PURCHASE_DATE like CONCAT(CONCAT('%', #{purchaseDate,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="status != null and  status !=''">
+      and STATUS like CONCAT(CONCAT('%', #{status,jdbcType=VARCHAR}), '%')
+    </if>
+
+    <if test="sort != null and  sort !='' and order != null and  order !=''">
+      order by ${sort} ${order}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from APP_UAV_DEVICE
+    where UAV_ID = #{uavId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.AppUavDevice" >
+    insert into APP_UAV_DEVICE (UAV_ID, UAV_CODE, UAV_MODEL, 
+      PURCHASE_DATE, STATUS)
+    values (SEQ_APPUAVDEVICE_UAVID.NEXTVAL, #{uavCode,jdbcType=VARCHAR}, #{uavModel,jdbcType=VARCHAR},
+      #{purchaseDate,jdbcType=DATE}, #{status,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.AppUavDevice" >
+    insert into APP_UAV_DEVICE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uavId != null" >
+        UAV_ID,
+      </if>
+      <if test="uavCode != null" >
+        UAV_CODE,
+      </if>
+      <if test="uavModel != null" >
+        UAV_MODEL,
+      </if>
+      <if test="purchaseDate != null" >
+        PURCHASE_DATE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uavId != null" >
+        #{uavId,jdbcType=INTEGER},
+      </if>
+      <if test="uavCode != null" >
+        #{uavCode,jdbcType=VARCHAR},
+      </if>
+      <if test="uavModel != null" >
+        #{uavModel,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDate != null" >
+        #{purchaseDate,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.AppUavDevice" >
+    update APP_UAV_DEVICE
+    <set >
+      <if test="uavCode != null" >
+        UAV_CODE = #{uavCode,jdbcType=VARCHAR},
+      </if>
+      <if test="uavModel != null" >
+        UAV_MODEL = #{uavModel,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDate != null" >
+        PURCHASE_DATE = #{purchaseDate,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UAV_ID = #{uavId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.AppUavDevice" >
+    update APP_UAV_DEVICE
+    set UAV_CODE = #{uavCode,jdbcType=VARCHAR},
+      UAV_MODEL = #{uavModel,jdbcType=VARCHAR},
+      PURCHASE_DATE = #{purchaseDate,jdbcType=DATE},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where UAV_ID = #{uavId,jdbcType=INTEGER}
+  </update>
+</mapper>

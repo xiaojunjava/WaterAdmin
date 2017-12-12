@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 案件调查取证记录xml, added by lvzhixue ,2017-11-02-->
+<mapper namespace="com.sinosoft.wateradmin.app.dao.ICaseEvidenceCollectionDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection" >
+    <id column="EC_ID" property="ecId" jdbcType="INTEGER" />
+    <result column="CI_ID" property="ciId" jdbcType="INTEGER" />
+    <result column="EC_NAME" property="ecName" jdbcType="VARCHAR" />
+    <result column="EC_DATETIME" property="ecDatetime" jdbcType="TIMESTAMP" />
+    <result column="EC_REC_PERSON" property="ecRecPerson" jdbcType="VARCHAR" />
+    <result column="EC_TYPE" property="ecType" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="EC_PLACE" property="ecPlace" jdbcType="VARCHAR" />
+    <result column="EC_CONTENT" property="ecContent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    EC_ID, CI_ID, EC_NAME, EC_DATETIME, EC_REC_PERSON, EC_TYPE, REMARK, EC_PLACE, EC_CONTENT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from CASE_EVIDENCE_COLLECTION
+    where EC_ID = #{ecId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from CASE_EVIDENCE_COLLECTION
+    where EC_ID = #{ecId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection" >
+    insert into CASE_EVIDENCE_COLLECTION (EC_ID, CI_ID, EC_NAME, 
+      EC_DATETIME, EC_REC_PERSON, EC_TYPE, 
+      REMARK, EC_PLACE, EC_CONTENT
+      )
+    values (#{ecId,jdbcType=DECIMAL}, #{ciId,jdbcType=DECIMAL}, #{ecName,jdbcType=VARCHAR}, 
+      #{ecDatetime,jdbcType=TIMESTAMP}, #{ecRecPerson,jdbcType=VARCHAR}, #{ecType,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR}, #{ecPlace,jdbcType=VARCHAR}, #{ecContent,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!-- added by lvzhixue 插入方法-->
+  <insert id="insertRecord" parameterType="com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection">
+
+    <selectKey keyProperty="ecId" resultType="INTEGER" order="BEFORE">
+      select SEQ_CASEEVIDCOLLECT_ECID.nextval as ecId from dual
+    </selectKey>
+
+	insert into CASE_EVIDENCE_COLLECTION (EC_ID, CI_ID, EC_NAME,
+      EC_DATETIME, EC_REC_PERSON, EC_TYPE,
+      REMARK, EC_PLACE, EC_CONTENT
+      )
+    values (#{ecId,jdbcType=INTEGER},#{ciId,jdbcType=INTEGER}, #{ecName,jdbcType=VARCHAR},
+      #{ecDatetime,jdbcType=TIMESTAMP}, #{ecRecPerson,jdbcType=VARCHAR}, #{ecType,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR}, #{ecPlace,jdbcType=VARCHAR}, #{ecContent,jdbcType=VARCHAR}
+      )
+
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection" >
+    insert into CASE_EVIDENCE_COLLECTION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ecId != null" >
+        EC_ID,
+      </if>
+      <if test="ciId != null" >
+        CI_ID,
+      </if>
+      <if test="ecName != null" >
+        EC_NAME,
+      </if>
+      <if test="ecDatetime != null" >
+        EC_DATETIME,
+      </if>
+      <if test="ecRecPerson != null" >
+        EC_REC_PERSON,
+      </if>
+      <if test="ecType != null" >
+        EC_TYPE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="ecPlace != null" >
+        EC_PLACE,
+      </if>
+      <if test="ecContent != null" >
+        EC_CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ecId != null" >
+        #{ecId,jdbcType=DECIMAL},
+      </if>
+      <if test="ciId != null" >
+        #{ciId,jdbcType=DECIMAL},
+      </if>
+      <if test="ecName != null" >
+        #{ecName,jdbcType=VARCHAR},
+      </if>
+      <if test="ecDatetime != null" >
+        #{ecDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ecRecPerson != null" >
+        #{ecRecPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="ecType != null" >
+        #{ecType,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="ecPlace != null" >
+        #{ecPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="ecContent != null" >
+        #{ecContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection" >
+    update CASE_EVIDENCE_COLLECTION
+    <set >
+      <if test="ciId != null" >
+        CI_ID = #{ciId,jdbcType=DECIMAL},
+      </if>
+      <if test="ecName != null" >
+        EC_NAME = #{ecName,jdbcType=VARCHAR},
+      </if>
+      <if test="ecDatetime != null" >
+        EC_DATETIME = #{ecDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ecRecPerson != null" >
+        EC_REC_PERSON = #{ecRecPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="ecType != null" >
+        EC_TYPE = #{ecType,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="ecPlace != null" >
+        EC_PLACE = #{ecPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="ecContent != null" >
+        EC_CONTENT = #{ecContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where EC_ID = #{ecId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection" >
+    update CASE_EVIDENCE_COLLECTION
+    set CI_ID = #{ciId,jdbcType=DECIMAL},
+      EC_NAME = #{ecName,jdbcType=VARCHAR},
+      EC_DATETIME = #{ecDatetime,jdbcType=TIMESTAMP},
+      EC_REC_PERSON = #{ecRecPerson,jdbcType=VARCHAR},
+      EC_TYPE = #{ecType,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      EC_PLACE = #{ecPlace,jdbcType=VARCHAR},
+      EC_CONTENT = #{ecContent,jdbcType=VARCHAR}
+    where EC_ID = #{ecId,jdbcType=DECIMAL}
+  </update>
+</mapper>

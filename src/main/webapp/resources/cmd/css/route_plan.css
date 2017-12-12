@@ -1,0 +1,225 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "黑体";
+  overflow: hidden;
+}
+
+.header {
+  width: 100%;
+  min-width: 1000px;
+  height: 119px;
+  background-image: url(../image/zhdd_banner.jpg);
+  background-repeat: no-repeat;
+  color: #fff;
+  overflow: hidden;
+}
+
+.logo {
+  width: 710px;
+  height: 105px;
+  margin-left: 5px;
+  float: left;
+  margin-top:7px;
+}
+
+.nav {
+  width: 427px;
+  height: 68px;
+  line-height: 44px;
+  font-size: 20px;
+  float: right;
+  margin-right: 25px;
+  margin-top:40px;
+  white-space: nowrap;
+    position:relative;
+    margin-left: -300px;
+}
+.nav div{
+  display: inline-block;
+  width: 48px;
+  text-align:center;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+
+.userinfo{
+    width: 215px;
+    height: 119px;
+    float: right;
+    margin-right: 17px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.userinfo .text{
+    display: inline-block;
+    width: 131px;
+    height: 75px;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    line-height: 26px;
+}
+.userinfo .userimg{
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+    padding-top: 0;
+}
+
+.logout {
+  width: 100px;
+  height: 85px;
+  margin-top: 18px;
+  float: right;
+  border-left: 1px solid #dbebf7;
+}
+
+.logout img {
+  width: 40px;
+  height: 40px;
+  margin-top: 19px;
+  margin-left: 28px;
+  cursor: pointer;
+}
+
+.userinfo .usericon {
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  background-color: #fff;
+}
+
+.userinfo .text b {
+  font-size: 17px;
+  font-weight: 400;
+}
+.underline{
+  height: 44px;
+  display: inline-block;
+  border-bottom:1px solid #fff;
+}
+.div{
+	outline: 1px solid #f00;
+}
+h2{
+	font-size: 20px;
+	line-height: 25px;
+	font-weight: 600;
+	font-family: "黑体";
+	text-align: left;
+	width: 291px;
+	margin: 20px auto;
+	display: flex;
+	align-items: center;
+	color: #3f98f6;
+}
+h4{
+	font-size: 18px;
+	font-family: "黑体";
+	font-weight: 600;
+	text-align: center; 
+	line-height: 0;
+}
+/*main*/
+.main{
+	width: 100%;
+}
+h3{
+  display: block;
+  height: 6px;
+  font-size: 1px;
+}
+.xianlu_list{
+  width: 264px;
+  height: 489px;
+  display: block;
+  position: fixed;
+  top: 183px;
+  left: 64px;
+  background-image: url(../image/xianlu_list_bg.png);
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+.xianlu_li{
+  height: 30px;
+}
+.xianlu_list div{
+  display: inline-block;
+}
+.xianlu_title{
+  width: 260px;
+  height: 38px;
+  display: block;
+}
+.xianlu_no{
+  width: 30px;
+  text-align: right;
+  font-size: 11.42px;
+  font-family: "宋体";
+}
+.xianlu_name{
+  width: 156px;
+  white-space: nowrap;
+  font-size: 10px;
+  font-family: "黑体";
+  text-align: center;
+    padding-top: 10px;
+}
+.xianlu_del{
+  background-image: url(../image/xianlu_del.png);
+  width: 47px;
+  height: 24px;
+  background-repeat: no-repeat;
+  display: inline-block;
+  cursor: pointer;
+    padding-top: 18px;
+}
+.xianlu_tools{
+  width: 344px;
+  height: 61px;
+  position: fixed;
+  top: 146px;
+  right: 0px;
+  background-image: url(../image/xianlu_tools_bg.png);
+  background-repeat: no-repeat;
+  font-size: 14px;
+  font-family: "黑体";
+  font-weight: 600;
+  z-index: 1;
+}
+.xianlu_quyu{
+  display: inline-block;
+  width: 73px;
+  margin-left: 56px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.xianlu_sheding{
+  display: inline-block;
+  width: 72px;
+  margin-left: 37px;
+  cursor: pointer;
+}
+.xianlu_clear{
+  display: inline-block;
+  width: 40px;
+  margin-left: 35px;
+  cursor: pointer;
+}
+.xianlu_map{
+  width: 1920px;
+  height: 960px;
+  background-size: cover;
+}

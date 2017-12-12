@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 角色_功能模块xml, added by lvzhixue ,2017-11-08-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IRoleModuleDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.RoleModuleKey" >
+    <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+    <id column="FM_ID" property="fmId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <!--根据角色id获取该角色可操作的所有模块 added by 2017.12.5 12：28-->
+  <select id="getRoleModuleKeyListByRoleId" parameterType="java.lang.Integer"
+          resultMap="BaseResultMap">
+    select *
+    from ROLE_MODULE where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.RoleModuleKey" >
+    delete from ROLE_MODULE
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+      and FM_ID = #{fmId,jdbcType=INTEGER}
+  </delete>
+
+  <!--删除角色对应的模块id added by 2017.12.5 13：58-->
+  <delete id="deleteByRoleId" parameterType="java.lang.Integer" >
+    delete from ROLE_MODULE
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.RoleModuleKey" >
+    insert into ROLE_MODULE (ROLE_ID, FM_ID)
+    values (#{roleId,jdbcType=INTEGER}, #{fmId,jdbcType=INTEGER})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.RoleModuleKey" >
+    insert into ROLE_MODULE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="fmId != null" >
+        FM_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="fmId != null" >
+        #{fmId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

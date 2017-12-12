@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.ITestDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.TestBean" >
+    <result column="testName" property="testName" jdbcType="VARCHAR" />
+
+  </resultMap>
+
+  <select id="tetsQuery" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select '111' as testName from dual
+  </select>
+
+</mapper>

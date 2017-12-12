@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 用户xml, added by lvzhixue ,2017-11-08-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IUsersDAO" >
+
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.Users" >
+    <id column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="USER_LOGINNAME" property="userLoginname" jdbcType="VARCHAR" />
+    <result column="USER_PSW" property="userPsw" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="PHONE_NUMBER" property="phoneNumber" jdbcType="VARCHAR" />
+    <result column="BIRTHDAY" property="birthday" jdbcType="DATE" />
+  </resultMap>
+
+  <resultMap id="userRoleMap" type="com.sinosoft.wateradmin.app.bean.Users" extends="BaseResultMap">
+    <association property="organization" javaType="com.sinosoft.wateradmin.app.bean.Organization">
+      <id column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+      <result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR" />
+      <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+      <result column="PAR_ORG_ID" property="parOrgId" jdbcType="DECIMAL" />
+      <result column="ORG_DESCRIPTION" property="orgDescription" jdbcType="VARCHAR" />
+    </association>
+
+    <collection property="roleList" ofType="com.sinosoft.wateradmin.app.bean.Role">
+      <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+      <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+      <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    </collection>
+
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    USER_ID, ORG_ID, USER_LOGINNAME, USER_PSW, USER_NAME, SEX, PHONE_NUMBER, BIRTHDAY
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from C_USERS
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </select>
+
+  <!-- 校验用户名密码是否相符, 操作表: tbl_userinfo-->
+  <select id="isRightIDAndPassword" parameterType="Map"
+          resultType="java.lang.Integer">
+    <![CDATA[
+			select count(USER_ID) from C_USERS where USER_LOGINNAME=#{loginName} and USER_PSW=#{userPsw}
+		]]>
+  </select>
+
+  <!-- 根据用户登录名获取该用户信息  added by lvzhixue 2017-11-15 12:09-->
+  <select id="getUserByLoginName" parameterType="java.lang.String"
+          resultMap="BaseResultMap">
+
+	  select <include refid="Base_Column_List" />
+	  from C_USERS where USER_LOGINNAME=#{loginName}
+
+  </select>
+
+  <!-- 根据user表中的LoginName查询用户和角色信息 added by lvzhixue 2017-11-16-->
+  <select id="selectUserAndRoleByLoginName" parameterType="java.lang.String"
+          resultMap="userRoleMap">
+        select u.USER_ID,u.ORG_ID,u.USER_LOGINNAME,u.USER_PSW,u.USER_NAME,u.SEX,u.PHONE_NUMBER,u.BIRTHDAY,r.ROLE_ID,r.ROLE_NAME,r.REMARK
+      from c_users u inner join user_role ur on u.user_id = ur.user_id
+                     inner join role r       on ur.role_id = r.role_id
+      where u.user_loginname = #{loginName}
+  </select>
+
+
+  <!--是否是系统管理员-->
+  <select id="isAdmin" parameterType="Map"
+          resultType="java.lang.Integer">
+    <![CDATA[
+			select count(USER_ID) from C_USERS where USER_LOGINNAME=#{loginName} and USER_PSW=#{userPsw}
+		]]>
+  </select>
+
+
+  <!-- 获取用户列表信息 added by lvzhixue 2017-12-01-->
+  <select id="getUserList" parameterType="com.sinosoft.wateradmin.app.bean.Users"
+          resultMap="userRoleMap">
+    select u.USER_ID,u.ORG_ID,o.org_name,u.USER_LOGINNAME,u.USER_PSW,u.USER_NAME,u.SEX,u.PHONE_NUMBER,u.BIRTHDAY,r.ROLE_ID,r.ROLE_NAME,r.REMARK
+    from c_users u LEFT join user_role ur on u.user_id = ur.user_id
+    LEFT join role r       on ur.role_id = r.role_id left join organization o on u.org_id = o.org_id
+    where 1=1
+    <if test="userName != null and  userName !=''">
+      and USER_NAME like CONCAT(CONCAT('%', #{userName,jdbcType=VARCHAR}), '%')
+    </if>
+  </select>
+
+
+<delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from C_USERS
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.Users" >
+
+    <selectKey keyProperty="userId" resultType="INTEGER" order="BEFORE">
+      select seq_user_userid.nextval as userId from dual
+    </selectKey>
+
+    insert into C_USERS (USER_ID, ORG_ID, USER_LOGINNAME,
+    USER_PSW, USER_NAME, SEX,
+    PHONE_NUMBER, BIRTHDAY)
+    values (#{userId,jdbcType=DECIMAL}, #{orgId,jdbcType=DECIMAL}, #{userLoginname,jdbcType=VARCHAR},
+    #{userPsw,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},
+    #{phoneNumber,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE})
+</insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.Users" >
+    insert into C_USERS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="userLoginname != null" >
+        USER_LOGINNAME,
+      </if>
+      <if test="userPsw != null" >
+        USER_PSW,
+      </if>
+      <if test="userName != null" >
+        USER_NAME,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="phoneNumber != null" >
+        PHONE_NUMBER,
+      </if>
+      <if test="birthday != null" >
+        BIRTHDAY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="userLoginname != null" >
+        #{userLoginname,jdbcType=VARCHAR},
+      </if>
+      <if test="userPsw != null" >
+        #{userPsw,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.Users" >
+    update C_USERS
+    <set >
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="userLoginname != null" >
+        USER_LOGINNAME = #{userLoginname,jdbcType=VARCHAR},
+      </if>
+      <if test="userPsw != null" >
+        USER_PSW = #{userPsw,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        BIRTHDAY = #{birthday,jdbcType=DATE},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.Users" >
+    update C_USERS
+    set ORG_ID = #{orgId,jdbcType=DECIMAL},
+      USER_LOGINNAME = #{userLoginname,jdbcType=VARCHAR},
+      USER_PSW = #{userPsw,jdbcType=VARCHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+      BIRTHDAY = #{birthday,jdbcType=DATE}
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </update>
+</mapper>

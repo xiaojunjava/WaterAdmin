@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 案件调查取证记录_附件xml, added by lvzhixue ,2017-11-02-->
+<mapper namespace="com.sinosoft.wateradmin.app.dao.ICaseAttachmentsDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.CaseAttachments" >
+    <id column="ECA_ID" property="ecaId" jdbcType="INTEGER" />
+    <result column="EC_ID" property="ecId" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="ECA_POSITION" property="ecaPosition" jdbcType="VARCHAR" />
+    <result column="ECA_DATETIME" property="ecaDatetime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ECA_ID, EC_ID, NAME, ECA_POSITION, ECA_DATETIME, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from CASE_ATTACHMENTS
+    where ECA_ID = #{ecaId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from CASE_ATTACHMENTS
+    where ECA_ID = #{ecaId,jdbcType=DECIMAL}
+  </delete>
+
+  <!--modified by lvzhixue 2017-11-03 16:22-->
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.CaseAttachments" >
+    insert into CASE_ATTACHMENTS (ECA_ID, EC_ID, NAME,
+      ECA_POSITION, ECA_DATETIME, REMARK
+      )
+    values (SEQ_ATTACHMENTS_ECAID.nextval, #{ecId,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR},
+      #{ecaPosition,jdbcType=VARCHAR}, #{ecaDatetime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.CaseAttachments" >
+    insert into CASE_ATTACHMENTS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ecaId != null" >
+        ECA_ID,
+      </if>
+      <if test="ecId != null" >
+        EC_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="ecaPosition != null" >
+        ECA_POSITION,
+      </if>
+      <if test="ecaDatetime != null" >
+        ECA_DATETIME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ecaId != null" >
+        #{ecaId,jdbcType=DECIMAL},
+      </if>
+      <if test="ecId != null" >
+        #{ecId,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ecaPosition != null" >
+        #{ecaPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="ecaDatetime != null" >
+        #{ecaDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.CaseAttachments" >
+    update CASE_ATTACHMENTS
+    <set >
+      <if test="ecId != null" >
+        EC_ID = #{ecId,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ecaPosition != null" >
+        ECA_POSITION = #{ecaPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="ecaDatetime != null" >
+        ECA_DATETIME = #{ecaDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ECA_ID = #{ecaId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.CaseAttachments" >
+    update CASE_ATTACHMENTS
+    set EC_ID = #{ecId,jdbcType=DECIMAL},
+      NAME = #{name,jdbcType=VARCHAR},
+      ECA_POSITION = #{ecaPosition,jdbcType=VARCHAR},
+      ECA_DATETIME = #{ecaDatetime,jdbcType=TIMESTAMP},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where ECA_ID = #{ecaId,jdbcType=DECIMAL}
+  </update>
+</mapper>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IAppVideoMonitorDeviceDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.AppVideoMonitorDevice" >
+    <id column="VM_ID" property="vmId" jdbcType="INTEGER" />
+    <result column="VM_CODE" property="vmCode" jdbcType="VARCHAR" />
+    <result column="VM_MODEL" property="vmModel" jdbcType="VARCHAR" />
+    <result column="PURCHASE_DATE" property="purchaseDate" jdbcType="DATE" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="VM_POSITION" property="vmPosition" jdbcType="VARCHAR" />
+    <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" />
+    <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" />
+    <result column="VM_TYPE" property="vmType" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    VM_ID, VM_CODE, VM_MODEL, PURCHASE_DATE, STATUS, VM_POSITION, LONGITUDE, LATITUDE, 
+    VM_TYPE
+  </sql>
+
+  <sql id="Base_Table">
+    APP_VIDEO_MONITOR_DEVICE
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_VIDEO_MONITOR_DEVICE
+    where VM_ID = #{vmId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据条件查询数据 added by lvzhixue 2017-11-28 15:18-->
+  <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.AppVideoMonitorDevice">
+    select <include refid="Base_Column_List"/>  from <include refid="Base_Table"/> where 1=1
+    <if test="vmId != null and  vmId !=''">
+      and VM_ID=#{vmId,jdbcType=INTEGER}
+    </if>
+    <if test="vmCode != null and  vmCode !=''">
+      and VM_CODE like CONCAT(CONCAT('%', #{vmCode,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="vmModel != null and  vmModel !=''">
+      and VM_MODEL like CONCAT(CONCAT('%', #{vmModel,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="purchaseDate != null and  purchaseDate !=''">
+      and PURCHASE_DATE like CONCAT(CONCAT('%', #{purchaseDate,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="status != null and  status !=''">
+      and STATUS like CONCAT(CONCAT('%', #{status,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="vmPosition != null and  vmPosition !=''">
+      and VM_POSITION like CONCAT(CONCAT('%', #{vmPosition,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="longitude != null and  longitude !=''">
+      and LONGITUDE like CONCAT(CONCAT('%', #{longitude,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="latitude != null and  latitude !=''">
+      and LATITUDE like CONCAT(CONCAT('%', #{latitude,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="vmType != null and  vmType !=''">
+      and VM_TYPE like CONCAT(CONCAT('%', #{vmType,jdbcType=VARCHAR}), '%')
+    </if>
+
+    <if test="sort != null and  sort !='' and order != null and  order !=''">
+      order by ${sort} ${order}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from APP_VIDEO_MONITOR_DEVICE
+    where VM_ID = #{vmId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.AppVideoMonitorDevice" >
+    insert into APP_VIDEO_MONITOR_DEVICE (VM_ID, VM_CODE, VM_MODEL, 
+      PURCHASE_DATE, STATUS, VM_POSITION, 
+      LONGITUDE, LATITUDE, VM_TYPE
+      )
+    values (SEQ_APPVIDEOMONITORDEVICE_VMID.NEXTVAL, #{vmCode,jdbcType=VARCHAR}, #{vmModel,jdbcType=VARCHAR},
+      #{purchaseDate,jdbcType=DATE}, #{status,jdbcType=VARCHAR}, #{vmPosition,jdbcType=VARCHAR}, 
+      #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{vmType,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.AppVideoMonitorDevice" >
+    insert into APP_VIDEO_MONITOR_DEVICE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="vmId != null" >
+        VM_ID,
+      </if>
+      <if test="vmCode != null" >
+        VM_CODE,
+      </if>
+      <if test="vmModel != null" >
+        VM_MODEL,
+      </if>
+      <if test="purchaseDate != null" >
+        PURCHASE_DATE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="vmPosition != null" >
+        VM_POSITION,
+      </if>
+      <if test="longitude != null" >
+        LONGITUDE,
+      </if>
+      <if test="latitude != null" >
+        LATITUDE,
+      </if>
+      <if test="vmType != null" >
+        VM_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="vmId != null" >
+        #{vmId,jdbcType=INTEGER},
+      </if>
+      <if test="vmCode != null" >
+        #{vmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vmModel != null" >
+        #{vmModel,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDate != null" >
+        #{purchaseDate,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="vmPosition != null" >
+        #{vmPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="vmType != null" >
+        #{vmType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.AppVideoMonitorDevice" >
+    update APP_VIDEO_MONITOR_DEVICE
+    <set >
+      <if test="vmCode != null" >
+        VM_CODE = #{vmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vmModel != null" >
+        VM_MODEL = #{vmModel,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDate != null" >
+        PURCHASE_DATE = #{purchaseDate,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="vmPosition != null" >
+        VM_POSITION = #{vmPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        LONGITUDE = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        LATITUDE = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="vmType != null" >
+        VM_TYPE = #{vmType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where VM_ID = #{vmId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.AppVideoMonitorDevice" >
+    update APP_VIDEO_MONITOR_DEVICE
+    set VM_CODE = #{vmCode,jdbcType=VARCHAR},
+      VM_MODEL = #{vmModel,jdbcType=VARCHAR},
+      PURCHASE_DATE = #{purchaseDate,jdbcType=DATE},
+      STATUS = #{status,jdbcType=VARCHAR},
+      VM_POSITION = #{vmPosition,jdbcType=VARCHAR},
+      LONGITUDE = #{longitude,jdbcType=VARCHAR},
+      LATITUDE = #{latitude,jdbcType=VARCHAR},
+      VM_TYPE = #{vmType,jdbcType=VARCHAR}
+    where VM_ID = #{vmId,jdbcType=INTEGER}
+  </update>
+</mapper>

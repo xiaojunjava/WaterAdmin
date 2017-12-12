@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 用户_角色xml, added by lvzhixue ,2017-11-08-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IUserRoleDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.UserRoleKey" >
+    <id column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.UserRoleKey" >
+    delete from USER_ROLE
+    where USER_ID = #{userId,jdbcType=INTEGER}
+      and ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </delete>
+
+
+  <!--根据用户id删除该用户对应的所有角色-->
+  <delete id="deleteByUserId" parameterType="INTEGER" >
+    delete from USER_ROLE
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.UserRoleKey" >
+    insert into USER_ROLE (USER_ID, ROLE_ID)
+    values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.UserRoleKey" >
+    insert into USER_ROLE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+    </trim>
+
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

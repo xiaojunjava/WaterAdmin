@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--巡查上报记录表映射文件-->
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IPatrolReportDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.PatrolReport" >
+    <id column="pr_id" property="prId" jdbcType="INTEGER" />
+    <result column="pl_id" property="plId" jdbcType="INTEGER" />
+    <result column="pr_site_description" property="prSiteDescription" jdbcType="VARCHAR" />
+    <result column="pr_position" property="prPosition" jdbcType="VARCHAR" />
+    <result column="pr_report_time" property="prReportTime" jdbcType="TIMESTAMP" />
+    <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+    <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pr_id, pl_id, pr_site_description, pr_position, pr_report_time, longitude, latitude, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_PATROL_REPORT
+    where pr_id = #{prId,jdbcType=INTEGER}
+  </select>
+   <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.PatrolReport">
+        select
+        <include refid="Base_Column_List" />
+        from APP_PATROL_REPORT where 1=1
+       <if test="prId != null and  prId !=''" >
+           and pr_id=#{prId,jdbcType=VARCHAR}
+       </if>
+       <if test="prSiteDescription != null and  prSiteDescription !=''" >
+           and pr_site_description like CONCAT(CONCAT('%', #{prSiteDescription,jdbcType=VARCHAR}), '%')
+       </if>
+       <if test="prPosition != null and  prPosition !=''" >
+           and pr_position like CONCAT(CONCAT('%', #{prPosition,jdbcType=VARCHAR}), '%')
+       </if>
+       <if test="startTime != null and  startTime !=''" >
+           and pr_report_time <![CDATA[ >= ]]> TO_DATE(#{startTime},'yyyy-MM-dd HH24:mi:ss')
+       </if>
+       <if test="endTime != null and  endTime !=''" >
+           and pr_report_time <![CDATA[ <= ]]> TO_DATE(#{endTime},'yyyy-MM-dd HH24:mi:ss')
+       </if>
+    </select>
+    <select id="selectSome" resultMap="BaseResultMap" parameterType="int">
+        select
+        <include refid="Base_Column_List" />
+        from APP_PATROL_REPORT where  rownum  <![CDATA[ <= ]]>   #{limitNum,jdbcType=INTEGER} order by pr_report_time desc
+
+    </select>
+  <delete id="deleteByPrimaryKey" parameterType="int" >
+    delete from APP_PATROL_REPORT
+    where pr_id = #{prId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.PatrolReport" >
+      <selectKey resultType="INTEGER" keyProperty="prId" order="BEFORE">
+          　　　select seq_patrolreport_prid.nextval from dual
+      </selectKey>
+    insert into APP_PATROL_REPORT (  <include refid="Base_Column_List" /> )
+    values (#{prId,jdbcType=INTEGER}, #{plId,jdbcType=INTEGER}, #{prSiteDescription,jdbcType=VARCHAR},
+      #{prPosition,jdbcType=VARCHAR}, #{prReportTime,jdbcType=TIMESTAMP}, #{longitude,jdbcType=VARCHAR},
+      #{latitude,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.PatrolReport" >
+    update APP_PATROL_REPORT
+    <set >
+      <if test="prSiteDescription != null" >
+          pr_site_description = #{prSiteDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="prPosition != null" >
+          pr_position = #{prPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="prReportTime != null" >
+          pr_report_time = #{prReportTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="longitude != null" >
+          longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+          latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pr_id = #{prId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

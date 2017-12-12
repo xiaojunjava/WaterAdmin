@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 采砂/运砂船主通讯录  映射文件-->
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IAppShipmasterAddresslistDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.AppShipmasterAddresslist" >
+    <id column="ASA_ID" property="asaId" jdbcType="INTEGER" />
+    <result column="ASA_NAME" property="asaName" jdbcType="VARCHAR" />
+    <result column="ASA_SEX" property="asaSex" jdbcType="VARCHAR" />
+    <result column="ASA_POSITION" property="asaPosition" jdbcType="VARCHAR" />
+    <result column="ASA_ID_CARD_NO" property="asaIdCardNo" jdbcType="VARCHAR" />
+    <result column="ASA_EMAIL" property="asaEmail" jdbcType="VARCHAR" />
+    <result column="ASA_TEL" property="asaTel" jdbcType="VARCHAR" />
+    <result column="ASA_TYPE" property="asaType" jdbcType="VARCHAR" />
+    <result column="COUNTRY_ID" property="countryId" jdbcType="INTEGER" />
+    <result column="CITY_ID" property="cityId" jdbcType="INTEGER" />
+    <result column="STREET" property="street" jdbcType="VARCHAR" />
+    <result column="ZIPCODE" property="zipcode" jdbcType="VARCHAR" />
+    <result column="BIRTHDAY" property="birthday" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ASA_ID, ASA_NAME, ASA_SEX, ASA_POSITION, ASA_ID_CARD_NO, ASA_EMAIL, ASA_TEL, ASA_TYPE, COUNTRY_ID,
+    CITY_ID, STREET, ZIPCODE, BIRTHDAY
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_SHIPMASTER_ADDRESSLIST
+    where ASA_ID = #{asaId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 采砂船主列表 added by lvzhixue 2017-11-08-->
+  <select id="getCaiShipmasterAddresslist" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from APP_SHIPMASTER_ADDRESSLIST
+    where ASA_TYPE = 0
+  </select>
+
+  <!-- 运沙船主通讯录  added by lvzhixue 2017-11-08-->
+  <select id="getYunShipmasterAddresslist" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from APP_SHIPMASTER_ADDRESSLIST
+    where ASA_TYPE = 1
+  </select>
+
+  <!-- 根据条件查询数据 added by lvzhixue 2017-12-05 15:08-->
+  <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.AppShipmasterAddresslist">
+    select
+    <include refid="Base_Column_List" />
+    from APP_SHIPMASTER_ADDRESSLIST
+    where 1 = 1
+    <if test="asaType != null and  asaType !=''">
+      and ASA_Type=#{asaType,jdbcType=VARCHAR}
+    </if>
+    <if test="asaName != null and  asaName !=''">
+      and ASA_NAME like CONCAT(CONCAT('%', #{asaName,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="asaSex != null and  asaSex !=''">
+      and ASA_SEX=#{asaSex,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from APP_SHIPMASTER_ADDRESSLIST
+    where ASA_ID = #{asaId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.AppShipmasterAddresslist" >
+    insert into APP_SHIPMASTER_ADDRESSLIST (ASA_ID, ASA_NAME, ASA_SEX, 
+      ASA_POSITION, ASA_ID_CARD_NO, ASA_EMAIL, 
+      ASA_TEL, ASA_TYPE, COUNTRY_ID, CITY_ID,
+      STREET, ZIPCODE, BIRTHDAY
+      )
+    values (SEQ_SHIPMASTERADDRLIST_ASAID.nextval, #{asaName,jdbcType=VARCHAR}, #{asaSex,jdbcType=VARCHAR},
+      #{asaPosition,jdbcType=VARCHAR}, #{asaIdCardNo,jdbcType=VARCHAR}, #{asaEmail,jdbcType=VARCHAR}, 
+      #{asaTel,jdbcType=VARCHAR}, #{asaType,jdbcType=VARCHAR}, #{countryId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER},
+      #{street,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.AppShipmasterAddresslist" >
+    insert into APP_SHIPMASTER_ADDRESSLIST
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="asaId != null" >
+        ASA_ID,
+      </if>
+      <if test="asaName != null" >
+        ASA_NAME,
+      </if>
+      <if test="asaSex != null" >
+        ASA_SEX,
+      </if>
+      <if test="asaPosition != null" >
+        ASA_POSITION,
+      </if>
+      <if test="asaIdCardNo != null" >
+        ASA_ID_CARD_NO,
+      </if>
+      <if test="asaEmail != null" >
+        ASA_EMAIL,
+      </if>
+      <if test="asaTel != null" >
+        ASA_TEL,
+      </if>
+      <if test="countryId != null" >
+        COUNTRY_ID,
+      </if>
+      <if test="cityId != null" >
+        CITY_ID,
+      </if>
+      <if test="street != null" >
+        STREET,
+      </if>
+      <if test="zipcode != null" >
+        ZIPCODE,
+      </if>
+      <if test="birthday != null" >
+        BIRTHDAY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="asaId != null" >
+        #{asaId,jdbcType=INTEGER},
+      </if>
+      <if test="asaName != null" >
+        #{asaName,jdbcType=VARCHAR},
+      </if>
+      <if test="asaSex != null" >
+        #{asaSex,jdbcType=VARCHAR},
+      </if>
+      <if test="asaPosition != null" >
+        #{asaPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="asaIdCardNo != null" >
+        #{asaIdCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="asaEmail != null" >
+        #{asaEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="asaTel != null" >
+        #{asaTel,jdbcType=VARCHAR},
+      </if>
+      <if test="countryId != null" >
+        #{countryId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="street != null" >
+        #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null" >
+        #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.AppShipmasterAddresslist" >
+    update APP_SHIPMASTER_ADDRESSLIST
+    <set >
+      <if test="asaName != null" >
+        ASA_NAME = #{asaName,jdbcType=VARCHAR},
+      </if>
+      <if test="asaSex != null" >
+        ASA_SEX = #{asaSex,jdbcType=VARCHAR},
+      </if>
+      <if test="asaPosition != null" >
+        ASA_POSITION = #{asaPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="asaIdCardNo != null" >
+        ASA_ID_CARD_NO = #{asaIdCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="asaEmail != null" >
+        ASA_EMAIL = #{asaEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="asaTel != null" >
+        ASA_TEL = #{asaTel,jdbcType=VARCHAR},
+      </if>
+      <if test="asaType != null" >
+        ASA_TYPE = #{asaType,jdbcType=VARCHAR},
+      </if>
+      <if test="countryId != null" >
+        COUNTRY_ID = #{countryId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        CITY_ID = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="street != null" >
+        STREET = #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null" >
+        ZIPCODE = #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        BIRTHDAY = #{birthday,jdbcType=DATE},
+      </if>
+    </set>
+    where ASA_ID = #{asaId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.AppShipmasterAddresslist" >
+    update APP_SHIPMASTER_ADDRESSLIST
+    set ASA_NAME = #{asaName,jdbcType=VARCHAR},
+      ASA_SEX = #{asaSex,jdbcType=VARCHAR},
+      ASA_POSITION = #{asaPosition,jdbcType=VARCHAR},
+      ASA_ID_CARD_NO = #{asaIdCardNo,jdbcType=VARCHAR},
+      ASA_EMAIL = #{asaEmail,jdbcType=VARCHAR},
+      ASA_TEL = #{asaTel,jdbcType=VARCHAR},
+      ASA_TYPE = #{asaType,jdbcType=VARCHAR},
+      COUNTRY_ID = #{countryId,jdbcType=INTEGER},
+      CITY_ID = #{cityId,jdbcType=INTEGER},
+      STREET = #{street,jdbcType=VARCHAR},
+      ZIPCODE = #{zipcode,jdbcType=VARCHAR},
+      BIRTHDAY = #{birthday,jdbcType=DATE}
+    where ASA_ID = #{asaId,jdbcType=INTEGER}
+  </update>
+</mapper>

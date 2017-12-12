@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IAppLawenforceRecorderDeviceDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.AppLawenforceRecorderDevice" >
+    <id column="ALR_ID" property="alrId" jdbcType="INTEGER" />
+    <result column="ALR_CODE" property="alrCode" jdbcType="VARCHAR" />
+    <result column="ALR_MODEL" property="alrModel" jdbcType="VARCHAR" />
+    <result column="PURCHASE_DATE" property="purchaseDate" jdbcType="DATE" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ALR_ID, ALR_CODE, ALR_MODEL, PURCHASE_DATE, STATUS
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LAWENFORCE_RECORDER_DEVICE
+    where ALR_ID = #{alrId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据条件查询数据 added by lvzhixue 2017-12-05 15:08-->
+  <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.AppLawenforceRecorderDevice">
+    select <include refid="Base_Column_List"/>  from APP_LAWENFORCE_RECORDER_DEVICE where 1=1
+    <if test="alrCode != null and  alrCode !=''">
+      and ALR_CODE like CONCAT(CONCAT('%', #{alrCode,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="status != null and  status !=''">
+      and status=#{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from APP_LAWENFORCE_RECORDER_DEVICE
+    where ALR_ID = #{alrId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.AppLawenforceRecorderDevice" >
+    insert into APP_LAWENFORCE_RECORDER_DEVICE (ALR_ID, ALR_CODE, ALR_MODEL, 
+      PURCHASE_DATE, STATUS)
+    values (SEQ_LAWENFORCERECORDER_ALRID.nextval, #{alrCode,jdbcType=VARCHAR}, #{alrModel,jdbcType=VARCHAR},
+      #{purchaseDate,jdbcType=DATE}, #{status,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.AppLawenforceRecorderDevice" >
+    insert into APP_LAWENFORCE_RECORDER_DEVICE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="alrId != null" >
+        ALR_ID,
+      </if>
+      <if test="alrCode != null" >
+        ALR_CODE,
+      </if>
+      <if test="alrModel != null" >
+        ALR_MODEL,
+      </if>
+      <if test="purchaseDate != null" >
+        PURCHASE_DATE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="alrId != null" >
+        #{alrId,jdbcType=INTEGER},
+      </if>
+      <if test="alrCode != null" >
+        #{alrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="alrModel != null" >
+        #{alrModel,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDate != null" >
+        #{purchaseDate,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.AppLawenforceRecorderDevice" >
+    update APP_LAWENFORCE_RECORDER_DEVICE
+    <set >
+      <if test="alrCode != null" >
+        ALR_CODE = #{alrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="alrModel != null" >
+        ALR_MODEL = #{alrModel,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDate != null" >
+        PURCHASE_DATE = #{purchaseDate,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ALR_ID = #{alrId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.AppLawenforceRecorderDevice" >
+    update APP_LAWENFORCE_RECORDER_DEVICE
+    set ALR_CODE = #{alrCode,jdbcType=VARCHAR},
+      ALR_MODEL = #{alrModel,jdbcType=VARCHAR},
+      PURCHASE_DATE = #{purchaseDate,jdbcType=DATE},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ALR_ID = #{alrId,jdbcType=INTEGER}
+  </update>
+</mapper>

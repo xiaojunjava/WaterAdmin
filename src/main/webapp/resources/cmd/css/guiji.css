@@ -1,0 +1,161 @@
+body {
+    overflow: hidden;
+}
+
+table {
+    text-align: center;
+}
+
+.header {
+    overflow: hidden;
+}
+
+.guiji2 .main div {
+    border: 1px solid #f00;
+}
+
+.guiji .main {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+
+}
+.guiji .left {
+    width: 50%;
+}
+
+.guiji .right {
+    width: 50%;
+}
+.guiji .left .top {
+    width: 877px;
+    height: 322px;
+    margin: 20px auto;
+    border-radius: 30px;
+    background: #f7f7f7;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.guiji .left .top .person {
+    width: 33%;
+    height: 272px;
+    overflow: hidden;
+}
+.guiji .left .top .info_name span {
+    display: block;
+    width: 100px;
+    line-height: 47px;
+    font-family: "黑体";
+    font-weight: 600;
+    margin: 0 auto;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+}
+.guiji .left .top .info_name span:hover {
+    color: #09f;
+}
+.guiji .left .top .info_name i {
+    display: block;
+    width: 60px;
+    margin: 0 auto;
+    border-bottom: 1px solid #b4b4b4;
+}
+.guiji .left .top .info_name:last-of-type i {
+    border-bottom: 0px;
+}
+.guiji .left .top .car {
+    width: 33%;
+    height: 272px;
+    overflow: hidden;
+}
+.guiji .left .top .ship {
+    width: 33%;
+    height: 272px;
+    overflow: hidden;
+}
+@media screen and (max-width: 2500px) {
+    .guiji .left .bottom {
+        width: 877px;
+        height: 539px;
+        margin: 20px auto;
+        border-radius: 30px;
+        background: #f7f7f7;
+        text-align: center;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+    }
+}
+@media screen and (max-width: 1920px) {
+    .guiji .left .bottom {
+        width: 877px;
+        height: 400px;
+        margin: 20px auto;
+        border-radius: 30px;
+        background: #f7f7f7;
+        text-align: center;
+        /*display: flex;  */
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+}
+@media screen and (max-width: 1400px) {
+    .left {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 500px;
+    }
+    .guiji .left .top {
+        width: 658px;
+        height: 300px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .guiji .left .bottom {
+        width: 658px;
+        height: 400px;
+        border-radius: 30px;
+        background: #f7f7f7;
+        text-align: center;
+        margin-left: 5px;
+        margin-right: 5px;
+        position: relative;
+    }
+    .laytable-cell-1-id {
+        width: 45px;
+    }
+    .laytable-cell-1-date {
+        width: 184px;
+    }
+    .laytable-cell-1-num {
+        width: 110px;
+    }
+    .laytable-cell-1-name {
+        width: 50px;
+    }
+    .laytable-cell-1-post {
+        width: 50px;
+    }
+    .laytable-cell-1-department {
+        width: 122px;
+    }
+    .laytable-cell-1-operation {
+        width: 75px;
+    }
+    .layui-table-box, .layui-table-view {
+        margin: 0px auto;
+        width: 639px;
+    }
+}
+.namebg {
+    color: #069;
+}
+
+.map {
+    z-index: 0;
+}

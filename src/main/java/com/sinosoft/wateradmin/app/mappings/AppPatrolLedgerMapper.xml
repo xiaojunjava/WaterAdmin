@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--巡查台账表 映射文件-->
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IAppPatrolLedgerDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.AppPatrolLedger" >
+    <id column="PL_ID" property="plId" jdbcType="INTEGER" />
+    <result column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="PL_LEDGER_NAME" property="plLedgerName" jdbcType="VARCHAR" />
+    <result column="PL_BEGINTIME" property="plBeginTime" jdbcType="TIMESTAMP" />
+    <result column="PL_EndTime" property="plEndTime" jdbcType="TIMESTAMP" />
+    <result column="PL_RESULT" property="plResult" jdbcType="VARCHAR" />
+    <result column="PL_TRAJECTORY" property="plTarjectory" jdbcType="CLOB" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PL_ID, USER_ID, USER_NAME, PL_LEDGER_NAME, PL_BEGINTIME, PL_ENDTIME, PL_RESULT, PL_TRAJECTORY
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_PATROL_LEDGER
+    where PL_ID = #{plId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_PATROL_LEDGER
+    where USER_ID = #{userId,jdbcType=INTEGER} and pl_endtime is NOT NULL
+  </select>
+  <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.AppPatrolLedger">
+    select
+    <include refid="Base_Column_List" />
+    from APP_PATROL_LEDGER where 1=1
+    <if test="plId != null and  plId !=''" >
+        and PL_ID=#{plId,jdbcType=INTEGER}
+    </if>
+    <if test="userId != null and  userId !=''" >
+        and USER_ID=#{userId,jdbcType=INTEGER}
+    </if>
+    <if test="userName != null and  userName !=''" >
+        and USER_NAME like CONCAT(CONCAT('%', #{userName,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="plLedgerName != null and  plLedgerName !=''" >
+        and PL_LEDGER_NAME like CONCAT(CONCAT('%', #{plLedgerName,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="startTime != null and  startTime !=''" >
+        and PL_BEGINTIME <![CDATA[ >= ]]> TO_DATE(#{startTime},'yyyy-MM-dd HH24:mi:ss')
+    </if>
+    <if test="endTime != null and  endTime !=''" >
+        and PL_BEGINTIME <![CDATA[ <= ]]> TO_DATE(#{endTime},'yyyy-MM-dd HH24:mi:ss')
+    </if>
+    <if test="plResult != null and  plResult !=''" >
+      and PL_RESULT like CONCAT(CONCAT('%', #{plResult,jdbcType=VARCHAR}), '%')
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from APP_PATROL_LEDGER
+    where PL_ID = #{plId,jdbcType=INTEGER}
+  </delete>
+
+  <!--updated by lvzhixue 2017-11-10 13:36-->
+  <insert id="insertAppPatrolLedger" parameterType="com.sinosoft.wateradmin.app.bean.AppPatrolLedger"  >
+
+    <selectKey keyProperty="plId" resultType="INTEGER" order="BEFORE">
+      select SEQ_APPPATROLLEDGER_PLID.NEXTVAL as plId from dual
+    </selectKey>
+
+    insert into APP_PATROL_LEDGER (PL_ID, USER_ID, USER_NAME,PL_LEDGER_NAME,
+      PL_BEGINTIME, PL_EndTime, PL_RESULT, PL_TRAJECTORY
+      )
+    values (#{plId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR},#{plLedgerName,jdbcType=VARCHAR},
+      #{plBeginTime,jdbcType=TIMESTAMP}, #{plEndTime,jdbcType=TIMESTAMP}, #{plResult,jdbcType=VARCHAR}, #{plTarjectory,jdbcType=CLOB}
+      )
+  </insert>
+
+
+  <!-- added by lvzhixue 2017-11-13 -->
+  <select id="getPatrolNow" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_PATROL_LEDGER
+    where pl_endtime is NULL
+  </select>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.AppPatrolLedger" >
+    insert into APP_PATROL_LEDGER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="plId != null" >
+        PL_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="plLedgerName != null" >
+        PL_LEDGER_NAME,
+      </if>
+      <if test="plBeginTime != null" >
+        PL_BEGINTIME,
+      </if>
+      <if test="plEndTime != null" >
+        PL_EndTime,
+      </if>
+      <if test="plResult != null" >
+        PL_RESULT,
+      </if>
+      <if test="plTarjectory != null" >
+        PL_TRAJECTORY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      SEQ_APPPATROLLEDGER_PLID.NEXTVAL,
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="plLedgerName != null" >
+        #{plLedgerName,jdbcType=VARCHAR},
+      </if>
+      <if test="plBeginTime != null" >
+        #{plBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="plEndTime != null" >
+        #{plEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="plResult != null" >
+        #{plResult,jdbcType=VARCHAR},
+      </if>
+      <if test="plTarjectory != null" >
+        #{plTarjectory,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.AppPatrolLedger" >
+    update APP_PATROL_LEDGER
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="plLedgerName != null" >
+        PL_LEDGER_NAME = #{plLedgerName,jdbcType=VARCHAR},
+      </if>
+      <if test="plBeginTime != null" >
+        PL_BEGINTIME = #{plBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="plEndTime != null" >
+        PL_ENDTIME = #{plEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="plResult != null" >
+        PL_RESULT = #{plResult,jdbcType=VARCHAR},
+      </if>
+      <if test="plTarjectory != null" >
+        PL_TRAJECTORY = #{plTarjectory,jdbcType=CLOB},
+      </if>
+    </set>
+    where PL_ID = #{plId,jdbcType=INTEGER}
+  </update>
+</mapper>

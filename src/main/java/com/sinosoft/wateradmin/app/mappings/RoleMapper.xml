@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 角色xml, added by lvzhixue ,2017-11-08-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IRoleDAO" >
+  <!--角色-->
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.Role" >
+    <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <!--角色含包含的用户列表-->
+  <resultMap id="RoleUserMap" type="com.sinosoft.wateradmin.app.bean.Role"  extends="BaseResultMap">
+    <collection property="userList" ofType="com.sinosoft.wateradmin.app.bean.Users">
+      <id column="USER_ID" property="userId" jdbcType="INTEGER" />
+      <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+      <result column="USER_LOGINNAME" property="userLoginname" jdbcType="VARCHAR" />
+      <result column="USER_PSW" property="userPsw" jdbcType="VARCHAR" />
+      <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+      <result column="SEX" property="sex" jdbcType="VARCHAR" />
+      <result column="PHONE_NUMBER" property="phoneNumber" jdbcType="VARCHAR" />
+      <result column="BIRTHDAY" property="birthday" jdbcType="DATE" />
+    </collection>
+  </resultMap>
+
+  <!--角色含包含的模块列表-->
+  <resultMap id="RoleModuleMap" type="com.sinosoft.wateradmin.app.bean.Role"  extends="BaseResultMap">
+    <collection property="moduleList" ofType="com.sinosoft.wateradmin.app.bean.FunctionalModule">
+      <id column="FM_ID" property="fmId" jdbcType="INTEGER" />
+      <result column="FM_NAME" property="fmName" jdbcType="VARCHAR" />
+      <result column="FM_CODE" property="fmCode" jdbcType="VARCHAR" />
+      <result column="PAR_FM_ID" property="parFmId" jdbcType="INTEGER" />
+      <result column="FM_ACCESS_ADDRESS" property="fmAccessAddress" jdbcType="VARCHAR" />
+      <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+      <result column="SEQ_NO" property="seqNo" jdbcType="INTEGER" /><!--顺序号-->
+      <result column="FM_DEPTH" property="fmDepth" jdbcType="INTEGER" /><!--层级深度-->
+      <result column="FM_TYPE" property="fmType" jdbcType="INTEGER" /><!--类型-->
+    </collection>
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+    ROLE_ID, ROLE_NAME, REMARK
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select 
+    <include refid="Base_Column_List" />
+    from ROLE
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </select>
+
+
+  <!-- 根据角色编号获取该角色可以操作的系统 added by lvzhixue 2017-11-16-->
+  <select id="selectSystemListByRoleId" parameterType="java.lang.String"
+          resultMap="RoleModuleMap">
+    select *
+      from role r
+     inner join role_module rm
+        on r.role_id = rm.role_id
+     inner join functional_module fm
+        on rm.fm_id = fm.fm_id
+     where fm.fm_depth = 0  and fm.fm_type != 1 and r.role_id in
+      <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+  </select>
+
+  <!--根据系统编号获取该系统可以操作的功能模块 added by lvzhixue 2017-11-16-->
+  <select id="selectModuleListBySystemId" parameterType="Map"
+          resultMap="RoleModuleMap">
+
+  </select>
+
+  <!-- 获取角色列表信息 added by lvzhixue 2017-12-01-->
+  <select id="getRoleList" parameterType="com.sinosoft.wateradmin.app.bean.Role"
+          resultMap="BaseResultMap">
+    select *
+      from role
+     where 1=1
+    <if test="roleName != null and  roleName !=''">
+      and role_name like CONCAT(CONCAT('%', #{roleName,jdbcType=VARCHAR}), '%')
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from ROLE
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.Role" >
+    <selectKey keyProperty="roleId" resultType="INTEGER" order="BEFORE">
+      select SEQ_ROLE_ROLEID.nextval as roleId from dual
+    </selectKey>
+
+    insert into ROLE (ROLE_ID, ROLE_NAME, REMARK
+      )
+    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.Role" >
+    insert into ROLE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="roleName != null" >
+        ROLE_NAME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.Role" >
+    update ROLE
+    <set >
+      <if test="roleName != null" >
+        ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.Role" >
+    update ROLE
+    set ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

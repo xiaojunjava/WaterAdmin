@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 案件信息xml, added by lvzhixue ,2017-11-02-->
+<mapper namespace="com.sinosoft.wateradmin.app.dao.ICaseInfoDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.CaseInfo" >
+    <id column="CI_ID" property="ciId" jdbcType="INTEGER" />
+    <result column="CI_NAME" property="ciName" jdbcType="VARCHAR" />
+    <result column="CI_DATETIME" property="ciDatetime" jdbcType="TIMESTAMP" />
+    <result column="CI_TYPE" property="ciType" jdbcType="VARCHAR" />
+    <result column="CI_STATUS" property="ciStatus" jdbcType="VARCHAR" />
+    <result column="CI_CONTENT" property="ciContent" jdbcType="VARCHAR" />
+    <result column="CI_PLACE" property="ciPlace" jdbcType="VARCHAR" />
+    <result column="CI_ACCEPT_PERSON" property="ciAcceptPerson" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CI_ID, CI_NAME, CI_DATETIME, CI_TYPE, CI_STATUS, CI_CONTENT, CI_PLACE,CI_ACCEPT_PERSON,REMARK
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from CASE_INFO
+    where CI_ID = #{ciId,jdbcType=DECIMAL}
+  </select>
+
+  <!--获取未处理的案件信息列表  ，added by lvzhixue 2017-11-6 11:12-->
+  <select id="getUntreatedCaseInfoList" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from CASE_INFO
+    where CI_STATUS = 2 <!-- 案件状态：1-立案申请，2-案件处理中，3-案件结案，4-无效案件 -->
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from CASE_INFO
+    where CI_ID = #{ciId,jdbcType=DECIMAL}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
+    insert into CASE_INFO (CI_ID, CI_NAME, CI_DATETIME, 
+      CI_TYPE, CI_STATUS, CI_CONTENT, 
+      CI_PLACE, REMARK)
+    values (#{ciId,jdbcType=DECIMAL}, #{ciName,jdbcType=VARCHAR}, #{ciDatetime,jdbcType=TIMESTAMP},
+      #{ciType,jdbcType=VARCHAR}, #{ciStatus,jdbcType=VARCHAR}, #{ciContent,jdbcType=VARCHAR}, 
+      #{ciPlace,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
+    insert into CASE_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ciId != null" >
+        CI_ID,
+      </if>
+      <if test="ciName != null" >
+        CI_NAME,
+      </if>
+      <if test="ciDatetime != null" >
+        CI_DATETIME,
+      </if>
+      <if test="ciType != null" >
+        CI_TYPE,
+      </if>
+      <if test="ciStatus != null" >
+        CI_STATUS,
+      </if>
+      <if test="ciContent != null" >
+        CI_CONTENT,
+      </if>
+      <if test="ciPlace != null" >
+        CI_PLACE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ciId != null" >
+        #{ciId,jdbcType=DECIMAL},
+      </if>
+      <if test="ciName != null" >
+        #{ciName,jdbcType=VARCHAR},
+      </if>
+      <if test="ciDatetime != null" >
+        #{ciDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ciType != null" >
+        #{ciType,jdbcType=VARCHAR},
+      </if>
+      <if test="ciStatus != null" >
+        #{ciStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="ciContent != null" >
+        #{ciContent,jdbcType=VARCHAR},
+      </if>
+      <if test="ciPlace != null" >
+        #{ciPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
+    update CASE_INFO
+    <set >
+      <if test="ciName != null" >
+        CI_NAME = #{ciName,jdbcType=VARCHAR},
+      </if>
+      <if test="ciDatetime != null" >
+        CI_DATETIME = #{ciDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ciType != null" >
+        CI_TYPE = #{ciType,jdbcType=VARCHAR},
+      </if>
+      <if test="ciStatus != null" >
+        CI_STATUS = #{ciStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="ciContent != null" >
+        CI_CONTENT = #{ciContent,jdbcType=VARCHAR},
+      </if>
+      <if test="ciPlace != null" >
+        CI_PLACE = #{ciPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CI_ID = #{ciId,jdbcType=DECIMAL}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
+    update CASE_INFO
+    set CI_NAME = #{ciName,jdbcType=VARCHAR},
+      CI_DATETIME = #{ciDatetime,jdbcType=TIMESTAMP},
+      CI_TYPE = #{ciType,jdbcType=VARCHAR},
+      CI_STATUS = #{ciStatus,jdbcType=VARCHAR},
+      CI_CONTENT = #{ciContent,jdbcType=VARCHAR},
+      CI_PLACE = #{ciPlace,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where CI_ID = #{ciId,jdbcType=DECIMAL}
+  </update>
+</mapper>

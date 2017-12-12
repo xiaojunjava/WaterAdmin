@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 水政单位通讯录  映射文件-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IAppWateradminAddresslistDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.AppWateradminAddresslist" >
+    <id column="UNIT_ID" property="unitId" jdbcType="INTEGER" />
+    <result column="UNIT_NAME" property="unitName" jdbcType="VARCHAR" />
+    <result column="UNIT_ADDRESS" property="unitAddress" jdbcType="VARCHAR" />
+    <result column="UNIT_CONTACT_NAME" property="unitContactName" jdbcType="VARCHAR" />
+    <result column="UNIT_CONTACT_TEL" property="unitContactTel" jdbcType="VARCHAR" />
+    <result column="UNIT_TEL" property="unitTel" jdbcType="VARCHAR" />
+    <result column="UNIT_FAX" property="unitFax" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    UNIT_ID, UNIT_NAME, UNIT_ADDRESS, UNIT_CONTACT_NAME, UNIT_CONTACT_TEL, UNIT_TEL, 
+    UNIT_FAX, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_WATERADMIN_ADDRESSLIST
+    where UNIT_ID = #{unitId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 水政单位通讯录 2017-11-08 added by lvzhixue -->
+  <select id="getAppWateradminAddresslist" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from APP_WATERADMIN_ADDRESSLIST
+  </select>
+
+  <!-- 根据条件查询数据 added by lvzhixue 2017-12-05 15:08-->
+  <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.AppWateradminAddresslist">
+    select
+    <include refid="Base_Column_List" />
+    from APP_WATERADMIN_ADDRESSLIST
+    where 1 = 1
+    <if test="unitName != null and  unitName !=''">
+      and UNIT_NAME like CONCAT(CONCAT('%', #{unitName,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="unitContactName != null and  unitContactName !=''">
+      and UNIT_CONTACT_NAME like CONCAT(CONCAT('%', #{unitContactName,jdbcType=VARCHAR}), '%')
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from APP_WATERADMIN_ADDRESSLIST
+    where UNIT_ID = #{unitId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.AppWateradminAddresslist" >
+    insert into APP_WATERADMIN_ADDRESSLIST (UNIT_ID, UNIT_NAME, UNIT_ADDRESS, 
+      UNIT_CONTACT_NAME, UNIT_CONTACT_TEL, UNIT_TEL, 
+      UNIT_FAX, REMARK)
+    values (SEQ_WATERADMINADDRLIST_UNITID.nextval, #{unitName,jdbcType=VARCHAR}, #{unitAddress,jdbcType=VARCHAR},
+      #{unitContactName,jdbcType=VARCHAR}, #{unitContactTel,jdbcType=VARCHAR}, #{unitTel,jdbcType=VARCHAR}, 
+      #{unitFax,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.AppWateradminAddresslist" >
+    insert into APP_WATERADMIN_ADDRESSLIST
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="unitId != null" >
+        UNIT_ID,
+      </if>
+      <if test="unitName != null" >
+        UNIT_NAME,
+      </if>
+      <if test="unitAddress != null" >
+        UNIT_ADDRESS,
+      </if>
+      <if test="unitContactName != null" >
+        UNIT_CONTACT_NAME,
+      </if>
+      <if test="unitContactTel != null" >
+        UNIT_CONTACT_TEL,
+      </if>
+      <if test="unitTel != null" >
+        UNIT_TEL,
+      </if>
+      <if test="unitFax != null" >
+        UNIT_FAX,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="unitId != null" >
+        #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="unitName != null" >
+        #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddress != null" >
+        #{unitAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="unitContactName != null" >
+        #{unitContactName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitContactTel != null" >
+        #{unitContactTel,jdbcType=VARCHAR},
+      </if>
+      <if test="unitTel != null" >
+        #{unitTel,jdbcType=VARCHAR},
+      </if>
+      <if test="unitFax != null" >
+        #{unitFax,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.AppWateradminAddresslist" >
+    update APP_WATERADMIN_ADDRESSLIST
+    <set >
+      <if test="unitName != null" >
+        UNIT_NAME = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddress != null" >
+        UNIT_ADDRESS = #{unitAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="unitContactName != null" >
+        UNIT_CONTACT_NAME = #{unitContactName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitContactTel != null" >
+        UNIT_CONTACT_TEL = #{unitContactTel,jdbcType=VARCHAR},
+      </if>
+      <if test="unitTel != null" >
+        UNIT_TEL = #{unitTel,jdbcType=VARCHAR},
+      </if>
+      <if test="unitFax != null" >
+        UNIT_FAX = #{unitFax,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UNIT_ID = #{unitId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.AppWateradminAddresslist" >
+    update APP_WATERADMIN_ADDRESSLIST
+    set UNIT_NAME = #{unitName,jdbcType=VARCHAR},
+      UNIT_ADDRESS = #{unitAddress,jdbcType=VARCHAR},
+      UNIT_CONTACT_NAME = #{unitContactName,jdbcType=VARCHAR},
+      UNIT_CONTACT_TEL = #{unitContactTel,jdbcType=VARCHAR},
+      UNIT_TEL = #{unitTel,jdbcType=VARCHAR},
+      UNIT_FAX = #{unitFax,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where UNIT_ID = #{unitId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--车船档案表映射文件-->
+<mapper namespace="com.sinosoft.wateradmin.cmd.dao.IRoutePlanningDAO">
+    <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.cmd.bean.RoutePlanning">
+        <id column="RP_ID" property="rpId" jdbcType="INTEGER"/>
+        <result column="RP_TYPE" property="rpType" jdbcType="VARCHAR"/>
+        <result column="RP_BELONG" property="rpBelong" jdbcType="VARCHAR"/>
+        <result column="RP_LINENAME" property="rpLineName" jdbcType="VARCHAR"/>
+        <result column="RP_POINTS" property="rpPoints" jdbcType="CLOB"/>
+        <result column="RP_STATUS" property="rpStatus" jdbcType="VARCHAR"/>
+        <result column="RP_MAKE_PERSON" property="rpMakePerson" jdbcType="VARCHAR"/>
+        <result column="RP_MAKE_TIME" property="rpMakeTime" jdbcType="TIMESTAMP"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    RP_ID, RP_TYPE, RP_BELONG, RP_LINENAME, RP_POINTS, RP_STATUS, RP_MAKE_PERSON, RP_MAKE_TIME,REMARK
+  </sql>
+    <sql id="Base_Table">
+        CMD_ROUTE_PLANNING
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER">
+        select  <include refid="Base_Column_List"/>   from <include refid="Base_Table"/>
+        where RP_ID = #{rpId,jdbcType=INTEGER}
+    </select>
+    <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.cmd.bean.RoutePlanning">
+        select <include refid="Base_Column_List"/>  from <include refid="Base_Table"/> where 1=1
+        <if test="rpId != null and  rpId !=''">
+            and RP_ID=#{rpId,jdbcType=INTEGER}
+        </if>
+        <if test="rpType != null and  rpType !=''">
+            and RP_TYPE =#{rpType,jdbcType=INTEGER}
+        </if>
+        <if test="rpBelong != null and  rpBelong !=''">
+            and RP_BELONG =#{rpBelong,jdbcType=INTEGER}
+        </if>
+        <if test="rpLineName != null and  rpLineName !=''">
+            and RP_LINENAME like CONCAT(CONCAT('%', #{rpLineName,jdbcType=VARCHAR}), '%')
+        </if>
+        <if test="rpStatus != null and  rpStatus !=''">
+            and RP_STATUS like CONCAT(CONCAT('%', #{rpStatus,jdbcType=VARCHAR}), '%')
+        </if>
+        <if test="rpMakePerson != null and  rpMakePerson !=''">
+            and RP_MAKE_PERSON like CONCAT(CONCAT('%', #{rpMakePerson,jdbcType=VARCHAR}), '%')
+        </if>
+        <if test="startTime != null and  startTime !=''" >
+            and RP_MAKE_TIME <![CDATA[ >= ]]> TO_DATE(#{startTime},'yyyy-MM-dd HH24:mi:ss')
+        </if>
+        <if test="endTime != null and  endTime !=''" >
+            and RP_MAKE_TIME <![CDATA[ <= ]]> TO_DATE(#{endTime},'yyyy-MM-dd HH24:mi:ss')
+        </if>
+        <if test="remark != null and  remark !=''">
+            and REMARK like  CONCAT(CONCAT('%', #{remark,jdbcType=VARCHAR}), '%')
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        delete from <include refid="Base_Table"/>
+        where RP_ID = #{rpId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.sinosoft.wateradmin.cmd.bean.RoutePlanning">
+        <selectKey resultType="INTEGER" keyProperty="saId" order="BEFORE">
+            　　　select seq_routeplanning_rpid.nextval from dual
+        </selectKey>
+        insert into <include refid="Base_Table"/> (  <include refid="Base_Column_List"/>  )
+        values (#{rpId,jdbcType=INTEGER}, #{rpType,jdbcType=INTEGER}, #{rpBelong,jdbcType=INTEGER},
+        #{rpLineName,jdbcType=VARCHAR}, #{rpPoints,jdbcType=CLOB}, #{rpStatus,jdbcType=VARCHAR},
+        #{rpMakePerson,jdbcType=VARCHAR}, #{rpMakeTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="com.sinosoft.wateradmin.cmd.bean.RoutePlanning">
+        update <include refid="Base_Table"/>
+        <set>
+            <if test="rpType != null and  rpType !=''">
+                RP_TYPE = #{rpType,jdbcType=INTEGER},
+            </if>
+            <if test="rpBelong != null and  rpBelong !=''">
+                RP_BELONG = #{rpBelong,jdbcType=INTEGER},
+            </if>
+            <if test="rpLineName != null and  rpLineName !=''">
+                RP_LINENAME = #{rpLineName,jdbcType=VARCHAR},
+            </if>
+            <if test="rpPoints != null and  rpPoints !=''">
+                RP_POINTS = #{rpPoints,jdbcType=CLOB},
+            </if>
+            <if test="rpStatus != null and  rpStatus !=''">
+                RP_STATUS = #{rpStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="rpMakePerson != null and  rpMakePerson !=''">
+                RP_MAKE_PERSON = #{rpMakePerson,jdbcType=VARCHAR},
+            </if>
+            <if test="rpMakeTime != null and  rpMakeTime !=''">
+                RP_MAKE_TIME = #{rpMakeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null and  remark !=''">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where RP_ID = #{rpId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

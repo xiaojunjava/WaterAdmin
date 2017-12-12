@@ -1,0 +1,206 @@
+html,body{
+	margin: 0;
+	padding: 0;
+}
+    .home{
+	min-width: 1000px;
+	float: left;
+	display: flex;
+    flex-wrap: wrap;
+    border-top: 5px solid #3385ff;
+	background-color: #fff;
+	justify-content: space-around;
+	margin-bottom: 100px;
+}
+
+@media screen and (min-width: 1350px) {
+    .home{
+	min-width: 1000px;
+	max-width: 1000px;
+	float: left;
+	display: flex;
+    flex-wrap: wrap;
+    border-top: 5px solid #3385ff;
+	background-color: #fff;
+	justify-content: space-around;
+}
+}
+
+@media screen and (min-width: 1440px) {
+    .home{
+	min-width: 1000px;
+	max-width: 1098px;
+	float: left;
+	display: flex;
+    flex-wrap: wrap;
+    border-top: 5px solid #3385ff;
+	background-color: #fff;
+	justify-content: space-around;
+}
+}
+
+.card{
+	width: 482px;
+	height: 100%;
+	margin-top: 9px;
+	/*margin-left: 25px;
+	margin-right:32px;*/
+	margin-bottom: 6px;
+}
+.card_title{
+	width: 100%;
+	text-align:center;
+}
+.card_content{
+	margin-top: 30px;
+    width: 100%;
+    height: 301px;
+    border: 1px solid #3385ff;
+}
+.content_title{
+    text-align: center;
+}
+.content_list{
+}
+.content_list ol {
+	width: 438px;
+	padding: 0;
+	margin: 0 auto;
+   list-style-type:none;		
+   counter-reset:sectioncounter;
+}                      
+.content_list ol li:before {
+   content:"" counter(sectioncounter) ". "; 
+   counter-increment:sectioncounter;
+}
+.content_list li{	
+	line-height: 42px;
+}
+.study_progress .content_list li{
+	display: flex;
+	align-items: center;
+}
+.content_list a{
+	color: #000;
+	text-decoration:none;
+	font-size: 18px;
+	font-family: "微软雅黑";
+	width: 325px;
+	display: inline-block;
+}
+.content_list a:hover{
+	color:#3385ff;
+}
+.study_progress .content_list a{
+	width: 219px;
+}
+.content_list li .time{
+	color: #3385ff;
+	font-size: 14px;
+	font-family: "微软雅黑";
+}
+.content_list li button{
+    width: 56px;
+    height: 21px;
+    background-color: #3385ff;
+    border-radius: 10px;
+    color: #fff;
+    font-family: "微软雅黑";
+    cursor: pointer;
+    outline: none;
+    border: 0;
+}
+.progress{
+	background-image:url(../image/xuexi_jindu_bg.png);
+	background-repeat: repeat-x;
+	width: 200px;
+	height: 17px; 
+	display: inline-block;
+}
+
+.progress div{
+    height: 17px;
+    text-align: right;
+}
+.progress div span{
+	line-height: 50px;
+    font-family: monospace;
+}
+/*紫色*/
+.purple{
+	background-image: url(../image/xuexi_jindu_bg_purple.png);
+	color: #522e90;
+}
+/*红色*/
+.red{
+	background-image: url(../image/xuexi_jindu_bg_red.png);
+	color: #ec1b23;
+}
+/*黄色*/
+.yellow{
+	background-image: url(../image/xuexi_jindu_bg_yellow.png);
+	color: #ffdd00;
+}
+/*绿色*/
+.green{
+	background-image: url(../image/xuexi_jindu_bg_green.png);
+	color: #8bc53f;
+}
+
+/*翠绿色*/
+.bice{
+	background-image: url(../image/xuexi_jindu_bg_bice.png);
+	color: #36b34a;
+}
+
+
+.width10{
+	width:10%;
+}
+.width20{
+	width: 20%;
+}
+.width30{
+	width:30%;
+}
+.width40{
+	width: 40%;
+}
+.width50{
+	width:50%;
+}
+.width60{
+	width: 60%;
+}
+.width70{
+	width:70%;
+}
+.width80{
+	width: 80%;
+}
+.width90{
+	width:90%;
+}
+.width100{
+	width: 100%;
+}
+.progress > span > span {
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #404040;
+  color: rgba(0, 0, 0, 0.7);
+  text-shadow: 0 1px rgba(255, 255, 255, 0.4);
+}
+.progress > span:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: 18px;
+  background-image: url("../image/xuexi_jindu_bg.png") 0 0 repeat-x;
+  border-radius: 10px;
+}

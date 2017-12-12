@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 组织机构xml, added by lvzhixue ,2017-11-08-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IOrganizationDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.Organization" >
+    <id column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="PAR_ORG_ID" property="parOrgId" jdbcType="INTEGER" />
+    <result column="ORG_DESCRIPTION" property="orgDescription" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ORG_ID, ORG_CODE, ORG_NAME, PAR_ORG_ID, ORG_DESCRIPTION
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select 
+    <include refid="Base_Column_List" />
+    from ORGANIZATION
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </select>
+
+  <!--获取当前结点的所有直接子节点  added by lvzhxiue 2017-12-01 16：45-->
+  <select id="getChildByOrgId" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select
+    <include refid="Base_Column_List" />
+    from ORGANIZATION
+    where PAR_ORG_ID = #{orgId,jdbcType=INTEGER}
+  </select>
+
+  <!--判断当前节点是否有子节点  added by lvzhxiue 2017-12-01 16：45-->
+  <select id="hasChild" resultType="INTEGER" parameterType="INTEGER" >
+    select count(*)
+    from ORGANIZATION
+    where PAR_ORG_ID = #{orgId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from ORGANIZATION
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.Organization" >
+    insert into ORGANIZATION (ORG_ID, ORG_CODE, ORG_NAME, 
+      PAR_ORG_ID, ORG_DESCRIPTION)
+    values (#{orgId,jdbcType=INTEGER}, #{orgCode,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, 
+      #{parOrgId,jdbcType=INTEGER}, #{orgDescription,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.Organization" >
+    insert into ORGANIZATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="orgCode != null" >
+        ORG_CODE,
+      </if>
+      <if test="orgName != null" >
+        ORG_NAME,
+      </if>
+      <if test="parOrgId != null" >
+        PAR_ORG_ID,
+      </if>
+      <if test="orgDescription != null" >
+        ORG_DESCRIPTION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="parOrgId != null" >
+        #{parOrgId,jdbcType=INTEGER},
+      </if>
+      <if test="orgDescription != null" >
+        #{orgDescription,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.Organization" >
+    update ORGANIZATION
+    <set >
+      <if test="orgCode != null" >
+        ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="parOrgId != null" >
+        PAR_ORG_ID = #{parOrgId,jdbcType=INTEGER},
+      </if>
+      <if test="orgDescription != null" >
+        ORG_DESCRIPTION = #{orgDescription,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.Organization" >
+    update ORGANIZATION
+    set ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+      ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      PAR_ORG_ID = #{parOrgId,jdbcType=INTEGER},
+      ORG_DESCRIPTION = #{orgDescription,jdbcType=VARCHAR}
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </update>
+</mapper>

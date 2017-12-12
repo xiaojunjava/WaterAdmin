@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 执法人员通讯录  映射文件-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.wateradmin.app.dao.IAppTipstaffAddresslistDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.AppTipstaffAddresslist" >
+    <id column="TIPSTAFF_ID" property="tipstaffId" jdbcType="INTEGER" />
+    <result column="TIPSTAFF_NAME" property="tipstaffName" jdbcType="VARCHAR" />
+    <result column="TIPSTAFF_SEX" property="tipstaffSex" jdbcType="VARCHAR" />
+    <result column="TIPSTAFF_ORG" property="tipstaffOrg" jdbcType="VARCHAR" />
+    <result column="TIPSTAFF_DEPARTMENT" property="tipstaffDepartment" jdbcType="VARCHAR" />
+    <result column="TIPSTAFF_POSITION" property="tipstaffPosition" jdbcType="VARCHAR" />
+    <result column="TIPSTAFF_PERSONAL_MAILBOX" property="tipstaffPersonalMailbox" jdbcType="VARCHAR" />
+    <result column="PHONE_NUMBER" property="phoneNumber" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    TIPSTAFF_ID, TIPSTAFF_NAME, TIPSTAFF_SEX, TIPSTAFF_ORG, TIPSTAFF_DEPARTMENT, TIPSTAFF_POSITION, 
+    TIPSTAFF_PERSONAL_MAILBOX, PHONE_NUMBER, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_TIPSTAFF_ADDRESSLIST
+    where TIPSTAFF_ID = #{tipstaffId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 执法人员通讯录 2017-11-08 added by lvzhixue -->
+
+  <select id="getAppTipstaffAddresslist" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_TIPSTAFF_ADDRESSLIST
+  </select>
+
+  <!-- 根据条件查询数据 added by lvzhixue 2017-12-05 15:08-->
+  <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.AppTipstaffAddresslist">
+    select
+    <include refid="Base_Column_List" />
+    from APP_TIPSTAFF_ADDRESSLIST
+    where 1 = 1
+    <if test="tipstaffName != null and  tipstaffName !=''">
+      and TIPSTAFF_NAME like CONCAT(CONCAT('%', #{tipstaffName,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="tipstaffSex != null and  tipstaffSex !=''">
+      and TIPSTAFF_SEX=#{tipstaffSex,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
+    delete from APP_TIPSTAFF_ADDRESSLIST
+    where TIPSTAFF_ID = #{tipstaffId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.AppTipstaffAddresslist" >
+    insert into APP_TIPSTAFF_ADDRESSLIST (TIPSTAFF_ID, TIPSTAFF_NAME, TIPSTAFF_SEX, 
+      TIPSTAFF_ORG, TIPSTAFF_DEPARTMENT, TIPSTAFF_POSITION, 
+      TIPSTAFF_PERSONAL_MAILBOX, PHONE_NUMBER, REMARK
+      )
+    values (SEQ_TIPSTAFFADDRLIST_FFID.nextval, #{tipstaffName,jdbcType=VARCHAR}, #{tipstaffSex,jdbcType=VARCHAR},
+      #{tipstaffOrg,jdbcType=VARCHAR}, #{tipstaffDepartment,jdbcType=VARCHAR}, #{tipstaffPosition,jdbcType=VARCHAR}, 
+      #{tipstaffPersonalMailbox,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.AppTipstaffAddresslist" >
+    insert into APP_TIPSTAFF_ADDRESSLIST
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tipstaffId != null" >
+        TIPSTAFF_ID,
+      </if>
+      <if test="tipstaffName != null" >
+        TIPSTAFF_NAME,
+      </if>
+      <if test="tipstaffSex != null" >
+        TIPSTAFF_SEX,
+      </if>
+      <if test="tipstaffOrg != null" >
+        TIPSTAFF_ORG,
+      </if>
+      <if test="tipstaffDepartment != null" >
+        TIPSTAFF_DEPARTMENT,
+      </if>
+      <if test="tipstaffPosition != null" >
+        TIPSTAFF_POSITION,
+      </if>
+      <if test="tipstaffPersonalMailbox != null" >
+        TIPSTAFF_PERSONAL_MAILBOX,
+      </if>
+      <if test="phoneNumber != null" >
+        PHONE_NUMBER,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tipstaffId != null" >
+        #{tipstaffId,jdbcType=INTEGER},
+      </if>
+      <if test="tipstaffName != null" >
+        #{tipstaffName,jdbcType=VARCHAR},
+      </if>
+      <if test="tipstaffSex != null" >
+        #{tipstaffSex,jdbcType=VARCHAR},
+      </if>
+      <if test="tipstaffOrg != null" >
+        #{tipstaffOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="tipstaffDepartment != null" >
+        #{tipstaffDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="tipstaffPosition != null" >
+        #{tipstaffPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="tipstaffPersonalMailbox != null" >
+        #{tipstaffPersonalMailbox,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.app.bean.AppTipstaffAddresslist" >
+    update APP_TIPSTAFF_ADDRESSLIST
+    <set >
+      <if test="tipstaffName != null" >
+        TIPSTAFF_NAME = #{tipstaffName,jdbcType=VARCHAR},
+      </if>
+      <if test="tipstaffSex != null" >
+        TIPSTAFF_SEX = #{tipstaffSex,jdbcType=VARCHAR},
+      </if>
+      <if test="tipstaffOrg != null" >
+        TIPSTAFF_ORG = #{tipstaffOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="tipstaffDepartment != null" >
+        TIPSTAFF_DEPARTMENT = #{tipstaffDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="tipstaffPosition != null" >
+        TIPSTAFF_POSITION = #{tipstaffPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="tipstaffPersonalMailbox != null" >
+        TIPSTAFF_PERSONAL_MAILBOX = #{tipstaffPersonalMailbox,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TIPSTAFF_ID = #{tipstaffId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.AppTipstaffAddresslist" >
+    update APP_TIPSTAFF_ADDRESSLIST
+    set TIPSTAFF_NAME = #{tipstaffName,jdbcType=VARCHAR},
+      TIPSTAFF_SEX = #{tipstaffSex,jdbcType=VARCHAR},
+      TIPSTAFF_ORG = #{tipstaffOrg,jdbcType=VARCHAR},
+      TIPSTAFF_DEPARTMENT = #{tipstaffDepartment,jdbcType=VARCHAR},
+      TIPSTAFF_POSITION = #{tipstaffPosition,jdbcType=VARCHAR},
+      TIPSTAFF_PERSONAL_MAILBOX = #{tipstaffPersonalMailbox,jdbcType=VARCHAR},
+      PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where TIPSTAFF_ID = #{tipstaffId,jdbcType=INTEGER}
+  </update>
+</mapper>

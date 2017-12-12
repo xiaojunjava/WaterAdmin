@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd"
+       default-lazy-init="true">
+
+    <description>quartz Configuration</description>
+    <!--注入任务处理类bean  -->
+    <bean id="quartzTask" class="com.sinosoft.wateradmin.cmd.quartz.TaskShipMonitor"></bean>
+    <!-- 任务触发器详细信息bean -->
+    <bean id="myJobDetail1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 设置任务执行对象 -->
+        <property name="targetObject" ref="quartzTask"></property>
+        <!-- 设置任务执行对象中对应的执行方法 -->
+        <property name="targetMethod" value="doCronTask"></property>
+        <!-- 设置任务是否可并发执行，默认为不并发 -->
+        <property name="concurrent" value="false"></property>
+    </bean>
+    <!-- 任务触发器 -->
+    <bean id="cronTrigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!-- 设置任务详细信息 -->
+        <property name="jobDetail" ref="myJobDetail1"></property>
+        <!-- 设置quartz任务执行表达式 ,每隔30秒执行一次任务-->
+        <property name="cronExpression" value="0/30 1 * * * ?"></property>
+    </bean>
+    <!-- 设置触发器调度工厂 -->
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger1"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>
