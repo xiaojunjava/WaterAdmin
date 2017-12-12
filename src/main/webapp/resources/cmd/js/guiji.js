@@ -154,7 +154,7 @@ function findPer(userId) {
 function listPL() {
     $.ajax({
         type: "GET",
-        url: myCotextPath+"/login/getRPDatas",
+        url: myCotextPath+"/login/getUsersData",
         dataType: "json",
         data:{page:"1",rows:"1000"},
         success: function (data)
