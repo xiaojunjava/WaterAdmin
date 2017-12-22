@@ -21,6 +21,22 @@
     <script src="<%=request.getContextPath()%>/resources/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
     <script src="<%=request.getContextPath()%>/resources/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
     <script src="<%=request.getContextPath()%>/resources/js/login_and_nav/login.js"></script>
+    <script  type="text/javascript">
+        $(function () {
+            $('#username').keydown(function (e) {
+                if (e.keyCode == 13) {
+                    login('<%=request.getContextPath()%>/login/pcUserLogin');
+                }
+            });
+
+            $('#password').keydown(function (e) {
+                if (e.keyCode == 13) {
+                    login('<%=request.getContextPath()%>/login/pcUserLogin');
+                }
+            });
+        });
+
+    </script>
 </head>
 <body>
 <div class="logo">

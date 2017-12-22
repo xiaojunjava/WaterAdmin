@@ -4,6 +4,7 @@ import com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection;
 import com.sinosoft.wateradmin.common.MyBatisDao;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 案件调查取证记录_dao
@@ -26,4 +27,6 @@ public interface ICaseEvidenceCollectionDAO {
     int updateByPrimaryKeySelective(CaseEvidenceCollection record);
 
     int updateByPrimaryKey(CaseEvidenceCollection record);
+
+    List<CaseEvidenceCollection> getEvidenceCollectionList(CaseEvidenceCollection caseEvidenceCollection);
 }

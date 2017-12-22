@@ -28,6 +28,13 @@ public interface IShipMonitorDAO {
 	List<ShipMonitor> selectDatas(ShipMonitor sm);
 
 	/**
+	 * 根据自定义条件查询
+	 * @param planSql
+	 * @return
+	 */
+	List<ShipMonitor> selectPlanDatas(@Param(value = "planSql") String planSql);
+
+	/**
 	 * 根据主键删除1条数据
 	 * @param csmId
 	 * @return

@@ -33,15 +33,15 @@
     select
     <include refid="Base_Column_List" />
     from APP_SHIPMASTER_ADDRESSLIST
-    where ASA_TYPE = 0
-  </select>
+    where ASA_TYPE = 2
+  </select><!--2-采沙船主，3-运沙船主-->
 
   <!-- 运沙船主通讯录  added by lvzhixue 2017-11-08-->
   <select id="getYunShipmasterAddresslist" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from APP_SHIPMASTER_ADDRESSLIST
-    where ASA_TYPE = 1
+    where ASA_TYPE = 3
   </select>
 
   <!-- 根据条件查询数据 added by lvzhixue 2017-12-05 15:08-->

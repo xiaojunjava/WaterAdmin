@@ -206,6 +206,7 @@ body {
   height: 28px;
 }
 .leftlist .listcard{
+    z-index: 8888;
   width: 258px;
   padding: 0 32px;
 }
@@ -378,6 +379,7 @@ body {
 }
 
 .listcard .button {
+    z-index: 9999;
   text-align: center;
   margin: 0;
   padding: 0;

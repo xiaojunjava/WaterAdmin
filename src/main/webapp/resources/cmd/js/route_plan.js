@@ -63,5 +63,46 @@ function listRP() {
     });
 }
 function hideMe(obj) {
-        $(obj).parent().hide();
+   $(obj).parent().hide();
 }
+/******** 保存规划的路线、边界 start **********/
+function openRoutePlanWin(type,content) {
+    $('#f1').form('clear');
+
+    var title="区域设定";
+    if(type==2){
+        title="线路设定";
+    }
+
+    $("#rpPoints").textbox("setValue",content);
+
+    $("#mywin").panel({title:"&nbsp;&nbsp;"+title });
+    $('#mywin').window('open');
+}
+function clearF1(){
+    $('#f1').form('clear');
+}
+//发送消息（保存）
+function submitF1() {
+    if($('#f1').form("validate")) {//通过校验
+        var form_data = $('#f1').serializeObject();
+
+        var actionUrl=myCotextPath+"/rp/addRp";
+        $.ajax({
+            type: "POST",
+            url:actionUrl,
+            data:form_data,
+            dataType: "json",
+            success: function (data)
+            {
+                if(data.tag){
+                    $.messager.alert('操作提示',data.message);
+                    listRP();//刷新路线列表
+                    $('#mywin').window('close');
+                }
+            },
+            error:function (data) {  alert("2"+JSON.stringify(data));   }
+        });
+    }
+}
+/********* 保存规划的路线、边界 end *************/

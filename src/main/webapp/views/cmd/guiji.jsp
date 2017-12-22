@@ -13,21 +13,32 @@
     <link rel="stylesheet" type="text/css"  href="<%=request.getContextPath()%>/resources/jquery-easyui-1.5.3/themes/icon.css"/>
     <link rel="stylesheet" type="text/css"  href="<%=request.getContextPath()%>/resources/jquery-easyui-1.5.3/themes/color.css"/>
 
-
+    <script type="text/javascript">
+        //配置arcgis拓展解析天地图服务类引用的路径
+        dojoConfig = {
+            parseOnLoad: true,
+            packages: [{
+                name: 'tdlib',
+                location: "<%=request.getContextPath()%>/resources/cmd/js/tdlib"
+                //location: "js/tdlib"
+            }]
+        };
+    </script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/jquery-1.8.0.min.js"></script>
-    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/default.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/main/utils.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/arcgisapi/3.14/init.js"></script>
-    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/main/historyRoute.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/main/map.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/main/layer.control.js"></script>
 
-
-    <script src="<%=request.getContextPath()%>/resources/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
-    <script src="<%=request.getContextPath()%>/resources/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
-    <script src="<%=request.getContextPath()%>/resources/common.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/common.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/guiji.js"></script>
     <script type="text/javascript">
         $(function () {
-            showtime();//显示时间
+            $.getScript("<%=request.getContextPath()%>/resources/cmd/js/default.js").done(function() {  /** todo something **/   });
+            showtime();
+            loadMap();
             //loadTable();//加载数据表格
             //searchAddCar();//添加搜索框
             loadTablePL();
@@ -35,6 +46,7 @@
 
             listSa();//显示车船列表
             listPL();//列表人员
+
         });
     </script>
 </head>
@@ -89,7 +101,7 @@
             <!-- 表格结束 -->
         </div>
     </div>
-    <div class="right" id="allmap"></div>
+    <div class="right" id="map"></div>
 </div>
 </body>
 

@@ -1,5 +1,11 @@
 package com.sinosoft.wateradmin.app.bean;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sinosoft.wateradmin.common.BaseBean;
+import com.sinosoft.wateradmin.common.CustomDateTimeDeserializer;
+import com.sinosoft.wateradmin.common.CustomDateTimeSerializer;
+
 import java.util.Date;
 
 /**
@@ -8,11 +14,15 @@ import java.util.Date;
  * @author lvzhixue
  * @create 2017-11-02 15:06
  */
-public class CaseInfo {
+public class CaseInfo extends BaseBean {
     private Integer ciId;
+
+    private Integer prId;//--巡检上报记录编号
 
     private String ciName;
 
+    @JsonSerialize(using=CustomDateTimeSerializer.class)
+    @JsonDeserialize(using= CustomDateTimeDeserializer.class)
     private Date ciDatetime;
 
     private String ciType;
@@ -26,6 +36,19 @@ public class CaseInfo {
     private String ciAcceptPerson;//--受理人
 
     private String remark;
+
+    private Integer userId;
+
+    private String userName;
+
+
+    //--申请理由
+    private String applyReason;
+
+    /****下面为：查询专用****/
+    private String startTime;
+    private String endTime;
+
 
     public Integer getCiId() {
         return ciId;
@@ -97,5 +120,53 @@ public class CaseInfo {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Integer getPrId() {
+        return prId;
+    }
+
+    public void setPrId(Integer prId) {
+        this.prId = prId;
+    }
+
+    public String getApplyReason() {
+        return applyReason;
+    }
+
+    public void setApplyReason(String applyReason) {
+        this.applyReason = applyReason;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

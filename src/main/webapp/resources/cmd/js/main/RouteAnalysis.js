@@ -27,6 +27,7 @@ $(document).ready(function () {
     $("#addStops").click(function () {
         removeEventHandlers();
         mapOnClick_addStops_connect = allMap.on("click", addStop);
+
     })
     //Clears all stops
     $("#clearStops").click(function () {

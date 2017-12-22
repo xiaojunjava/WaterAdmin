@@ -1,5 +1,11 @@
 package com.sinosoft.wateradmin.app.bean;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sinosoft.wateradmin.common.BaseBean;
+import com.sinosoft.wateradmin.common.CustomDateTimeDeserializer;
+import com.sinosoft.wateradmin.common.CustomDateTimeSerializer;
+
 import java.util.Date;
 
 /**
@@ -8,13 +14,14 @@ import java.util.Date;
  * @author lvzhixue
  * @create 2017-11-02 15:06
  */
-public class CaseEvidenceCollection {
+public class CaseEvidenceCollection  extends BaseBean {
     private Integer ecId;
 
     private Integer ciId;
 
     private String ecName;
-
+    @JsonSerialize(using=CustomDateTimeSerializer.class)
+    @JsonDeserialize(using= CustomDateTimeDeserializer.class)
     private Date ecDatetime;
 
     private String ecRecPerson;
@@ -26,6 +33,10 @@ public class CaseEvidenceCollection {
     private String ecPlace;
 
     private String ecContent;
+
+    /****下面为：查询专用****/
+    private String startTime;
+    private String endTime;
 
     public Integer getEcId() {
         return ecId;
@@ -97,5 +108,21 @@ public class CaseEvidenceCollection {
 
     public void setEcContent(String ecContent) {
         this.ecContent = ecContent;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

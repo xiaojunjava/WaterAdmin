@@ -45,8 +45,6 @@
                 }}
             ]];
 
-
-
             //--获取数据库中的数据
             var jsonData = {
                 url: '<%=request.getContextPath()%>/uavDevice/getUavDeviceData',

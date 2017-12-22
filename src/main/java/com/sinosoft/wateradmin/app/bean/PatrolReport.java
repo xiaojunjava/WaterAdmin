@@ -33,6 +33,10 @@ public class PatrolReport extends BaseBean{
 	private String latitude;
 	//备注
 	private String remark;
+
+	//--added by lvzhixue 为了立案申请新增加的状态
+	private int status;
+
 	/****下面为：查询专用****/
 	private String startTime;
 	private String endTime;
@@ -116,5 +120,13 @@ public class PatrolReport extends BaseBean{
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

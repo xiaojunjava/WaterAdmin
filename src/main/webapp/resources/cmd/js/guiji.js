@@ -1,4 +1,31 @@
 var myCotextPath="/"+window.location.pathname.split("/")[1];
+function showtime()
+{
+    var now=new Date();
+    var year=now.getFullYear();
+    var month=now.getMonth()+1;
+    if(month<10){
+        month="0"+month;
+    }
+    var day=now.getDate();
+    if(day<10){
+        day="0"+day;
+    }
+    var hours=now.getHours();
+    if(hours<10){
+        hours="0"+hours;
+    }
+    var minutes=now.getMinutes();
+    if(minutes<10){
+        minutes="0"+minutes;
+    }
+    var seconds=now.getSeconds();
+    if(seconds<10){
+        seconds="0"+seconds;
+    }
+    document.all.show.innerHTML=""+year+"-"+month+"-"+day+"<br /> "+hours+":"+minutes+":"+seconds+"";
+    var timeID=setTimeout(showtime,1000);
+}
 var sa_columns = [[
     // {field:'ck',checkbox:true},
     {field:'smBeginTime',title:'轨迹开始时间',width:264,align:'center'},
@@ -174,7 +201,7 @@ function listPL() {
         }
     });
 }
-Date.prototype.format = function(fmt) {
+Date.prototype.formatMe = function(fmt) {
     var o = {
         "M+" : this.getMonth()+1,                 //月份
         "d+" : this.getDate(),                    //日
@@ -193,24 +220,25 @@ Date.prototype.format = function(fmt) {
         }
     }
     return fmt;
-}
+};
 //加载巡查台帐（人的）数据表格
 var per_columns = [[
     // {field:'ck',checkbox:true},
     {field:'userName',title:'巡查人员',width:264,align:'center'},
     {field:'plLedgerName',title:'台账名称',width:264,align:'center'},
-    {field:'plBeginTime',title:'开始时间',width:264,align:'center', formatter : function(value, rec, index) {
+    {field:'plBeginTime',title:'开始时间',width:264,align:'center',formatter : function(value, rowData, rowIndex) {
             var unixTimestamp = new Date(value);
-            return unixTimestamp.format("yyyy-MM-dd hh:mm:ss");
+            return unixTimestamp.formatMe("yyyy-MM-dd hh:mm:ss");
         }
     },
-    {field:'plEndTime',title:'结束时间',width:264,align:'center',formatter : function(value, rec, index)
-    {
+    {field:'plEndTime',title:'结束时间',width:264,align:'center',formatter : function(value, rowData, rowIndex){
         var unixTimestamp = new Date(value);
-        return unixTimestamp.format("yyyy-MM-dd hh:mm:ss");
+        return unixTimestamp.formatMe("yyyy-MM-dd hh:mm:ss");
     }},
     {field:'plResult',title:'巡查结果',width:264,align:'center'}
 ]];
+
+//巡查台账数据列表
 function loadTablePL(){
 
     var IsCheckFlag=false;
@@ -244,8 +272,22 @@ function loadTablePL(){
                 IsCheckFlag = false;
             }
         },
+        onClickRow:function(rowIndex,rowData){
+            var people_routeJson= rowData["plTarjectory"];
+            if(people_routeJson!=null&&people_routeJson.length>0){
+                var obj = eval('(' + people_routeJson + ')');
+                displayLine(obj);
+            }else{
+                alert("未获取到轨迹坐标");
+            }
+        },
         onLoadSuccess : function(data) { },
         toolbar:[{ }]
     };
     $('#list_sa').datagrid(jsonData);//加载数据
+}
+
+function displayLine(people_routeJson) {
+    allMap.graphics.clear();
+    showRoute(people_routeJson,myCotextPath+"/resources/cmd/image/personRoute.gif");
 }

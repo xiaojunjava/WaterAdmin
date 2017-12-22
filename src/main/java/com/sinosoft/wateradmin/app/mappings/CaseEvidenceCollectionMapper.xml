@@ -16,22 +16,37 @@
   <sql id="Base_Column_List" >
     EC_ID, CI_ID, EC_NAME, EC_DATETIME, EC_REC_PERSON, EC_TYPE, REMARK, EC_PLACE, EC_CONTENT
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
     select 
     <include refid="Base_Column_List" />
     from CASE_EVIDENCE_COLLECTION
-    where EC_ID = #{ecId,jdbcType=DECIMAL}
+    where EC_ID = #{ecId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+
+  <!--案件审批-取证记录   added by lvzhixue 2017-12-20 -->
+  <select id="getEvidenceCollectionList" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection" >
+    select
+    <include refid="Base_Column_List" />
+    from CASE_EVIDENCE_COLLECTION
+    where 1=1
+    <if test="startTime != null and  startTime !=''" >
+      and EC_DATETIME <![CDATA[ >= ]]> TO_DATE(#{startTime},'yyyy-MM-dd HH24:mi:ss')
+    </if>
+    <if test="endTime != null and  endTime !=''" >
+      and EC_DATETIME <![CDATA[ <= ]]> TO_DATE(#{endTime},'yyyy-MM-dd HH24:mi:ss')
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
     delete from CASE_EVIDENCE_COLLECTION
-    where EC_ID = #{ecId,jdbcType=DECIMAL}
+    where EC_ID = #{ecId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection" >
     insert into CASE_EVIDENCE_COLLECTION (EC_ID, CI_ID, EC_NAME, 
       EC_DATETIME, EC_REC_PERSON, EC_TYPE, 
       REMARK, EC_PLACE, EC_CONTENT
       )
-    values (#{ecId,jdbcType=DECIMAL}, #{ciId,jdbcType=DECIMAL}, #{ecName,jdbcType=VARCHAR}, 
+    values (#{ecId,jdbcType=INTEGER}, #{ciId,jdbcType=INTEGER}, #{ecName,jdbcType=VARCHAR}, 
       #{ecDatetime,jdbcType=TIMESTAMP}, #{ecRecPerson,jdbcType=VARCHAR}, #{ecType,jdbcType=VARCHAR},
       #{remark,jdbcType=VARCHAR}, #{ecPlace,jdbcType=VARCHAR}, #{ecContent,jdbcType=VARCHAR}
       )
@@ -88,10 +103,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="ecId != null" >
-        #{ecId,jdbcType=DECIMAL},
+        #{ecId,jdbcType=INTEGER},
       </if>
       <if test="ciId != null" >
-        #{ciId,jdbcType=DECIMAL},
+        #{ciId,jdbcType=INTEGER},
       </if>
       <if test="ecName != null" >
         #{ecName,jdbcType=VARCHAR},
@@ -120,7 +135,7 @@
     update CASE_EVIDENCE_COLLECTION
     <set >
       <if test="ciId != null" >
-        CI_ID = #{ciId,jdbcType=DECIMAL},
+        CI_ID = #{ciId,jdbcType=INTEGER},
       </if>
       <if test="ecName != null" >
         EC_NAME = #{ecName,jdbcType=VARCHAR},
@@ -144,11 +159,11 @@
         EC_CONTENT = #{ecContent,jdbcType=VARCHAR},
       </if>
     </set>
-    where EC_ID = #{ecId,jdbcType=DECIMAL}
+    where EC_ID = #{ecId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection" >
     update CASE_EVIDENCE_COLLECTION
-    set CI_ID = #{ciId,jdbcType=DECIMAL},
+    set CI_ID = #{ciId,jdbcType=INTEGER},
       EC_NAME = #{ecName,jdbcType=VARCHAR},
       EC_DATETIME = #{ecDatetime,jdbcType=TIMESTAMP},
       EC_REC_PERSON = #{ecRecPerson,jdbcType=VARCHAR},
@@ -156,6 +171,6 @@
       REMARK = #{remark,jdbcType=VARCHAR},
       EC_PLACE = #{ecPlace,jdbcType=VARCHAR},
       EC_CONTENT = #{ecContent,jdbcType=VARCHAR}
-    where EC_ID = #{ecId,jdbcType=DECIMAL}
+    where EC_ID = #{ecId,jdbcType=INTEGER}
   </update>
 </mapper>

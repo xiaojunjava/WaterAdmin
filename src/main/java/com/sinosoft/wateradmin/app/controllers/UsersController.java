@@ -81,6 +81,9 @@ public class UsersController {
             result.put("message", "登录成功！");
             result.put("user", user);
 
+            //--将登陆的用户保存到session中，将权限保存到session中
+            request.getSession().setAttribute("user",user);
+
             return result;
         }else{//--用户名和密码错误
             result.put("code", "2");

@@ -31,7 +31,6 @@
                 $.messager.alert('提示', '密码不能为空!', 'warning');
                 return;
             } else if (userPsw.length < 6) {
-
                 $.messager.alert('提示', '密码过于简单!', 'warning');
                 return;
             }
@@ -49,6 +48,24 @@
                     }
                 });
         }
+    </script>
+
+    <script  type="text/javascript">
+        $(function () {
+            $('#username').keydown(function (e) {
+                if (e.keyCode == 13) {
+                    login();
+                }
+            });
+
+            $('#password').keydown(function (e) {
+                if (e.keyCode == 13) {
+                    login();
+                }
+            });
+
+        });
+
     </script>
 </head>
 <body id="login_bg">

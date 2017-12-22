@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.sinosoft.wateradmin.cmd.bean.RoutePlanning;
 import com.sinosoft.wateradmin.cmd.service.IRoutePlanningService;
 import com.sinosoft.wateradmin.common.BasePage;
+import com.sinosoft.wateradmin.common.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,6 +77,7 @@ public class RoutePlanningController {
 			return m;
 		}
 		rp.setRpMakeTime(new Date());
+		rp.setRpMakePerson(CommonUtil.getLoginUser().getUserName());
 		int ee=routePlanningService.insert(rp);
 		if(ee>0){
 			m.put("tag","true");

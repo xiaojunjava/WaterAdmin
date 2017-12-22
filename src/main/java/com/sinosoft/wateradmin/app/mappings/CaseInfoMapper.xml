@@ -5,6 +5,7 @@
 <mapper namespace="com.sinosoft.wateradmin.app.dao.ICaseInfoDAO" >
   <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.app.bean.CaseInfo" >
     <id column="CI_ID" property="ciId" jdbcType="INTEGER" />
+    <result column="pr_Id" property="prId" jdbcType="INTEGER" />
     <result column="CI_NAME" property="ciName" jdbcType="VARCHAR" />
     <result column="CI_DATETIME" property="ciDatetime" jdbcType="TIMESTAMP" />
     <result column="CI_TYPE" property="ciType" jdbcType="VARCHAR" />
@@ -13,13 +14,17 @@
     <result column="CI_PLACE" property="ciPlace" jdbcType="VARCHAR" />
     <result column="CI_ACCEPT_PERSON" property="ciAcceptPerson" jdbcType="VARCHAR" />
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="applyReason" property="applyReason" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+
   </resultMap>
 
   <sql id="Base_Column_List" >
-    CI_ID, CI_NAME, CI_DATETIME, CI_TYPE, CI_STATUS, CI_CONTENT, CI_PLACE,CI_ACCEPT_PERSON,REMARK
+    CI_ID, CI_NAME, CI_DATETIME, CI_TYPE, CI_STATUS, CI_CONTENT, CI_PLACE,CI_ACCEPT_PERSON,REMARK,pr_Id,applyReason,user_id,user_name
   </sql>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
     select 
     <include refid="Base_Column_List" />
     from CASE_INFO
@@ -35,18 +40,65 @@
   </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+  <!--获取待受理的案件信息列表  ，added by lvzhixue 2017-12-14 12:14-->
+  <select id="getUnDisposeCaseList" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
+    select
+    <include refid="Base_Column_List" />
+    from CASE_INFO
+    where CI_STATUS = 1 <!-- 案件状态：1-立案申请，2-案件处理中，3-案件结案，4-无效案件 -->
+
+    <if test="startTime != null and  startTime !=''" >
+      and CI_DATETIME <![CDATA[ >= ]]> TO_DATE(#{startTime},'yyyy-MM-dd HH24:mi:ss')
+    </if>
+    <if test="endTime != null and  endTime !=''" >
+      and CI_DATETIME <![CDATA[ <= ]]> TO_DATE(#{endTime},'yyyy-MM-dd HH24:mi:ss')
+    </if>
+
+  </select>
+
+
+  <!--获取待取证的案件信息列表  ，added by lvzhixue 2017-12-14 12:14-->
+  <select id="getEvidenceCaseList" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
+    select
+    <include refid="Base_Column_List" />
+    from CASE_INFO
+    where CI_STATUS = 2 <!-- 案件状态：1-立案申请，2-案件处理中，3-案件结案，4-无效案件 -->
+    <if test="startTime != null and  startTime !=''" >
+      and CI_DATETIME <![CDATA[ >= ]]> TO_DATE(#{startTime},'yyyy-MM-dd HH24:mi:ss')
+    </if>
+    <if test="endTime != null and  endTime !=''" >
+      and CI_DATETIME <![CDATA[ <= ]]> TO_DATE(#{endTime},'yyyy-MM-dd HH24:mi:ss')
+    </if>
+  </select>
+
+
+  <!--获取待审批的案件信息列表  ，added by lvzhixue 2017-12-18 15:40-->
+  <select id="getApprovalCaseList" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
+    select
+    <include refid="Base_Column_List" />
+    from CASE_INFO
+    where CI_STATUS = 2  and user_id is not null <!-- 案件状态：1-立案申请，2-案件处理中，3-案件结案，4-无效案件 -->
+    <if test="startTime != null and  startTime !=''" >
+      and CI_DATETIME <![CDATA[ >= ]]> TO_DATE(#{startTime},'yyyy-MM-dd HH24:mi:ss')
+    </if>
+    <if test="endTime != null and  endTime !=''" >
+      and CI_DATETIME <![CDATA[ <= ]]> TO_DATE(#{endTime},'yyyy-MM-dd HH24:mi:ss')
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="INTEGER" >
     delete from CASE_INFO
-    where CI_ID = #{ciId,jdbcType=DECIMAL}
+    where CI_ID = #{ciId,jdbcType=INTEGER}
   </delete>
 
   <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
     insert into CASE_INFO (CI_ID, CI_NAME, CI_DATETIME, 
       CI_TYPE, CI_STATUS, CI_CONTENT, 
-      CI_PLACE, REMARK)
-    values (#{ciId,jdbcType=DECIMAL}, #{ciName,jdbcType=VARCHAR}, #{ciDatetime,jdbcType=TIMESTAMP},
+      CI_PLACE, REMARK,pr_Id,applyReason,user_id,user_name)
+    values (SEQ_CASEINFO_CIID.nextval, #{ciName,jdbcType=VARCHAR}, #{ciDatetime,jdbcType=TIMESTAMP},
       #{ciType,jdbcType=VARCHAR}, #{ciStatus,jdbcType=VARCHAR}, #{ciContent,jdbcType=VARCHAR}, 
-      #{ciPlace,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+      #{ciPlace,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},#{prId,jdbcType=INTEGER},
+      #{applyReason,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR})
   </insert>
 
   <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
@@ -76,10 +128,23 @@
       <if test="remark != null" >
         REMARK,
       </if>
+      <if test="prId != null" >
+        pr_Id,
+      </if>
+      <if test="applyReason != null" >
+        applyReason,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="ciId != null" >
-        #{ciId,jdbcType=DECIMAL},
+        SEQ_CASEINFO_CIID.nextval,
       </if>
       <if test="ciName != null" >
         #{ciName,jdbcType=VARCHAR},
@@ -102,6 +167,19 @@
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="prId != null" >
+        #{prId,jdbcType=INTEGER},
+      </if>
+      <if test="applyReason != null" >
+        #{applyReason,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+
     </trim>
   </insert>
 
@@ -129,8 +207,21 @@
       <if test="remark != null" >
         REMARK = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="prId != null" >
+        pr_Id = #{prId,jdbcType=INTEGER},
+      </if>
+      <if test="applyReason != null" >
+        applyReason = #{applyReason,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+
     </set>
-    where CI_ID = #{ciId,jdbcType=DECIMAL}
+    where CI_ID = #{ciId,jdbcType=INTEGER}
   </update>
 
   <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
@@ -141,7 +232,11 @@
       CI_STATUS = #{ciStatus,jdbcType=VARCHAR},
       CI_CONTENT = #{ciContent,jdbcType=VARCHAR},
       CI_PLACE = #{ciPlace,jdbcType=VARCHAR},
-      REMARK = #{remark,jdbcType=VARCHAR}
-    where CI_ID = #{ciId,jdbcType=DECIMAL}
+      REMARK = #{remark,jdbcType=VARCHAR},
+      pr_Id = #{prId,jdbcType=INTEGER},
+      applyReason = #{applyReason,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR}
+    where CI_ID = #{ciId,jdbcType=INTEGER}
   </update>
 </mapper>

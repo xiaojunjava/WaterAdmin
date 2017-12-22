@@ -1,9 +1,11 @@
 package com.sinosoft.wateradmin.app.controllers;
 
+import com.github.pagehelper.PageHelper;
 import com.sinosoft.wateradmin.app.bean.CaseAttachments;
 import com.sinosoft.wateradmin.app.bean.CaseEvidenceCollection;
 import com.sinosoft.wateradmin.app.service.ICaseAttachmentsService;
 import com.sinosoft.wateradmin.app.service.ICaseEvidenceCollectionService;
+import com.sinosoft.wateradmin.common.BasePage;
 import com.sinosoft.wateradmin.common.DateConvert;
 import com.sinosoft.wateradmin.common.PropertiesUtils;
 import org.apache.commons.io.FileUtils;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -212,6 +215,24 @@ public class CaseEvidenceCollectionController {
         reslut.put("message", "upload done!");
 
         return "ok";
+    }
+
+    /**
+     * 获取取证记录列表（查询记录）,getEvidenceCollectionList
+     * 案件审核-取证记录
+     * @param caseEvidenceCollection
+     * @return
+     * @remark added by lvzhixue, 2017-12-20 14:00
+     */
+    @RequestMapping(value = "/getEvidenceCollectionList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public BasePage getEvidenceCollectionList(@RequestParam(required = true, defaultValue = "1") Integer page,
+                                         @RequestParam(required = true, defaultValue = "10") Integer rows,
+                                         CaseEvidenceCollection caseEvidenceCollection) throws Exception {
+        PageHelper.startPage(page, rows);
+        List<CaseEvidenceCollection> ls= this.caseEvidenceCollectionService.getEvidenceCollectionList(caseEvidenceCollection);
+        BasePage<CaseEvidenceCollection> pi = new BasePage<CaseEvidenceCollection>(ls);
+        return pi;
     }
 }
 

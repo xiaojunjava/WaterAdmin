@@ -3,6 +3,7 @@ package com.sinosoft.wateradmin.app.dao;
 import com.sinosoft.wateradmin.app.bean.PatrolReport;
 import com.sinosoft.wateradmin.common.MyBatisDao;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 
@@ -53,5 +54,6 @@ public interface IPatrolReportDAO {
 	 * @return
 	 */
 	int updateByPrimaryKey(PatrolReport patrolReport);
+
 
 }

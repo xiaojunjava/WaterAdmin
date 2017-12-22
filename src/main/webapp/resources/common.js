@@ -29,7 +29,7 @@ $.extend($.fn.validatebox.defaults.rules, {
     },
     selectValueRequired: {
         validator: function(value,param){
-            console.info($(param[0]).find("option:contains('"+value+"')").val());
+            //console.info($(param[0]).find("option:contains('"+value+"')").val());
             return $(param[0]).find("option:contains('"+value+"')").val() != '';
         },
         message: '请选择下列列表中的某一项'

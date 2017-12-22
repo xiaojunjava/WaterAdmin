@@ -44,8 +44,7 @@
 
         return false;
       });
-
-
+      
       // 拖拽事件
       this.$oTitle.on('mousedown', function (ev) {
         if (self.opts.ifDrag) {

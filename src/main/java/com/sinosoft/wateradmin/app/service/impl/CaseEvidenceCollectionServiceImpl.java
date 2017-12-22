@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 证据采集——service
@@ -22,5 +23,10 @@ public class CaseEvidenceCollectionServiceImpl implements ICaseEvidenceCollectio
     @Override
     public Integer saveEvidence(CaseEvidenceCollection caseCollection) {
         return caseEvidenceCollectionMapper.insertRecord(caseCollection);
+    }
+
+    @Override
+    public List<CaseEvidenceCollection> getEvidenceCollectionList(CaseEvidenceCollection caseEvidenceCollection) {
+        return caseEvidenceCollectionMapper.getEvidenceCollectionList(caseEvidenceCollection);
     }
 }

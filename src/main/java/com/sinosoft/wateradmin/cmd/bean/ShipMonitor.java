@@ -32,9 +32,18 @@ public class ShipMonitor extends BaseBean {
 	//备注
 	private String remark;
 
+	private  ShipArchives shipArchives;
 	//****以下为“查询专用”****/
 	private String startTime;//开始时间
 	private String endTime;//结束时间
+
+	public ShipArchives getShipArchives() {
+		return shipArchives;
+	}
+
+	public void setShipArchives(ShipArchives shipArchives) {
+		this.shipArchives = shipArchives;
+	}
 
 	public Integer getCsmId() {
 		return csmId;

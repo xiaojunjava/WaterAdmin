@@ -106,7 +106,7 @@
             </div>
             <div style="margin-bottom:20px"><!--访问地址-->
                 <input class="easyui-textbox" name="fmAccessAddress" id="fmAccessAddress" style="width:100%"
-                       data-options="label:'访问地址:',required:false,validType:'maxLength[20]'">
+                       data-options="label:'访问地址:',required:false,validType:'maxLength[100]'">
             </div>
 
             <div style="margin-bottom:20px"><!--顺序号-->

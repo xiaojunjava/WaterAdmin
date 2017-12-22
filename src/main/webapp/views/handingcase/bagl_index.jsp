@@ -70,7 +70,7 @@
                 for (int j = 0; j < secMenuList.size(); j++) {//--二级菜单
                     FunctionalModule secModule = secMenuList.get(j);
             %>
-            <a href="javascript:;" target="open_page"><i></i><span><%=secModule.getFmName()%></span></a>
+            <a href="<%=request.getContextPath()%>/<%=secModule.getFmAccessAddress()%>" target="open_page"><i></i><span><%=secModule.getFmName()%></span></a>
             <%
                 }
             %>

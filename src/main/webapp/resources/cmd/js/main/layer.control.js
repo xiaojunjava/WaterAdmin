@@ -2,83 +2,90 @@
  * Created by Administrator on 2017/10/24 0024.
  * 监控点显示
  */
-
+var Sx = '../resources/cmd/image/cream.png';
 var ZBOAT_DATA={
     total:4,
-    items:[{id:1,name:"乌鲁木齐",Y:118.23520,X:25.49392},
-        {id:2,name:"拉萨",Y:118.23593, X:25.49326},
-        {id:3,name:"西宁",Y:118.23648,X:25.49347},
-        {id:4,name:"兰州",Y:118.23671,X:25.49311}
+    items:[{id:1,name:"执法船001",Y:120.479160,X:32.043300},
+        {id:2,name:"执法船006",Y:120.666280, X:32.000220},
+        {id:3,name:"执法船004",Y:120.685160,X:32.000510},
+        {id:4,name:"执法船003",Y:120.762060,X:31.976630}
     ]
 };
-
 var CBOAT_DATA={
     total:4,
-    items:[{id:1,name:"乌鲁木齐",Y:118.23553,X:25.49361},
-        {id:2,name:"拉萨",Y:118.23624, X:25.49320},
-        {id:3,name:"西宁",Y:118.23684,X:25.49328},
-        {id:4,name:"兰州",Y:118.23721,X:25.49312}
+    items:[{id:1,name:"采砂船001",Y:120.726360,X:32.004580},
+        {id:2,name:"采砂船002",Y:120.578730, X:32.024960},
+        {id:3,name:"采砂船003",Y:120.704730,X:32.027870},
+        {id:4,name:"采砂船004",Y:120.570830,X:31.999340}
     ]
 };
 
 var YBOAT_DATA={
     total:4,
-    items:[{id:1,name:"乌鲁木齐",Y:118.23573,X:25.49349},
-        {id:2,name:"拉萨",Y:118.23562, X:25.49287},
-        {id:3,name:"西宁",Y:118.23646,X:25.49334},
-        {id:4,name:"兰州",Y:118.23526,X:25.49385}
+    items:[{id:1,name:"运砂船001",Y:120.497360,X:32.062790},
+        {id:2,name:"运砂船002",Y:120.769960, X:31.970220},
+        {id:3,name:"运砂船003",Y:120.714680,X:32.036310},
+        {id:4,name:"运砂船004",Y:120.787120,X:31.998470}
     ]
 };
 
 var ZCAR_DATA={
     total:4,
-    items:[{id:1,name:"乌鲁木齐",Y:118.23626,X:25.49293},
-        {id:2,name:"拉萨",Y:118.23588, X:25.49407},
-        {id:3,name:"西宁",Y:118.23771,X:25.49342},
-        {id:4,name:"兰州",Y:118.23556,X:25.49222}
+    items:[{id:1,name:"执法车001",Y:120.478130,X:31.996430},
+        {id:2,name:"执法车002",Y:120.551610, X:31.994100},
+        {id:3,name:"执法车003",Y:120.595890,X:31.948380},
+        {id:4,name:"执法车004",Y:120.732540,X:31.980710}
     ]
 };
 var PEOPLE_DATA={
     total:4,
-    items:[{id:1,name:"乌鲁木齐",Y:118.23756,X:25.49231},
-        {id:2,name:"拉萨",Y:118.23391, X:25.49325},
-        {id:3,name:"西宁",Y:118.23519,X:25.49456},
-        {id:4,name:"兰州",Y:118.23874,X:25.49398}
+    items:[{id:1,name:"张三",Y:120.471950,X:32.022340},
+        {id:2,name:"李四",Y:120.603450, X:31.982160},
+        {id:3,name:"小明",Y:120.430760,X:31.982450},
+        {id:4,name:"大华",Y:120.570490,X:31.985950}
     ]
 };
 
 var SX_DATA={
     total:3,
-    items:[{id:1,name:"乌鲁木齐",Y:118.23572,X:25.49330},
-        {id:2,name:"拉萨",Y:118.23501, X:25.49417},
-        {id:3,name:"西宁",Y:118.23815,X:25.49316}
+    items:[{id:1,name:"长江云1号",Y:120.379260,X:31.980410},
+        {id:2,name:"长江云2号",Y:120.436590, X:32.019430},
+        {id:3,name:"长江云3号",Y:120.838540,X:31.817410}
     ]
 };
 
 
 polylineJson={
-    "paths": [[[118.23538,25.49264], [118.23550,25.49277], [118.23562,25.49289],
-        [118.23576,25.49303],[118.23589,25.49321], [118.23612,25.49322],
-        [118.23633,25.49321], [118.23653,25.49316], [118.23671,25.49311]]],
+    "paths": [[[120.449980,31.993520], [120.447920,32.007640], [120.443970,32.018410],
+        [120.445350,32.028600],[120.454790,32.036600], [120.469720,32.038200],
+        [120.485690,32.035580], [120.502000,32.029620], [120.517620,32.023070],
+        [120.534100,32.017830],[120.547660,32.014190],[120.560020,32.011420]]],
     "spatialReference":{"wkid":4326}
 };
-
+people_routeJson={
+    "paths": [[[120.449980,31.993520], [120.447920,32.007640], [120.443970,32.018410],
+        [120.445350,32.028600],[120.454790,32.036600], [120.469720,32.038200],
+        [120.485690,32.035580], [120.502000,32.029620], [120.517620,32.023070],
+        [120.534100,32.017830],[120.547660,32.014190],[120.560020,32.011420]]],
+    "spatialReference":{"wkid":4326}
+};
 prouteJson={
-    "paths": [[[118.23538,25.49264], [118.23550,25.49277], [118.23562,25.49289],
-        [118.23576,25.49303],[118.23589,25.49321], [118.23612,25.49322],
-        [118.23633,25.49321], [118.23653,25.49316], [118.23671,25.49311],
-        [118.23687,25.49308],[118.23704,25.49303],[118.23721,25.49304],[118.23728,25.49313]]],
+    "paths": [[[120.449980,31.993520], [120.447920,32.007640], [120.443970,32.018410],
+        [120.445350,32.028600],[120.454790,32.036600], [120.469720,32.038200],
+        [120.485690,32.035580], [120.502000,32.029620], [120.517620,32.023070],
+        [120.534100,32.017830],[120.547660,32.014190],[120.560020,32.011420],
+        [120.572890,32.009390],[120.585940,32.007200],[120.597950,32.003710]]],
     "spatialReference":{"wkid":4326}
 };
-var ring = [[118.23601,25.49372],
-    [118.23593,25.49369],[118.23584,25.49364],[118.23578,25.49360],
-    [118.23575,25.49353],[118.23575,25.49343],[118.23580,25.49336],
-    [118.23586,25.49330],[118.23595,25.49325],[118.23606,25.49321],
-    [118.23619,25.49318],[118.23632,25.49317],[118.23642,25.49316],
-    [118.23654,25.49317],[118.23662,25.49319],[118.23670,25.49324],
-    [118.23674,25.49330],[118.23671,25.49338],[118.23664,25.49344],
-    [118.23656,25.49350],[118.23647,25.49355],[118.23636,25.49361],
-    [118.23626,25.49364],[118.23614,25.49368],[118.23601,25.49372]];
+var ring = [[120.506800,32.020160],
+    [120.518130,32.015210],[120.530830,32.009530],[120.542850,32.006040],
+    [120.556760,31.999920],[120.567570,31.998030],[120.577530,31.997160],
+    [120.587830,31.994540],[120.595890,31.993520],[120.605340,31.991330],
+    [120.628850,31.990750],[120.657520,31.992060],[120.682240,31.993810],
+    [120.699410,31.996140],[120.713480,31.994390],[120.729100,31.991190],
+    [120.733650,31.997450],[120.681720,32.008730],[120.654520,32.005310],
+    [120.636840,32.003050],[120.619150,32.006620],[120.597180,32.012520],
+    [120.573750,32.018850],[120.543450,32.025540],[120.506800,32.020160]];
 
 function show(data,image){
     var items= data.items;
@@ -90,15 +97,6 @@ function show(data,image){
     }
 };
 
-//摄像头控制
-/*function showCream(){
-    var visible = new Array();
-    for(i=0;i<=17;i++){
-        visible [i]= i;
-    };
-    layer.setVisibleLayers(visible);
-
-};*/
 //执法船
 function showZboat(){
     Zboat = '../resources/cmd/image/zboat.png';
@@ -129,7 +127,6 @@ function showPeople(){
 };
 //摄像头
 function showSX(){
-    Sx = '../resources/cmd/image/cream.png';
     show(SX_DATA,Sx);
 };
 //执法区域
@@ -139,7 +136,6 @@ function showArea(ring){
     var symbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_DASHDOT, new dojo.Color([125,129,130]),2), new dojo.Color([255,0,0,0.25]));
     var graphic = new esri.Graphic(polygon, symbol);
     allMap.graphics.add(graphic);
-
 }
 
 //显示路线
@@ -157,11 +153,11 @@ function showRoute(polylineJson,img) {
     var sys=new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_DASH,new esri.Color([0,255,0]),3);
     var graphic2=new esri.Graphic(polyline,sys);
     allMap.graphics.add(graphic2);
-    var point=new esri.geometry.Point(118.23538,25.49264,new esri.SpatialReference({wkid:4326}));
+    var point=new esri.geometry.Point(polylineJson.paths[0][0],new esri.SpatialReference({wkid:4326}));
     var pictureMarkerSymbol=new esri.symbol.PictureMarkerSymbol(img,25,51);
     graphic=new esri.Graphic(point,pictureMarkerSymbol);
     allMap.graphics.add(graphic);
-
+    allMap.centerAt(point);
     if(typeof(moving)!="undefined"){
         clearInterval(moving); //清除移动
     }
@@ -177,41 +173,55 @@ function move(start,end){
     var y1=points[start][1];
     var x2=points[end][0];
     var y2=points[end][1];
-
-    var p=(y2-y1)/(x2-x1);//斜率
-    var v=0.00001;//距离  距离越小 位置越精确
-    moving=setInterval(function(){
-        startNum=start;
-        endNum=end;
-        //分别计算 x,y轴方向速度
-        if(Math.abs(p)==Number.POSITIVE_INFINITY){//无穷大
-            graphic.geometry.y+=v;
-        }
-        else{
-            if(x2<x1){
-                graphic.geometry.x-=(1/Math.sqrt(1+p*p))*v;
-                graphic.geometry.y-=(p / Math.sqrt(1 + p * p)) * v;
-                //计算汽车角度
-                graphic.symbol.angle =CalulateXYAnagle(x1,y1,x2,y2); //// (Math.PI / 2 - Math.atan(p)) * 180 / Math.PI+180
+    if(x2-x1==0){
+        var p=0;
+    }else{
+        var p=(y2-y1)/(x2-x1);//斜率
+    }
+    if(p==0){
+        startNum=start++;
+        endNum=end++;
+        if (end < points.length)
+            move(start, end);
+    }
+    else{
+        var v=0.001;//距离  距离越小 位置越精确
+        moving=setInterval(function(){
+            startNum=start;
+            endNum=end;
+            //分别计算 x,y轴方向速度
+            if(Math.abs(p)==Number.POSITIVE_INFINITY||p==0){//无穷大
+                graphic.geometry.y+=v;
             }
             else{
-                graphic.geometry.x+=(1/Math.sqrt(1+p*p))*v;
-                graphic.geometry.y+=(p / Math.sqrt(1 + p * p)) * v;
-                //计算汽车角度
-                graphic.symbol.angle =CalulateXYAnagle(x1,y1,x2,y2); ////(Math.PI / 2 - Math.atan(p)) * 180 / Math.PI
+                if(x2<x1){
+                    graphic.geometry.x-=(1/Math.sqrt(1+p*p))*v;
+                    graphic.geometry.y-=(p / Math.sqrt(1 + p * p)) * v;
+                    //计算汽车角度
+                    graphic.symbol.angle =CalulateXYAnagle(x1,y1,x2,y2); //// (Math.PI / 2 - Math.atan(p)) * 180 / Math.PI+180
+                }
+                else{
+                    graphic.geometry.x+=(1/Math.sqrt(1+p*p))*v;
+                    graphic.geometry.y+=(p / Math.sqrt(1 + p * p)) * v;
+                    //计算汽车角度
+                    graphic.symbol.angle =CalulateXYAnagle(x1,y1,x2,y2); ////(Math.PI / 2 - Math.atan(p)) * 180 / Math.PI
+                }
             }
-        }
-        //图层刷新
-        allMap.graphics.redraw();
-        if (Math.abs(graphic.geometry.x - x2) <=0.00001 && Math.abs(graphic.geometry.y - y2) <=0.00001) {
-            clearInterval(moving);
-            startNum=start++;
-            endNum=end++;
-            if (end < points.length)
-                move(start, end);
-        }
-    }, 50);
+            //图层刷新
+            allMap.graphics.redraw();
+            if (Math.abs(graphic.geometry.x - x2) <=v && Math.abs(graphic.geometry.y - y2) <=v) {
+                clearInterval(moving);
+                startNum=start++;
+                endNum=end++;
+                if (end < points.length)
+                    move(start, end);
+            }
+        }, 75);
+    }
+
 }
+
+//车头转向
 function CalulateXYAnagle(startx,starty,endx,endy){
     var tan=Math.atan(Math.abs((endy-starty)/(endx-startx)))*180/Math.PI+90;
     if (endx > startx && endy > starty)//第一象限
@@ -232,50 +242,25 @@ function CalulateXYAnagle(startx,starty,endx,endy){
     }
 }
 
-
-
 //清除图层
 function remove(type,img,style){
-    for(var i=allMap.graphics.graphics.length-1;i>0;i--){
-        if(allMap.graphics.graphics[i].geometry.type==type){
+    for(var i=allMap.graphics.graphics.length;i>0;i--){
+        if(allMap.graphics.graphics[i-1].geometry.type==type){
             if(type=='point'){
-                if(allMap.graphics.graphics[i].symbol.url==img){
-                    allMap.graphics.remove(allMap.graphics.graphics[i]);
+                if(allMap.graphics.graphics[i-1].symbol.url==img){
+                    allMap.graphics.remove(allMap.graphics.graphics[i-1]);
                 }
             }
             if(type=='polyline'){
-                if(allMap.graphics.graphics[i].symbol.style==style){
-                    allMap.graphics.remove(allMap.graphics.graphics[i]);
+                if(allMap.graphics.graphics[i-1].symbol.style==style){
+                    allMap.graphics.remove(allMap.graphics.graphics[i-1]);
                 }
             }
             if(type=='polygon'){
-                allMap.graphics.remove(allMap.graphics.graphics[i]);
-            }
-
-        }
-    }
-}
-
-/*
-function removePolyline(style){
-    for(var i=allMap.graphics.graphics.length-1;i>0;i--){
-        if(allMap.graphics.graphics[i].geometry.type == 'polyline'){
-            if(allMap.graphics.graphics[i].symbol.style==style){
-                allMap.graphics.remove(allMap.graphics.graphics[i]);
+                allMap.graphics.remove(allMap.graphics.graphics[i-1]);
             }
         }
     }
 }
 
-function removePlygon(){
-    for(var i=allMap.graphics.graphics.length-1;i>0;i--){
-        if(allMap.graphics.graphics[i].geometry.type == 'polygon'){
-            allMap.graphics.remove(allMap.graphics.graphics[i]);
-        }
-    }
-}
-
-
-
-*/
 

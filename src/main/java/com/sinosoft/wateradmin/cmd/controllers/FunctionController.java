@@ -126,4 +126,16 @@ FunctionController {
 	public String jumpVideo(HttpServletRequest request, HttpServletResponse response)throws Exception{
 		return "cmd/video";
 	}
+
+	/**
+	 * 跳监控
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/jump.monitor")
+	public String jumpVideoMonitor(HttpServletRequest request, HttpServletResponse response)throws Exception{
+		return "cmd/video_monitor";
+	}
 }

@@ -26,6 +26,13 @@ public interface IShipMonitorService {
 	public List<ShipMonitor> selectDatas(ShipMonitor sm) throws Exception;
 
 	/**
+	 * 自定义条件查询
+	 * @param planSql
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ShipMonitor> selectPlanDatas(String planSql) throws Exception;
+	/**
 	 * 根据主键删除1条数据
 	 * @param csmId
 	 * @return
@@ -45,11 +52,5 @@ public interface IShipMonitorService {
 	 * @return
 	 */
 	public int update(ShipMonitor sm) throws Exception;
-
-	/**
-	 * 处理gis信息
-	 * @throws Exception
-	 */
-	public void doGisRequest() throws  Exception;
 
 }

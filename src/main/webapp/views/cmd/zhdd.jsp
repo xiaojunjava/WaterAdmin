@@ -4,6 +4,17 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>指挥调度</title>
+    <script type="text/javascript">
+        //配置arcgis拓展解析天地图服务类引用的路径
+        dojoConfig = {
+            parseOnLoad: true,
+            packages: [{
+                name: 'tdlib',
+                location: "<%=request.getContextPath()%>/resources/cmd/js/tdlib"
+                //location: "js/tdlib"
+            }]
+        };
+    </script>
   <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/cmd/css/default.css">
   <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/cmd/js/arcgisapi/3.14/dijit/themes/nihilo/nihilo.css" />
   <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/cmd/js/arcgisapi/3.14/esri/css/esri.css" />
@@ -14,7 +25,6 @@
   <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/jquery-1.8.0.min.js"></script>
   <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/jquery.nicescroll.min.js"></script>
   <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/main/utils.js"></script>
-  <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/default.js"></script>
   <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/arcgisapi/3.14/init.js"></script>
   <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/main/map.js"></script>
   <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/main/alertlist.js"></script>
@@ -26,13 +36,16 @@
 
 <script type="text/javascript">
     $(function () {
-        showtime();
+        $.getScript("<%=request.getContextPath()%>/resources/cmd/js/default.js").done(function() {
+            showtime();
+//            loadcss();
+        });
         listSa();
         listShipAlarm();
     });
 </script>
 </head>
-<body>
+<body onload=" onLoad();">
   <div class="header">
     <div class="logo">
       <img src="<%=request.getContextPath()%>/resources/cmd/image/zhdd_logo.png" alt="">
@@ -146,14 +159,12 @@
           <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearF1()" style="width:80px">清空</a>
       </div>
   </div>
-<!--  <div class="zoom right_hide_zoom" id="zoom">
-    <div class="plus" onclick="zoom('plus')">
-
+  <div class="zoom right_hide_zoom" id="zoom">
+    <div class="plus" id="zoomOut">
     </div>
-    <div class="mini" onclick="zoom('mini')">
-
+    <div class="mini" id="zoomIn">
     </div>
-  </div>-->
+  </div>
 </body>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/cmd/js/zhdd.js"></script>
 </html>

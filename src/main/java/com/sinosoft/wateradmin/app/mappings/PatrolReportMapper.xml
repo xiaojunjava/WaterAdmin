@@ -11,9 +11,10 @@
     <result column="longitude" property="longitude" jdbcType="VARCHAR" />
     <result column="latitude" property="latitude" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    pr_id, pl_id, pr_site_description, pr_position, pr_report_time, longitude, latitude, remark
+    pr_id, pl_id, pr_site_description, pr_position, pr_report_time, longitude, latitude, remark ,status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
     select 
@@ -53,7 +54,7 @@
   </delete>
   <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.PatrolReport" >
       <selectKey resultType="INTEGER" keyProperty="prId" order="BEFORE">
-          　　　select seq_patrolreport_prid.nextval from dual
+          select seq_patrolreport_prid.nextval from dual
       </selectKey>
     insert into APP_PATROL_REPORT (  <include refid="Base_Column_List" /> )
     values (#{prId,jdbcType=INTEGER}, #{plId,jdbcType=INTEGER}, #{prSiteDescription,jdbcType=VARCHAR},
@@ -81,6 +82,9 @@
       </if>
       <if test="remark != null" >
         REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+          status = #{status,jdbcType=VARCHAR},
       </if>
     </set>
     where pr_id = #{prId,jdbcType=INTEGER}
