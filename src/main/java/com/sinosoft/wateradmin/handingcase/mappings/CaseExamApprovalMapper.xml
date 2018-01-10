@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--立案申请表 added by lvzhixue 2018/1/4 15:43-->
+<mapper namespace="com.sinosoft.wateradmin.handingcase.dao.ICaseExamApprovalDAO" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.wateradmin.handingcase.bean.CaseExamApproval" >
+    <id column="CEA_ID" property="ceaId" jdbcType="INTEGER" />
+    <result column="CEA_ABBREVIATION" property="ceaAbbreviation" jdbcType="VARCHAR" />
+    <result column="CEA_YEAR" property="ceaYear" jdbcType="INTEGER" />
+    <result column="CEA_SEQNO" property="ceaSeqno" jdbcType="INTEGER" />
+    <result column="CEA_SOURCE" property="ceaSource" jdbcType="CHAR" />
+    <result column="CEA_POSITION" property="ceaPosition" jdbcType="VARCHAR" />
+    <result column="CEA_TIMEOFCASE" property="ceaTimeofcase" jdbcType="TIMESTAMP" />
+    <result column="CEA_NAME" property="ceaName" jdbcType="VARCHAR" />
+    <result column="CEA_SEX" property="ceaSex" jdbcType="VARCHAR" />
+    <result column="CEA_TELEPHONE" property="ceaTelephone" jdbcType="VARCHAR" />
+    <result column="CEA_ADDRESS" property="ceaAddress" jdbcType="VARCHAR" />
+    <result column="CEA_ZIPCODE" property="ceaZipcode" jdbcType="VARCHAR" />
+    <result column="CEA_COMPANY_NAME" property="ceaCompanyName" jdbcType="VARCHAR" />
+    <result column="CEA_COMPANY_CHARGE" property="ceaCompanyCharge" jdbcType="VARCHAR" />
+    <result column="CEA_COMPANY_JOB" property="ceaCompanyJob" jdbcType="VARCHAR" />
+    <result column="CEA_COMPANY_TELEPHONE" property="ceaCompanyTelephone" jdbcType="VARCHAR" />
+    <result column="CEA_COMPANY_ADDRESS" property="ceaCompanyAddress" jdbcType="VARCHAR" />
+    <result column="CEA_COMPANY_ZIPCODE" property="ceaCompanyZipcode" jdbcType="VARCHAR" />
+    <result column="CEA_CASE_SUMMARY" property="ceaCaseSummary" jdbcType="VARCHAR" />
+    <result column="CEA_CASE_AGENT" property="ceaCaseAgent" jdbcType="VARCHAR" />
+    <result column="CEA_CASE_DATETIME" property="ceaCaseDatetime" jdbcType="TIMESTAMP" />
+    <result column="CEA_COMPANY_AUDITOPINION" property="ceaCompanyAuditopinion" jdbcType="VARCHAR" />
+    <result column="CEA_COMPANY_AUTOGRAPH" property="ceaCompanyAutograph" jdbcType="VARCHAR" />
+    <result column="CEA_COMPANY_DATETIME" property="ceaCompanyDatetime" jdbcType="TIMESTAMP" />
+    <result column="CEA_OFFICE_AUDITOPINION" property="ceaOfficeAuditopinion" jdbcType="VARCHAR" />
+    <result column="CEA_OFFICE_AUTOGRAPH" property="ceaOfficeAutograph" jdbcType="VARCHAR" />
+    <result column="CEA_OFFICE_DATETIME" property="ceaOfficeDatetime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="PRID" property="prid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CEA_ID, CEA_ABBREVIATION, CEA_YEAR, CEA_SEQNO, CEA_SOURCE, CEA_POSITION, CEA_TIMEOFCASE,
+    CEA_NAME, CEA_SEX, CEA_TELEPHONE, CEA_ADDRESS, CEA_ZIPCODE, CEA_COMPANY_NAME, CEA_COMPANY_CHARGE,
+    CEA_COMPANY_JOB, CEA_COMPANY_TELEPHONE, CEA_COMPANY_ADDRESS, CEA_COMPANY_ZIPCODE,
+    CEA_CASE_SUMMARY, CEA_CASE_AGENT, CEA_CASE_DATETIME, CEA_COMPANY_AUDITOPINION, CEA_COMPANY_AUTOGRAPH,
+    CEA_COMPANY_DATETIME, CEA_OFFICE_AUDITOPINION, CEA_OFFICE_AUTOGRAPH, CEA_OFFICE_DATETIME,
+    REMARK, STATUS, PRID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select
+    <include refid="Base_Column_List" />
+    from CASE_EXAM_APPROVAL
+    where CEA_ID = #{ceaId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from CASE_EXAM_APPROVAL
+    where CEA_ID = #{ceaId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.wateradmin.handingcase.bean.CaseExamApproval" >
+    <selectKey resultType="INTEGER" keyProperty="ceaId" order="BEFORE">
+      select SEQ_CASEEXAMAPPROVAL_CEAID.nextval from dual
+    </selectKey>
+    insert into CASE_EXAM_APPROVAL (CEA_ID, CEA_ABBREVIATION, CEA_YEAR,
+    CEA_SEQNO, CEA_SOURCE, CEA_POSITION,
+    CEA_TIMEOFCASE, CEA_NAME, CEA_SEX,
+    CEA_TELEPHONE, CEA_ADDRESS, CEA_ZIPCODE,
+    CEA_COMPANY_NAME, CEA_COMPANY_CHARGE, CEA_COMPANY_JOB,
+    CEA_COMPANY_TELEPHONE, CEA_COMPANY_ADDRESS,
+    CEA_COMPANY_ZIPCODE, CEA_CASE_SUMMARY, CEA_CASE_AGENT,
+    CEA_CASE_DATETIME, CEA_COMPANY_AUDITOPINION, CEA_COMPANY_AUTOGRAPH,
+    CEA_COMPANY_DATETIME, CEA_OFFICE_AUDITOPINION,
+    CEA_OFFICE_AUTOGRAPH, CEA_OFFICE_DATETIME, REMARK,
+    STATUS, PRID)
+    values (#{ceaId,jdbcType=INTEGER}, #{ceaAbbreviation,jdbcType=VARCHAR}, #{ceaYear,jdbcType=INTEGER},
+    #{ceaSeqno,jdbcType=INTEGER}, #{ceaSource,jdbcType=CHAR}, #{ceaPosition,jdbcType=VARCHAR},
+    #{ceaTimeofcase,jdbcType=TIMESTAMP}, #{ceaName,jdbcType=VARCHAR}, #{ceaSex,jdbcType=VARCHAR},
+    #{ceaTelephone,jdbcType=VARCHAR}, #{ceaAddress,jdbcType=VARCHAR}, #{ceaZipcode,jdbcType=VARCHAR},
+    #{ceaCompanyName,jdbcType=VARCHAR}, #{ceaCompanyCharge,jdbcType=VARCHAR}, #{ceaCompanyJob,jdbcType=VARCHAR},
+    #{ceaCompanyTelephone,jdbcType=VARCHAR}, #{ceaCompanyAddress,jdbcType=VARCHAR},
+    #{ceaCompanyZipcode,jdbcType=VARCHAR}, #{ceaCaseSummary,jdbcType=VARCHAR}, #{ceaCaseAgent,jdbcType=VARCHAR},
+    #{ceaCaseDatetime,jdbcType=TIMESTAMP}, #{ceaCompanyAuditopinion,jdbcType=VARCHAR}, #{ceaCompanyAutograph,jdbcType=VARCHAR},
+    #{ceaCompanyDatetime,jdbcType=TIMESTAMP}, #{ceaOfficeAuditopinion,jdbcType=VARCHAR},
+    #{ceaOfficeAutograph,jdbcType=VARCHAR}, #{ceaOfficeDatetime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR},
+    #{status,jdbcType=VARCHAR}, #{prid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.handingcase.bean.CaseExamApproval" >
+
+    <selectKey resultType="INTEGER" keyProperty="ceaId" order="BEFORE">
+      select SEQ_CASEEXAMAPPROVAL_CEAID.nextval from dual
+    </selectKey>
+
+    insert into CASE_EXAM_APPROVAL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        CEA_ID,
+      <if test="ceaAbbreviation != null" >
+        CEA_ABBREVIATION,
+      </if>
+      <if test="ceaYear != null" >
+        CEA_YEAR,
+      </if>
+      <if test="ceaSeqno != null" >
+        CEA_SEQNO,
+      </if>
+      <if test="ceaSource != null" >
+        CEA_SOURCE,
+      </if>
+      <if test="ceaPosition != null" >
+        CEA_POSITION,
+      </if>
+      <if test="ceaTimeofcase != null" >
+        CEA_TIMEOFCASE,
+      </if>
+      <if test="ceaName != null" >
+        CEA_NAME,
+      </if>
+      <if test="ceaSex != null" >
+        CEA_SEX,
+      </if>
+      <if test="ceaTelephone != null" >
+        CEA_TELEPHONE,
+      </if>
+      <if test="ceaAddress != null" >
+        CEA_ADDRESS,
+      </if>
+      <if test="ceaZipcode != null" >
+        CEA_ZIPCODE,
+      </if>
+      <if test="ceaCompanyName != null" >
+        CEA_COMPANY_NAME,
+      </if>
+      <if test="ceaCompanyCharge != null" >
+        CEA_COMPANY_CHARGE,
+      </if>
+      <if test="ceaCompanyJob != null" >
+        CEA_COMPANY_JOB,
+      </if>
+      <if test="ceaCompanyTelephone != null" >
+        CEA_COMPANY_TELEPHONE,
+      </if>
+      <if test="ceaCompanyAddress != null" >
+        CEA_COMPANY_ADDRESS,
+      </if>
+      <if test="ceaCompanyZipcode != null" >
+        CEA_COMPANY_ZIPCODE,
+      </if>
+      <if test="ceaCaseSummary != null" >
+        CEA_CASE_SUMMARY,
+      </if>
+      <if test="ceaCaseAgent != null" >
+        CEA_CASE_AGENT,
+      </if>
+      <if test="ceaCaseDatetime != null" >
+        CEA_CASE_DATETIME,
+      </if>
+      <if test="ceaCompanyAuditopinion != null" >
+        CEA_COMPANY_AUDITOPINION,
+      </if>
+      <if test="ceaCompanyAutograph != null" >
+        CEA_COMPANY_AUTOGRAPH,
+      </if>
+      <if test="ceaCompanyDatetime != null" >
+        CEA_COMPANY_DATETIME,
+      </if>
+      <if test="ceaOfficeAuditopinion != null" >
+        CEA_OFFICE_AUDITOPINION,
+      </if>
+      <if test="ceaOfficeAutograph != null" >
+        CEA_OFFICE_AUTOGRAPH,
+      </if>
+      <if test="ceaOfficeDatetime != null" >
+        CEA_OFFICE_DATETIME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="prid != null" >
+        PRID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+
+      #{ceaId,jdbcType=INTEGER},
+
+      <if test="ceaAbbreviation != null" >
+        #{ceaAbbreviation,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaYear != null" >
+        #{ceaYear,jdbcType=INTEGER},
+      </if>
+      <if test="ceaSeqno != null" >
+        #{ceaSeqno,jdbcType=INTEGER},
+      </if>
+      <if test="ceaSource != null" >
+        #{ceaSource,jdbcType=CHAR},
+      </if>
+      <if test="ceaPosition != null" >
+        #{ceaPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaTimeofcase != null" >
+        #{ceaTimeofcase,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ceaName != null" >
+        #{ceaName,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaSex != null" >
+        #{ceaSex,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaTelephone != null" >
+        #{ceaTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaAddress != null" >
+        #{ceaAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaZipcode != null" >
+        #{ceaZipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyName != null" >
+        #{ceaCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyCharge != null" >
+        #{ceaCompanyCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyJob != null" >
+        #{ceaCompanyJob,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyTelephone != null" >
+        #{ceaCompanyTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyAddress != null" >
+        #{ceaCompanyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyZipcode != null" >
+        #{ceaCompanyZipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCaseSummary != null" >
+        #{ceaCaseSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCaseAgent != null" >
+        #{ceaCaseAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCaseDatetime != null" >
+        #{ceaCaseDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ceaCompanyAuditopinion != null" >
+        #{ceaCompanyAuditopinion,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyAutograph != null" >
+        #{ceaCompanyAutograph,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyDatetime != null" >
+        #{ceaCompanyDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ceaOfficeAuditopinion != null" >
+        #{ceaOfficeAuditopinion,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaOfficeAutograph != null" >
+        #{ceaOfficeAutograph,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaOfficeDatetime != null" >
+        #{ceaOfficeDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="prid != null" >
+        #{prid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.wateradmin.handingcase.bean.CaseExamApproval" >
+    update CASE_EXAM_APPROVAL
+    <set >
+      <if test="ceaAbbreviation != null" >
+        CEA_ABBREVIATION = #{ceaAbbreviation,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaYear != null" >
+        CEA_YEAR = #{ceaYear,jdbcType=INTEGER},
+      </if>
+      <if test="ceaSeqno != null" >
+        CEA_SEQNO = #{ceaSeqno,jdbcType=INTEGER},
+      </if>
+      <if test="ceaSource != null" >
+        CEA_SOURCE = #{ceaSource,jdbcType=CHAR},
+      </if>
+      <if test="ceaPosition != null" >
+        CEA_POSITION = #{ceaPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaTimeofcase != null" >
+        CEA_TIMEOFCASE = #{ceaTimeofcase,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ceaName != null" >
+        CEA_NAME = #{ceaName,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaSex != null" >
+        CEA_SEX = #{ceaSex,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaTelephone != null" >
+        CEA_TELEPHONE = #{ceaTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaAddress != null" >
+        CEA_ADDRESS = #{ceaAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaZipcode != null" >
+        CEA_ZIPCODE = #{ceaZipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyName != null" >
+        CEA_COMPANY_NAME = #{ceaCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyCharge != null" >
+        CEA_COMPANY_CHARGE = #{ceaCompanyCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyJob != null" >
+        CEA_COMPANY_JOB = #{ceaCompanyJob,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyTelephone != null" >
+        CEA_COMPANY_TELEPHONE = #{ceaCompanyTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyAddress != null" >
+        CEA_COMPANY_ADDRESS = #{ceaCompanyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyZipcode != null" >
+        CEA_COMPANY_ZIPCODE = #{ceaCompanyZipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCaseSummary != null" >
+        CEA_CASE_SUMMARY = #{ceaCaseSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCaseAgent != null" >
+        CEA_CASE_AGENT = #{ceaCaseAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCaseDatetime != null" >
+        CEA_CASE_DATETIME = #{ceaCaseDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ceaCompanyAuditopinion != null" >
+        CEA_COMPANY_AUDITOPINION = #{ceaCompanyAuditopinion,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyAutograph != null" >
+        CEA_COMPANY_AUTOGRAPH = #{ceaCompanyAutograph,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaCompanyDatetime != null" >
+        CEA_COMPANY_DATETIME = #{ceaCompanyDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ceaOfficeAuditopinion != null" >
+        CEA_OFFICE_AUDITOPINION = #{ceaOfficeAuditopinion,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaOfficeAutograph != null" >
+        CEA_OFFICE_AUTOGRAPH = #{ceaOfficeAutograph,jdbcType=VARCHAR},
+      </if>
+      <if test="ceaOfficeDatetime != null" >
+        CEA_OFFICE_DATETIME = #{ceaOfficeDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="prid != null" >
+        PRID = #{prid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where CEA_ID = #{ceaId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.handingcase.bean.CaseExamApproval" >
+    update CASE_EXAM_APPROVAL
+    set CEA_ABBREVIATION = #{ceaAbbreviation,jdbcType=VARCHAR},
+    CEA_YEAR = #{ceaYear,jdbcType=INTEGER},
+    CEA_SEQNO = #{ceaSeqno,jdbcType=INTEGER},
+    CEA_SOURCE = #{ceaSource,jdbcType=CHAR},
+    CEA_POSITION = #{ceaPosition,jdbcType=VARCHAR},
+    CEA_TIMEOFCASE = #{ceaTimeofcase,jdbcType=TIMESTAMP},
+    CEA_NAME = #{ceaName,jdbcType=VARCHAR},
+    CEA_SEX = #{ceaSex,jdbcType=VARCHAR},
+    CEA_TELEPHONE = #{ceaTelephone,jdbcType=VARCHAR},
+    CEA_ADDRESS = #{ceaAddress,jdbcType=VARCHAR},
+    CEA_ZIPCODE = #{ceaZipcode,jdbcType=VARCHAR},
+    CEA_COMPANY_NAME = #{ceaCompanyName,jdbcType=VARCHAR},
+    CEA_COMPANY_CHARGE = #{ceaCompanyCharge,jdbcType=VARCHAR},
+    CEA_COMPANY_JOB = #{ceaCompanyJob,jdbcType=VARCHAR},
+    CEA_COMPANY_TELEPHONE = #{ceaCompanyTelephone,jdbcType=VARCHAR},
+    CEA_COMPANY_ADDRESS = #{ceaCompanyAddress,jdbcType=VARCHAR},
+    CEA_COMPANY_ZIPCODE = #{ceaCompanyZipcode,jdbcType=VARCHAR},
+    CEA_CASE_SUMMARY = #{ceaCaseSummary,jdbcType=VARCHAR},
+    CEA_CASE_AGENT = #{ceaCaseAgent,jdbcType=VARCHAR},
+    CEA_CASE_DATETIME = #{ceaCaseDatetime,jdbcType=TIMESTAMP},
+    CEA_COMPANY_AUDITOPINION = #{ceaCompanyAuditopinion,jdbcType=VARCHAR},
+    CEA_COMPANY_AUTOGRAPH = #{ceaCompanyAutograph,jdbcType=VARCHAR},
+    CEA_COMPANY_DATETIME = #{ceaCompanyDatetime,jdbcType=TIMESTAMP},
+    CEA_OFFICE_AUDITOPINION = #{ceaOfficeAuditopinion,jdbcType=VARCHAR},
+    CEA_OFFICE_AUTOGRAPH = #{ceaOfficeAutograph,jdbcType=VARCHAR},
+    CEA_OFFICE_DATETIME = #{ceaOfficeDatetime,jdbcType=TIMESTAMP},
+    REMARK = #{remark,jdbcType=VARCHAR},
+    STATUS = #{status,jdbcType=VARCHAR},
+    PRID = #{prid,jdbcType=INTEGER}
+    where CEA_ID = #{ceaId,jdbcType=INTEGER}
+  </update>
+</mapper>
