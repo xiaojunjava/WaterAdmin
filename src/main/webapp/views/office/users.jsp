@@ -254,9 +254,9 @@
             </div>
             <div style="margin-bottom:20px">
                 <select class="easyui-combobox" name="sex" id="sex" style="width:100%;" label="性别:" data-options="required:false">
-                    <option value="0">女</option>
-                    <option value="1">男</option>
-                </select>
+                <option value="0">女</option>
+                <option value="1">男</option>
+            </select>
             </div>
             <div style="margin-bottom:20px">
                 <input class="easyui-textbox" name="phoneNumber" id="phoneNumber" style="width:100%"

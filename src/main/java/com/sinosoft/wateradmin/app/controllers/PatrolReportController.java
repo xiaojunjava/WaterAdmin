@@ -90,6 +90,35 @@ public class PatrolReportController {
 		}
 		return m;
 	}
+
+	/**
+	 * 添加案件来源（手动添加案件）
+	 * @param patrolReport
+	 * @return
+	 * @throws Exception
+	 * added by lvzhixue 2018/1/4 10:28
+	 */
+	@RequestMapping(value="/saveCaseSource",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+	public @ResponseBody Object saveCaseSource(@RequestBody PatrolReport patrolReport)throws Exception{
+		Map m=new HashMap();
+		/***条件异常判断***/
+		if(patrolReport==null){
+			m.put("tag","false");
+			m.put("message","未获取参数");
+			return m;
+		}
+		int ee=patrolReportService.insert(patrolReport);
+		if(ee>0){
+			m.put("tag","true");
+			m.put("message","添加成功");
+			m.put("prId",patrolReport.getPrId());
+		}else{
+			m.put("tag","false");
+			m.put("message","DB操作异常");
+		}
+		return m;
+	}
+
 	@RequestMapping(value="/updatePr",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	public @ResponseBody Object updatePr(@RequestBody PatrolReport patrolReport)throws Exception{
 		Map m=new HashMap();
@@ -117,4 +146,35 @@ public class PatrolReportController {
 		}
 		return m;
 	}
+
+	/**
+	 * 删除1条记录
+	 *
+	 * @param prId
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/delPatrolReport", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public @ResponseBody
+	Object delPatrolReport(int prId) throws Exception {
+		Map m = new HashMap();
+
+		/***条件异常判断***/
+		if (prId <= 0) {
+			m.put("tag", "false");
+			m.put("message", "参数获取异常");
+			return m;
+		}
+		int ee = this.patrolReportService.deleteByPrimaryKey(prId);
+		if (ee > 0) {
+			m.put("tag", "true");
+			m.put("message", "操作成功");
+		} else {
+			m.put("tag", "false");
+			m.put("message", "DB操作异常");
+		}
+		return m;
+	}
+
+
 }

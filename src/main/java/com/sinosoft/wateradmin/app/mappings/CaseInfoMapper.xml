@@ -17,11 +17,11 @@
     <result column="applyReason" property="applyReason" jdbcType="VARCHAR" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
-
+    <result column="cea_Id" property="ceaId" jdbcType="INTEGER" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    CI_ID, CI_NAME, CI_DATETIME, CI_TYPE, CI_STATUS, CI_CONTENT, CI_PLACE,CI_ACCEPT_PERSON,REMARK,pr_Id,applyReason,user_id,user_name
+    CI_ID, CI_NAME, CI_DATETIME, CI_TYPE, CI_STATUS, CI_CONTENT, CI_PLACE,CI_ACCEPT_PERSON,REMARK,pr_Id,applyReason,user_id,user_name,cea_Id
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
@@ -94,11 +94,11 @@
   <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
     insert into CASE_INFO (CI_ID, CI_NAME, CI_DATETIME, 
       CI_TYPE, CI_STATUS, CI_CONTENT, 
-      CI_PLACE, REMARK,pr_Id,applyReason,user_id,user_name)
+      CI_PLACE, REMARK,pr_Id,applyReason,user_id,user_name,cea_Id)
     values (SEQ_CASEINFO_CIID.nextval, #{ciName,jdbcType=VARCHAR}, #{ciDatetime,jdbcType=TIMESTAMP},
       #{ciType,jdbcType=VARCHAR}, #{ciStatus,jdbcType=VARCHAR}, #{ciContent,jdbcType=VARCHAR}, 
       #{ciPlace,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},#{prId,jdbcType=INTEGER},
-      #{applyReason,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR})
+      #{applyReason,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR},#{ceaId,jdbcType=INTEGER})
   </insert>
 
   <insert id="insertSelective" parameterType="com.sinosoft.wateradmin.app.bean.CaseInfo" >
@@ -140,6 +140,9 @@
       <if test="userName != null" >
         user_name,
       </if>
+      <if test="ceaId != null" >
+        cea_Id,
+      </if>
 
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -179,7 +182,9 @@
       <if test="userName != null" >
         #{userName,jdbcType=VARCHAR},
       </if>
-
+      <if test="ceaId != null" >
+        #{ceaId,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
 
@@ -219,7 +224,9 @@
       <if test="userName != null" >
         user_name = #{userName,jdbcType=VARCHAR},
       </if>
-
+      <if test="ceaId != null" >
+        cea_Id = #{ceaId,jdbcType=INTEGER},
+      </if>
     </set>
     where CI_ID = #{ciId,jdbcType=INTEGER}
   </update>
@@ -236,7 +243,8 @@
       pr_Id = #{prId,jdbcType=INTEGER},
       applyReason = #{applyReason,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER},
-      user_name = #{userName,jdbcType=VARCHAR}
+      user_name = #{userName,jdbcType=VARCHAR},
+      cea_Id = #{ceaId,jdbcType=INTEGER}
     where CI_ID = #{ciId,jdbcType=INTEGER}
   </update>
 </mapper>

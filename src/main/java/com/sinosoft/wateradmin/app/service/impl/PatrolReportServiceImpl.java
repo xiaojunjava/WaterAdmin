@@ -1,6 +1,7 @@
 package com.sinosoft.wateradmin.app.service.impl;
 
 import com.sinosoft.wateradmin.app.bean.PatrolReport;
+import com.sinosoft.wateradmin.app.dao.IPatrolReportAttachmentsDAO;
 import com.sinosoft.wateradmin.app.dao.IPatrolReportDAO;
 import com.sinosoft.wateradmin.app.service.IPatrolReportService;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,14 @@ import java.util.List;
 @Service
 @Transactional
 public class PatrolReportServiceImpl implements IPatrolReportService{
+
 	@Resource
 	private IPatrolReportDAO patrolReportDAO;
+
+	@Resource
+	private IPatrolReportAttachmentsDAO patrolReportAttachmentsDAO;
+
+
 	public PatrolReport selectByPrimaryKey(int prId) throws Exception{
 		return patrolReportDAO.selectByPrimaryKey(prId);
 	}
@@ -30,6 +37,10 @@ public class PatrolReportServiceImpl implements IPatrolReportService{
 		return   patrolReportDAO.selectSome(limitNum);
 	}
 	public int deleteByPrimaryKey(int prId) throws Exception{
+		//--删除该记录所有附件
+		this.patrolReportAttachmentsDAO.deleteByPrId(prId);
+
+		//--删除该上报记录
 		return patrolReportDAO.deleteByPrimaryKey(prId);
 	}
 

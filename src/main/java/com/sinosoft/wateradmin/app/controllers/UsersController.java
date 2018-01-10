@@ -130,7 +130,9 @@ public class UsersController {
             }
 
             //--根据角色获取角色所能操作的系统
-            List<FunctionalModule> moduleList = this.functionalModuleService.selectSystemListByRoleId(roleIdArray.toArray());
+			FunctionalModule fm=new FunctionalModule();
+            fm.setFmStatus(1);
+            List<FunctionalModule> moduleList = this.functionalModuleService.selectDatas(fm);
 
             //--将登陆的用户保存到session中，将权限保存到session中
             request.getSession().setAttribute("user",user);

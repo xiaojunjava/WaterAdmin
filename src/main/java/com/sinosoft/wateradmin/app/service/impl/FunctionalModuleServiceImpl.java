@@ -33,6 +33,15 @@ public class FunctionalModuleServiceImpl implements IFunctionalModuleService {
         return functionalModuleDAO.selectSystemListByRoleId(roleIdArray);
     }
 
+	/**
+	 * 根据条件查询
+	 * @param functionalModule
+	 * @return
+	 */
+	@Override
+	public List<FunctionalModule> selectDatas(FunctionalModule functionalModule){
+		return functionalModuleDAO.selectDatas(functionalModule);
+	}
     /**
      * 根据给定的fm_id查询该节点及其所有子节点
      *
@@ -85,4 +94,9 @@ public class FunctionalModuleServiceImpl implements IFunctionalModuleService {
     public int updateByPrimaryKeySelective(FunctionalModule record) {
         return this.functionalModuleDAO.updateByPrimaryKeySelective(record);
     }
+
+    @Override
+	public List<FunctionalModule> selectChildNodes(Map map){
+    	return functionalModuleDAO.selectChildNodes(map);
+	}
 }

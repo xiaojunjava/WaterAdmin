@@ -48,7 +48,7 @@
     </div>
     <!-- 退出 -->
     <div class="logout">
-        <a href="javascript:;" onclick="window.location.href='<%=request.getContextPath()%>/admin_login.jsp'"><img src="<%=request.getContextPath()%>/resources/manager/image/logout.png" alt="" class="logoutimg"></a>
+        <a href="<%=request.getContextPath()%>/jump.exit_manager" ><img src="<%=request.getContextPath()%>/resources/manager/image/logout.png" alt="" class="logoutimg"></a>
     </div>
 
 </div>

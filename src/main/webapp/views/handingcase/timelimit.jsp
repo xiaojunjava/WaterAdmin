@@ -9,6 +9,9 @@
     <title>时限</title>
 </head>
 <body>
-时限--建设中
+时限--建设中,内容提供后替换即可</div>
+<div align="center">
+    <img src="../resources/handingcase/tmpImg/logo_translucent.png">
+</div>
 </body>
 </html>

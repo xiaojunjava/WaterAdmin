@@ -439,7 +439,7 @@ body {
 
 .tags {
   width: 274px;
-  height: 87px;
+  height: 57px;
   line-height: 24px;
   display: inline-block;
   vertical-align: middle;
@@ -453,6 +453,7 @@ body {
 .tags a:hover {
   color: #2543d9;
 }
+
 /* NOTE:  */
 .hoveradd{
   color: #2543d9;

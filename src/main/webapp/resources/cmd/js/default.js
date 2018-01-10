@@ -7,7 +7,7 @@ $(document).ready(function() {
         boxzoom: false
     });
 
-     menu('rightclose');
+     // menu('rightclose');//（默认关闭车船列表--收缩）貌似之前商浩加的，造成首页右下角链接点了失效
 
     // NOTE: 显示船
     $(".tags a").toggle(function() {

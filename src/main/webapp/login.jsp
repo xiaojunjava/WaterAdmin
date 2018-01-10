@@ -48,6 +48,7 @@
         <input type="text" name="username" value="" class="username" id="username" placeholder="请输入登录账号">
         <input type="password" name="password" value="" class="password" id="password" placeholder="请输入登录密码">
         <button type="button" name="button" onclick="login('<%=request.getContextPath()%>/login/pcUserLogin');">登录</button>
+        <input name="username" id="333"  disabled style="display:none"/>
     </div>
 </div>
 

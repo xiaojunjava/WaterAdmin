@@ -40,7 +40,6 @@
             showtime();
 //            loadcss();
         });
-        listSa();
         listShipAlarm();
     });
 </script>
@@ -50,8 +49,8 @@
     <div class="logo">
       <img src="<%=request.getContextPath()%>/resources/cmd/image/zhdd_logo.png" alt="">
     </div>
-    <div class="logout" onclick="window.location='<%=request.getContextPath()%>/login.jsp'">
-      <img src="<%=request.getContextPath()%>/resources/cmd/image/logout.png" alt="" class="logoutimg">
+    <div class="logout">
+        <a href="<%=request.getContextPath()%>/jump.exit" ><img src="<%=request.getContextPath()%>/resources/cmd/image/logout.png" alt="" class="logoutimg"></a>
     </div>
     <div class="userinfo">
       <div class="text">
@@ -65,15 +64,15 @@
       </div>
     </div>
     <div class="nav">
-      <a href="<%=request.getContextPath()%>/main/jump.cmd" class="underline">首页</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.video">视频监控</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.guiji">历史轨迹</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.route">线路预设</a>
-  </div>
+      <a href="<%=request.getContextPath()%>/main/jump.cmd" class="underline">首页</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.cmd.zhdd">指挥调度</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.cmd.csjg">采沙监管</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.cmd.jkgl">监控管理</a>
+    </div>
   </div>
   <div class="leftlisticon" id="leftlisticon" onclick="menu('leftopen');">
     <img src="<%=request.getContextPath()%>/resources/cmd/image/menu.png" alt="">
   </div>
-  <div class="rightlisticon" id="rightlisticon" onclick="menu('rightopen');">
-    <img src="<%=request.getContextPath()%>/resources/cmd/image/menu.png" alt="">
-  </div>
+  <%--<div class="rightlisticon" id="rightlisticon" onclick="menu('rightopen');">--%>
+    <%--<img src="<%=request.getContextPath()%>/resources/cmd/image/menu.png" alt="">--%>
+  <%--</div>--%>
   <div class="main">
 
     <div class="map"  id="map">
@@ -85,50 +84,32 @@
         <img src="<%=request.getContextPath()%>/resources/cmd/image/menu.png" onclick="menu('leftclose');" alt="">
       </div>
       <div class="" id="boxscroll4">
-        <div class="listcontent wrapper" id="ship_alarm_list">
-          <!-- NOTE: 卡片开始 -->
-          <div class="listcard">
-            <p class="ptitle">
-              <img src="<%=request.getContextPath()%>/resources/cmd/image/zhifa.png" alt="意外报警">
-              <span>2001号执法船意外报警</span>
-            </p>
-            <p class="time">2017-10-19 15:14:12</p>
-            <p class="button">
-              <button id="list_history" type="button" name="button" class="button_bg">轨迹回放</button>
-              <button id="list_area" type="button" name="button" class="button_bg">显示边界</button>
-              <button id="list_route" type="button" name="button" class="button_bg">显示路线</button>
-              <button type="button" name="button" class="button_bg closecard">结束</button>
-            </p>
-          </div>
-          <div class="bottomline"></div>
-          <!-- NOTE: 循环结束 -->
-          <p>&nbsp;</p>
-        </div>
+        <div class="listcontent wrapper" id="ship_alarm_list"></div>
       </div>
     </div>
-    <div class="rightlist" id="rightlist">
-      <div class="listtitle">
-        <span>车船列表</span>
-        <img src="<%=request.getContextPath()%>/resources/cmd/image/menu.png" onclick="menu('rightclose');" alt="">
-      </div>
-      <!-- NOTE: 滚动 -->
-      <div class="" id="boxscroll2">
-        <div class="listcontent wrapper rightlistcontent" id="sa_list">
-          <!-- NOTE: 卡片开始 -->
-          <!-- NOTE: 循环结束 -->
-          <p>&nbsp;</p>
-        </div>
-      </div>
-    </div>
+    <%--<div class="rightlist" id="rightlist">--%>
+      <%--<div class="listtitle">--%>
+        <%--<span>车船列表</span>--%>
+        <%--<img src="<%=request.getContextPath()%>/resources/cmd/image/menu.png" onclick="menu('rightclose');" alt="">--%>
+      <%--</div>--%>
+      <%--<!-- NOTE: 滚动 -->--%>
+      <%--<div class="" id="boxscroll2">--%>
+        <%--<div class="listcontent wrapper rightlistcontent" id="sa_list">--%>
+          <%--<!-- NOTE: 卡片开始 -->--%>
+          <%--<!-- NOTE: 循环结束 -->--%>
+          <%--<p>&nbsp;</p>--%>
+        <%--</div>--%>
+      <%--</div>--%>
+    <%--</div>--%>
   </div>
 
   <div class="righttools">
     <div class="tags">
-      <a href="#" class="hoverrf" id="yunsha">运砂船</a>&nbsp;&nbsp;|
-      <a href="#" class="hoverrf" id="caisha">采砂船</a>&nbsp;&nbsp;|
-      <a href="#" class="hoverrf" id="zhifa">执法船</a><br />
-      <a href="#" class="hoverrf" id="che">执法车</a>&nbsp;&nbsp;|
-      <a href="#" class="hoverrf" id="ren">执法人</a>&nbsp;&nbsp;|
+      <%--<a href="#" class="hoverrf" id="yunsha">运砂船</a>&nbsp;&nbsp;|--%>
+      <%--<a href="#" class="hoverrf" id="caisha">采砂船</a>&nbsp;&nbsp;|--%>
+      <a href="#" class="hoverrf" id="zhifa">执法船</a>|
+      <a href="#" class="hoverrf" id="che">执法车</a>|
+      <a href="#" class="hoverrf" id="ren">执法人</a>|
       <a href="#" class="hoverrf" id="shexiang">摄像头</a>
     </div>
     <div class="clear">

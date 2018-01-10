@@ -12,6 +12,7 @@
     <result column="SEQ_NO" property="seqNo" jdbcType="INTEGER" /><!--顺序号-->
     <result column="FM_DEPTH" property="fmDepth" jdbcType="INTEGER" /><!--层级深度-->
     <result column="FM_TYPE" property="fmType" jdbcType="INTEGER" /><!--类型-->
+    <result column="FM_STATUS" property="fmStatus" jdbcType="INTEGER" /><!--状态-->
   </resultMap>
 
   <!--包含模块所属的角色列表-->
@@ -24,7 +25,7 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    FM_ID, FM_NAME, FM_CODE, PAR_FM_ID, FM_ACCESS_ADDRESS, REMARK,SEQ_NO,FM_DEPTH,FM_TYPE
+    FM_ID, FM_NAME, FM_CODE, PAR_FM_ID, FM_ACCESS_ADDRESS, REMARK,SEQ_NO,FM_DEPTH,FM_TYPE,FM_STATUS
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
     select 
@@ -32,10 +33,34 @@
     from FUNCTIONAL_MODULE
     where FM_ID = #{fmId,jdbcType=INTEGER}
   </select>
+    <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.FunctionalModule">
+        select
+        <include refid="Base_Column_List" />
+        from FUNCTIONAL_MODULE where 1=1
+        <if test="fmId != null and  fmId !=''" >
+            and FM_ID=#{fmId,jdbcType=INTEGER}
+        </if>
+        <if test="fmType != null and  fmType !=''" >
+            and FM_TYPE=#{fmType,jdbcType=INTEGER}
+        </if>
+        <if test="fmStatus != null and  fmStatus !=''" >
+            and FM_STATUS=#{fmStatus,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="selectChildNodes" resultMap="BaseResultMap" parameterType="map">
+        select  <include refid="Base_Column_List" /> from functional_module  where 1=1
+        <if test="parFmId != null and  parFmId !=''" >
+            and  par_fm_id = #{parFmId,jdbcType=INTEGER}
+        </if>
+        <if test="roleId != null and  roleId !=''" >
+            and  fm_id in (select fm_id from role_module where role_id=#{roleId,jdbcType=INTEGER})
+        </if>
+        order by seq_no
 
+    </select>
   <!-- 根据角色编号获取该角色可以操作的系统 added by lvzhixue 2017-11-16-->
   <select id="selectSystemListByRoleId" resultMap="BaseResultMap">
-    select DISTINCT(fm.FM_ID), fm.FM_NAME, fm.FM_CODE, fm.PAR_FM_ID, fm.FM_ACCESS_ADDRESS, fm.REMARK,SEQ_NO,FM_DEPTH,FM_TYPE
+    select DISTINCT(fm.FM_ID), fm.FM_NAME, fm.FM_CODE, fm.PAR_FM_ID, fm.FM_ACCESS_ADDRESS, fm.REMARK,SEQ_NO,FM_DEPTH,FM_TYPE,FM_STATUS
     from role r
     inner join role_module rm
     on r.role_id = rm.role_id
@@ -58,7 +83,7 @@
     REMARK,
     SEQ_NO,
     FM_DEPTH,
-    FM_TYPE
+    FM_TYPE,fm_status
     from functional_module
     where par_fm_id = #{fmId,jdbcType=INTEGER}
     order by seq_no
@@ -76,7 +101,7 @@
     REMARK,
     SEQ_NO,
     FM_DEPTH,
-    FM_TYPE
+    FM_TYPE,fm_status
     from functional_module
     where par_fm_id = #{fmId,jdbcType=INTEGER} and fm_type = #{fmType,jdbcType=INTEGER}
     order by seq_no
@@ -100,11 +125,11 @@
     </selectKey>
 
     insert into FUNCTIONAL_MODULE (FM_ID, FM_NAME, FM_CODE,
-      PAR_FM_ID, FM_ACCESS_ADDRESS, REMARK, SEQ_NO, FM_DEPTH, FM_TYPE
+      PAR_FM_ID, FM_ACCESS_ADDRESS, REMARK, SEQ_NO, FM_DEPTH, FM_TYPE,FM_STATUS
       )
     values (#{fmId,jdbcType=INTEGER}, #{fmName,jdbcType=VARCHAR}, #{fmCode,jdbcType=VARCHAR},
       #{parFmId,jdbcType=INTEGER}, #{fmAccessAddress,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
-      #{seqNo,jdbcType=INTEGER},#{fmDepth,jdbcType=INTEGER},#{fmType,jdbcType=INTEGER}
+      #{seqNo,jdbcType=INTEGER},#{fmDepth,jdbcType=INTEGER},#{fmType,jdbcType=INTEGER},#{fmStatus,jdbcType=INTEGER}
       )
   </insert>
 

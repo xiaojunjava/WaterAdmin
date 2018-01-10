@@ -41,6 +41,8 @@ public class CaseInfo extends BaseBean {
 
     private String userName;
 
+    private Integer ceaId;//--立案审批表编号
+
 
     //--申请理由
     private String applyReason;
@@ -168,5 +170,13 @@ public class CaseInfo extends BaseBean {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public Integer getCeaId() {
+        return ceaId;
+    }
+
+    public void setCeaId(Integer ceaId) {
+        this.ceaId = ceaId;
     }
 }

@@ -19,6 +19,12 @@ public interface IFunctionalModuleService {
      */
     List<FunctionalModule> selectSystemListByRoleId(Object[] roleIdArray);
 
+	/**
+	 * 根据条件查询
+	 * @param functionalModule
+	 * @return
+	 */
+	List<FunctionalModule> selectDatas(FunctionalModule functionalModule);
     /**
      * 根据给定的fm_id查询该节点下其所有子节点
      */
@@ -48,4 +54,11 @@ public interface IFunctionalModuleService {
     int deleteByPrimaryKey(Integer fmId);
 
     int updateByPrimaryKeySelective(FunctionalModule record);
+
+	/**
+	 * 根据fmId、roleId查子项
+	 * @param map
+	 * @return
+	 */
+	List<FunctionalModule> selectChildNodes(Map map);
 }

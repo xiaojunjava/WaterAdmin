@@ -29,7 +29,7 @@ function login(url) {
     if (null == loginName || "" == $.trim(loginName)) {
         $.messager.alert('提示', '用户名不能为空!', 'warning');
         return;
-    } else if (loginName.length < 6) {
+    } else if (loginName.length < 5) {
         $.messager.alert('提示', '用户名太短!', 'warning');
         return;
     }

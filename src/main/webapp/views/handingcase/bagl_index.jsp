@@ -1,7 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="com.sinosoft.wateradmin.app.bean.FunctionalModule" %>
-<%@ page import="com.sinosoft.wateradmin.app.bean.Users" %><%--
+<%@ page import="com.sinosoft.wateradmin.app.bean.Users" %>
+<%--
   Description:办案管理系统
   User: lvzhixue
   Date: 2017/11/17 13:38
@@ -47,7 +48,8 @@
     </div>
     <!-- 退出 -->
     <div class="logout">
-        <a href="javascript:;" onclick="history.go(-1);"><img src="<%=request.getContextPath()%>/resources/handingcase/image/logout.png" alt="" class="logoutimg"></a>
+        <%--<a href="<%=request.getContextPath()%>/jump.exit" ><img src="<%=request.getContextPath()%>/resources/handingcase/image/logout.png" alt="" class="logoutimg"></a>--%>
+        <a href="http://193376ov44.iok.la:8081/WaterAdmin/nav.html" ><img src="<%=request.getContextPath()%>/resources/handingcase/image/logout.png" alt="" class="logoutimg"></a>
     </div>
 
 </div>
@@ -70,7 +72,9 @@
                 for (int j = 0; j < secMenuList.size(); j++) {//--二级菜单
                     FunctionalModule secModule = secMenuList.get(j);
             %>
-            <a href="<%=request.getContextPath()%>/<%=secModule.getFmAccessAddress()%>" target="open_page"><i></i><span><%=secModule.getFmName()%></span></a>
+            <div class="menu3">
+               <a href="<%=request.getContextPath()%>/<%=secModule.getFmAccessAddress()%>" target="open_page"><i></i><span><%=secModule.getFmName()%></span></a>
+            </div>
             <%
                 }
             %>
@@ -82,7 +86,7 @@
     </div>
 
     <div class="right">
-        <iframe name="open_page" src="../views/handingcase/anjian_home.jsp" frameborder="0" width="100%" height="100%">
+        <iframe name="open_page" src="<%=request.getContextPath()%>/caseinfo/gotoFilingApplicationPage" frameborder="0" width="100%" height="100%">
 
         </iframe>
     </div>

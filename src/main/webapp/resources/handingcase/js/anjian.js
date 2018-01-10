@@ -17,6 +17,11 @@ $(document).ready(function() {
 
         $(".menu1").first().click();
         showtime();
+
+    $(".menu3").click(function(){
+        $(".menu3").removeClass("menu3hover");
+        $(this).addClass("menu3hover");
+    });
 })
 
 //时间

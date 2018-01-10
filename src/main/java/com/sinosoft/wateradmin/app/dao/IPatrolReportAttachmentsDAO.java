@@ -47,4 +47,11 @@ public interface IPatrolReportAttachmentsDAO {
 	 */
 	int updateByPrimaryKey(PatrolReportAttachments pra);
 
+	/**
+	 * 根据上报记录编号删除该记录的所有附件 added by lvzhixue 2018/1/4 11:43
+	 * @param prId
+	 * @return
+	 */
+	int deleteByPrId(int prId);
+
 }

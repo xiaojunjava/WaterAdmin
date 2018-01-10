@@ -12,16 +12,20 @@
     <result column="latitude" property="latitude" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+
   </resultMap>
   <sql id="Base_Column_List" >
-    pr_id, pl_id, pr_site_description, pr_position, pr_report_time, longitude, latitude, remark ,status
+    pr_id, pl_id, pr_site_description, pr_position, pr_report_time, longitude, latitude, remark ,status,source
   </sql>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="INTEGER" >
     select 
     <include refid="Base_Column_List" />
     from APP_PATROL_REPORT
     where pr_id = #{prId,jdbcType=INTEGER}
   </select>
+
    <select id="selectDatas" resultMap="BaseResultMap" parameterType="com.sinosoft.wateradmin.app.bean.PatrolReport">
         select
         <include refid="Base_Column_List" />
@@ -41,17 +45,22 @@
        <if test="endTime != null and  endTime !=''" >
            and pr_report_time <![CDATA[ <= ]]> TO_DATE(#{endTime},'yyyy-MM-dd HH24:mi:ss')
        </if>
+       order by pr_id DESC
     </select>
+
     <select id="selectSome" resultMap="BaseResultMap" parameterType="int">
         select
         <include refid="Base_Column_List" />
         from APP_PATROL_REPORT where  rownum  <![CDATA[ <= ]]>   #{limitNum,jdbcType=INTEGER} order by pr_report_time desc
 
     </select>
+
   <delete id="deleteByPrimaryKey" parameterType="int" >
     delete from APP_PATROL_REPORT
     where pr_id = #{prId,jdbcType=INTEGER}
   </delete>
+
+    <!--modify by lvzhixue 2018/1/4 9:50  added "source、status" field-->
   <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.PatrolReport" >
       <selectKey resultType="INTEGER" keyProperty="prId" order="BEFORE">
           select seq_patrolreport_prid.nextval from dual
@@ -59,9 +68,10 @@
     insert into APP_PATROL_REPORT (  <include refid="Base_Column_List" /> )
     values (#{prId,jdbcType=INTEGER}, #{plId,jdbcType=INTEGER}, #{prSiteDescription,jdbcType=VARCHAR},
       #{prPosition,jdbcType=VARCHAR}, #{prReportTime,jdbcType=TIMESTAMP}, #{longitude,jdbcType=VARCHAR},
-      #{latitude,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+      #{latitude,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{source,jdbcType=VARCHAR})
   </insert>
 
+  <!--更新 modify by lvzhixue 2018/1/4 9:50  added "source" field -->
   <update id="updateByPrimaryKey" parameterType="com.sinosoft.wateradmin.app.bean.PatrolReport" >
     update APP_PATROL_REPORT
     <set >
@@ -85,6 +95,9 @@
       </if>
       <if test="status != null" >
           status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+          source = #{source,jdbcType=VARCHAR},
       </if>
     </set>
     where pr_id = #{prId,jdbcType=INTEGER}

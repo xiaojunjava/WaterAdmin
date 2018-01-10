@@ -34,6 +34,12 @@ public interface IFunctionalModuleDAO {
      */
     List<FunctionalModule> selectSystemListByRoleId(Object[] roleIdArray);
 
+	/**
+	 * 根据条件查询
+	 * @param functionalModule
+	 * @return
+	 */
+	List<FunctionalModule> selectDatas(FunctionalModule functionalModule);
     /**
      * 根据给定的fm_id查询该节点及其所有子节点
      */
@@ -48,4 +54,11 @@ public interface IFunctionalModuleDAO {
 
     //--根据给定的fm_id,fm_Type查询该节点下其所有子节点
     List<FunctionalModule> selectChildNodeByfmIdAndType(Map map);
+
+	/**
+	 * 根据fmId、rolId查子项
+	 * @param map
+	 * @return
+	 */
+	List<FunctionalModule> selectChildNodes(Map map);
 }

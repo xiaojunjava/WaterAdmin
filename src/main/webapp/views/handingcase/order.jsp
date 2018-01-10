@@ -9,6 +9,9 @@
     <title>程序</title>
 </head>
 <body>
-程序--建设中
+程序--建设中,内容提供后替换即可</div>
+<div align="center">
+    <img src="../resources/handingcase/tmpImg/logo_translucent.png">
+</div>
 </body>
 </html>

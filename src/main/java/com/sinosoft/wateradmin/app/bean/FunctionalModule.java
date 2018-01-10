@@ -24,13 +24,21 @@ public class FunctionalModule {
     private Integer fmDepth;
 
     private Integer fmType;
+    private Integer fmStatus;
 
     private List<Role> roleList;//--角色列表
 
     private List<FunctionalModule> childNodeList;
 
+	public Integer getFmStatus() {
+		return fmStatus;
+	}
 
-    public Integer getFmId() {
+	public void setFmStatus(Integer fmStatus) {
+		this.fmStatus = fmStatus;
+	}
+
+	public Integer getFmId() {
         return fmId;
     }
 

@@ -82,7 +82,6 @@
             onLoadSuccess: function (data) {
                 // alert(JSON.stringify(data));
             },
-            singleSelect: true,//为false时可以选择多行
             collapsible: true,
             toolbar: []
         };

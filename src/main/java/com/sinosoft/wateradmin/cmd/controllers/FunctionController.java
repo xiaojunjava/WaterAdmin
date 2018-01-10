@@ -1,8 +1,10 @@
 package com.sinosoft.wateradmin.cmd.controllers;
 
 import com.sinosoft.wateradmin.app.bean.FunctionalModule;
+import com.sinosoft.wateradmin.app.bean.Users;
 import com.sinosoft.wateradmin.app.service.IFunctionalModuleService;
 import com.sinosoft.wateradmin.cmd.service.IRoutePlanningService;
+import com.sinosoft.wateradmin.common.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,21 +74,21 @@ FunctionController {
 	private void initMenuList(HttpServletRequest request){
 		//--系统编号
 		Integer fmId = Integer.valueOf(request.getParameter("fmId"));
+		Users nowUser=CommonUtil.getLoginUser();
 		Map map = new HashMap();
-		map.put("fmId",fmId);
-		map.put("fmType", 3);//1-app,2-指挥中心，3-普通操作员能操作的模块，4-系统管理员能操作的模块
-
+		map.put("parFmId",fmId);
+		map.put("roleId",nowUser.getRoleList().get(0).getRoleId());
 		List menuList = new ArrayList();
 
 		//--获取在线学习系统的一级菜单
-		List<FunctionalModule> firstModuleList = this.functionalModuleService.selectChildNodeByfmIdAndType(map);
+		List<FunctionalModule> firstModuleList = this.functionalModuleService.selectChildNodeByfmId(fmId);
 		for (int i = 0; i < firstModuleList.size(); i++) {//--遍历一级菜单获取二级菜单列表
 			FunctionalModule moduleTmp = firstModuleList.get(i);
 
-			map.remove("fmId");//--删除map中的fmId
-			map.put("fmId",moduleTmp.getFmId());//--添加fmId
+//			map.remove("fmId");//--删除map中的fmId
+			map.put("parFmId",moduleTmp.getFmId());//--添加fmId
 
-			List<FunctionalModule> secondModuleTmpList = this.functionalModuleService.selectChildNodeByfmIdAndType(map);
+			List<FunctionalModule> secondModuleTmpList = this.functionalModuleService.selectChildNodes(map);
 			Map<FunctionalModule,List<FunctionalModule>> mapModule = new HashMap<>();
 			mapModule.put(moduleTmp,secondModuleTmpList);
 			menuList.add(mapModule);
@@ -137,5 +139,26 @@ FunctionController {
 	@RequestMapping(value = "/jump.monitor")
 	public String jumpVideoMonitor(HttpServletRequest request, HttpServletResponse response)throws Exception{
 		return "cmd/video_monitor";
+	}
+	//跳--指挥调度
+	@RequestMapping(value = "/jump.cmd.zhdd")
+	public String jumpCmdZhdd(HttpServletRequest request, HttpServletResponse response)throws Exception{
+		return "cmd/cmd_zhdd";
+	}
+	//跳--采沙监管
+	@RequestMapping(value = "/jump.cmd.csjg")
+	public String jumpCmdCsjg(HttpServletRequest request, HttpServletResponse response)throws Exception{
+		return "cmd/cmd_csjg";
+	}
+	//跳--监控管理
+	@RequestMapping(value = "/jump.cmd.jkgl")
+	public String jumpCmdJkgl(HttpServletRequest request, HttpServletResponse response)throws Exception{
+		return "cmd/cmd_jkgl";
+	}
+
+	@RequestMapping(value = "/jump.xczf")
+	public String jumpXczf(HttpServletRequest request, HttpServletResponse response)throws Exception{
+		initMenuList(request);
+		return "app/xczf_index";
 	}
 }

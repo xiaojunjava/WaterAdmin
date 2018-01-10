@@ -73,7 +73,7 @@
                 autoRowHeight: false,
                 fitColumns: true,//允许表格自动缩放，以适应父容器
                 pageSize: '10',
-                width: '90%',
+                width: '98%',
                 height: '400',
                 singleSelect: false,//为true时只能选择单行
                 queryParams: queryData,
@@ -170,7 +170,7 @@
 <body id="login_bg" align="center">
 <%@include file="../../views/loadingDiv.jsp"%>
 <!-- 执法人员通讯录查询条件 -->
-<div class="easyui-panel" title="查询" style="width:90%;padding:10px 10px 10px 10px;margin:0px 0px 1px 0px">
+<div class="easyui-panel" title="查询" style="width:98%;padding:10px 10px 10px 10px;margin:0px 0px 5px 0px">
     <div style="margin-bottom:0px">
         <form id="atalSearchForm" method="post">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

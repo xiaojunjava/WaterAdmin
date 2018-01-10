@@ -37,6 +37,9 @@ public class PatrolReport extends BaseBean{
 	//--added by lvzhixue 为了立案申请新增加的状态
 	private int status;
 
+	//--added by lvzhixue 需求变更，增加案件来源字段 0--部门移送;1--上级交办2--群众举报3--简易上报4--巡查上报   2018.1.4 9:43
+	private String source;
+
 	/****下面为：查询专用****/
 	private String startTime;
 	private String endTime;
@@ -128,5 +131,13 @@ public class PatrolReport extends BaseBean{
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 }

@@ -7,13 +7,12 @@ import com.sinosoft.wateradmin.app.service.ICaseInfoService;
 import com.sinosoft.wateradmin.app.service.IPatrolReportService;
 import com.sinosoft.wateradmin.common.BasePage;
 import com.sinosoft.wateradmin.common.DateConvert;
+import com.sinosoft.wateradmin.handingcase.bean.CaseExamApproval;
+import com.sinosoft.wateradmin.handingcase.service.ICaseExamApprovalService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,12 +30,17 @@ public class CaseInfoManageController {
 
     private final static Logger loger = Logger.getLogger(CaseInfoManageController.class);
 
+    //--巡查上报Service
     @Autowired
     private IPatrolReportService patrolReportService;
 
     //--案件信息Service
     @Autowired
     private ICaseInfoService caseInfoService;
+
+    //--立案审批表Service
+    @Autowired
+    private ICaseExamApprovalService caseExamApprovalService;
 
     //--跳转到立案申请页面
     @RequestMapping(value = "/gotoFilingApplicationPage")
@@ -107,6 +111,71 @@ public class CaseInfoManageController {
 
         return "handingcase/result";
     }
+
+    //--跳转到执法文书页面
+    @RequestMapping(value = "/gotoInformingDocument")
+    public String gotoInformingDocument(HttpServletRequest request) throws Exception {
+
+        return "handingcase/Informing_document";
+    }
+
+    //--跳转到案件复核页面
+    @RequestMapping(value = "/gotoCaseReview")
+    public String gotoCaseReview(HttpServletRequest request) throws Exception {
+
+        return "handingcase/case_review";
+    }
+
+    //--跳转到处罚处理页面
+    @RequestMapping(value = "/gotoPunishHandling")
+    public String gotoPunishHandling(HttpServletRequest request) throws Exception {
+
+        return "handingcase/punish_handling";
+    }
+
+    //--跳转到强制执行页面
+    @RequestMapping(value = "/gotoEnforcement")
+    public String gotoEnforcement(HttpServletRequest request) throws Exception {
+
+        return "handingcase/Enforcement";
+    }
+
+    //--跳转到结案归档页面
+    @RequestMapping(value = "/gotoPlaceOnFile")
+    public String gotoPlaceOnFile(HttpServletRequest request) throws Exception {
+
+        return "handingcase/place_on_file";
+    }
+
+    //--跳转到处罚对象页面
+    @RequestMapping(value = "/gotoObjectOfPunishment")
+    public String gotoObjectOfPunishment(HttpServletRequest request) throws Exception {
+
+        return "handingcase/object_of_punishment";
+    }
+
+    //--跳转到简易巡查事件页面
+    @RequestMapping(value = "/gotoSimpleFilingEvent")
+    public String gotoSimpleFilingEvent(HttpServletRequest request) throws Exception {
+
+        return "handingcase/simple_filing_event";
+    }
+
+    //--跳转到案件基本情况页面
+    @RequestMapping(value = "/gotoCaseBasicSituation")
+    public String gotoCaseBasicSituation(HttpServletRequest request) throws Exception {
+
+        return "handingcase/case_basic_situation";
+    }
+
+    //--跳转到进度显示页面
+    @RequestMapping(value = "/gotoProcessingProgress")
+    public String gotoProcessingProgress(HttpServletRequest request) throws Exception {
+
+        return "handingcase/case_processing_progress";
+    }
+
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //--立案申请
@@ -372,6 +441,55 @@ public class CaseInfoManageController {
         }
 
         return m;
+    }
+
+    /**
+     * 立案申请--提交立案审批表
+     */
+    @RequestMapping(value = "/submitExamApprovalCase", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    Object submitExamApprovalCase(@RequestParam(required = true) int prId, @RequestBody CaseExamApproval caseExamApproval) throws Exception {
+        Map map = new HashMap();
+
+        /***条件异常判断***/
+        if (caseExamApproval == null) {
+            map.put("tag", "false");
+            map.put("message", "未获取参数");
+            return map;
+        }
+        //--第一步、写立案审批表，然后获取立案审批的id编号
+        caseExamApproval.setPrid(prId);//--巡检上报记录
+        caseExamApproval.setStatus("0");//--状态
+        this.caseExamApprovalService.insert(caseExamApproval);
+
+        //--第二步、立案，写案件信息表
+        //--立案申请，根据巡检上报记录，优先写案件信息表
+        PatrolReport patrolReport = this.patrolReportService.selectByPrimaryKey(prId);
+        CaseInfo caseInfo = new CaseInfo();
+        caseInfo.setCiName(DateConvert.date2Str(patrolReport.getPrReportTime()));
+        caseInfo.setCiDatetime(patrolReport.getPrReportTime());
+        caseInfo.setCiType("0");//--暂无定义
+        caseInfo.setCiStatus("1");//--1-立案申请
+        caseInfo.setCiContent(patrolReport.getPrSiteDescription());
+        caseInfo.setCiPlace(patrolReport.getPrPosition());
+        caseInfo.setRemark(patrolReport.getRemark());
+        caseInfo.setPrId(patrolReport.getPrId());
+        caseInfo.setApplyReason("");
+        caseInfo.setCeaId(caseExamApproval.getCeaId());
+        this.caseInfoService.insert(caseInfo);
+
+        //--第三步、案件信息成功后，修改巡检上报记录的状态为已立案申请
+        patrolReport.setStatus(1);//--立案申请
+        int count = this.patrolReportService.updateByPrimaryKey(patrolReport);
+
+        if (count > 0) {
+            map.put("tag", "true");
+            map.put("message", "操作成功");
+        } else {
+            map.put("tag", "false");
+            map.put("message", "DB操作异常");
+        }
+        return map;
     }
 
 }

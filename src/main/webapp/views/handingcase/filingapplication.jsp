@@ -5,6 +5,41 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>立案申请</title>
+    <style>
+        h3,h2{
+            text-align: center;
+        }
+        .examApprovalCaseClass table{
+            margin:0 auto;
+            text-align: center;
+        }
+        .examApprovalCaseClass input,textarea{
+            border:none;
+            width:100%;
+            display: inline-block;
+            outline: none;
+        }
+        .examApprovalCaseClass textarea{
+            line-height: 30px;
+        }
+        .examApprovalCaseClass tr{
+            /*width:1000px;*/
+        }
+        .examApprovalCaseClass td{
+            padding:10px;
+        }
+        .table-top{
+            margin:10px;
+            text-align: right;
+        }
+        .table-top input{
+            width:80px;
+            margin:0 3px;
+            border:none;
+            border-bottom:1px solid #333;
+            text-align: center;
+        }
+    </style>
     <link rel="stylesheet" type="text/css"
           href="<%=request.getContextPath()%>/resources/jquery-easyui-1.5.3/themes/default/easyui.css"/>
     <link rel="stylesheet" type="text/css"
@@ -35,8 +70,8 @@
                 {field: 'prReportTime', title: '上报时间', width: 100, align: 'center'},
                 {field: 'longitude', title: '经度坐标', width: 80, align: 'center'},
                 {field: 'latitude', title: '纬度坐标', width: 80, align: 'center'},
-                {field: 'status', title: '状态', width: 80, align: 'center',formatter:function(value,row,index){
-                    if (value == '0'){//0-女，1-男
+                {field: 'status', title: '案件状态', width: 80, align: 'center',formatter:function(value,row,index){
+                    if (value == '0'){
                         return '巡查上报';
                     }else if (value == '1'){
                         return ' <font color="blue">立案申请</font>';
@@ -48,17 +83,26 @@
                         return '<font color="red">案件审核驳回</font>';
                     }
                 }},
-                {field: 'remark', title: '备注', width: 200, align: 'center'},
-
-                {field: 'opt', title: '操作', width: 120, align: 'center',formatter:function(value,row,index){
-                    var tmpOptStr = "<div style='display:inline; float:right'>";
-
-                    if (row.status=='0'){
-                        tmpOptStr = tmpOptStr +"<a href='javascript:;' class='easyui-linkbutton' onclick='addFiling("+row.prId+",\""+row.prSiteDescription+"\")' style='width:80px'>立案</a>&nbsp;&nbsp;";
+                {field: 'source', title: '案件来源', width: 80, align: 'center',formatter:function(value,row,index){
+                    if (value == '0'){
+                        return '部门移送';
+                    }else if (value == '1'){
+                        return ' <font color="blue">上级交办</font>';
+                    }else if (value == '2'){
+                        return '<font color="green">群众举报</font>';
+                    }else if (value == '3'){
+                        return '<font color="red">简易上报</font>';
+                    }else if (value == '4'){
+                        return '<font color="red">巡查上报</font>';
                     }
-                    tmpOptStr = tmpOptStr +"<a href='javascript:;' class='easyui-linkbutton' onclick='viewDetail("+row.prId+")' style='width:80px'>详情</a>&nbsp;&nbsp;";
+                }},
+                {field: 'remark', title: '备注', width: 150, align: 'center'},
+                {field: 'opt', title: '操作', width: 50, align: 'center',formatter:function(value,row,index){
+                    var tmpOptStr = "<div style='display:inline; float:right'>";
+                    if (row.status=='0'){
+                        tmpOptStr = tmpOptStr +"<a href='javascript:;' class='easyui-linkbutton' onclick='addFiling("+row.prId+"),event.cancelBubble= true'  style='width:80px'>立案</a>&nbsp;&nbsp;";
+                    }
                     tmpOptStr = tmpOptStr +"</div>";
-
                     return tmpOptStr;
                 }}
             ]];
@@ -89,11 +133,11 @@
                 },
                 singleSelect: true,//为false时可以选择多行
                 collapsible: true,
-                toolbar: [/*{
+                toolbar: [{
                     text: '新增',
                     iconCls: 'icon-save',
                     handler: add						//handler类似事件
-                }, '-', {
+                }, '-', /*{
                     text: '编辑',
                     iconCls: 'icon-add',
                     handler: edit
@@ -102,22 +146,23 @@
                     iconCls: 'icon-remove',
                     handler: del
                 }]
-
             };
 
             $('#list_filing').datagrid(jsonData);//加载数据
             $('#list_filing').datagrid('hideColumn','prId');
             $('#list_filing').datagrid('hideColumn','plId');
+            $('#list_filing').datagrid('hideColumn','longitude');
+            $('#list_filing').datagrid('hideColumn','latitude');
         }
 
-        /*//--点击新增按钮动作
+        //--点击新增按钮动作
         function add() {
-            $('#filingModuleForm').form('clear');//清除表单数据
+            $('#newCaseModuleForm').form('clear');//清除表单数据
             $("#tag").val("add");//操作标识
-            $("#filingModule").panel({title: "&nbsp;添加角色"});//--标题
-            $('#filingModule').window('open');//--打开新增页面
+            $("#newCaseModule").panel({title: "&nbsp;新增案件来源"});//--标题
+            $('#newCaseModule').window('open');//--打开新增页面
         }
-
+        /*
         //--点击编辑按钮动作
         function edit() {
             var rows = $('#list_filing').datagrid('getSelections');
@@ -146,25 +191,68 @@
         }*/
 
         //--点击立案申请，打开申请页面
-        function addFiling(prId,prSiteDescription){
-            $('#filingModuleForm').form('clear');//清除表单数据
-            $("#prId").val(prId);//--主键，唯一
-            $("#prSiteDescription").textbox('setValue',prSiteDescription);
+        function addFiling(prId){
 
-            $("#filingModule").panel({title: "&nbsp;立案申请"});//--标题
-            $('#filingModule').window('open');//--打开新增页面
+            $('#examApprovalCaseModuleForm').form('clear');//清除表单数据
+
+            //--初始化数据
+            var rows = $('#list_filing').datagrid('getSelections');
+            if (rows && rows.length == 1) {
+                if (rows[0].prId!=prId){//--判断当前选中的行是不是要操作的行，不是的话--退出
+                    return;
+                }
+
+                $("#prId_1").val(rows[0].prId);//--巡查上报记录编号
+                $("#ceaAbbreviation").val('苏');//--处罚单位简称
+                $("#ceaYear").val('2018');//--年份
+                $("#ceaSeqno").val('2');//--序号
+
+                //--案件来源
+                $("#ceaSource").val(rows[0].source);
+                if (rows[0].source == '0'){
+                    $("#ceaSource_display").val('部门移送');
+                }else if (rows[0].source == '1'){
+                    $("#ceaSource_display").val('上级交办');
+                }else if (rows[0].source == '2'){
+                    $("#ceaSource_display").val('群众举报');
+                }else if (rows[0].source == '3'){
+                    $("#ceaSource_display").val('简易上报');
+                }else if (rows[0].source == '4'){
+                    $("#ceaSource_display").val('巡查上报');
+                }
+
+                //--案发地点
+                $("#ceaPosition").val(rows[0].prPosition);
+                //--案发时间
+                $("#ceaTimeofcase").val(rows[0].prReportTime);
+
+                //--案情简介及立案依据
+                $("#ceaCaseSummary").val(rows[0].prSiteDescription);
+
+
+            }else{
+                $.messager.alert('提示', '请选择要立案的记录!');
+                return;
+            }
+
+            /*
+                $("#prSiteDescription").textbox('setValue',prSiteDescription);
+            */
+
+            $("#examApprovalCaseModule").panel({title: "&nbsp;立案审批表"});//--标题
+            $('#examApprovalCaseModule').window('open').window('resize',{top: '10px'});;//--打开新增页面
         }
 
         //--点击删除按钮动作
         function del() {
             var rows = $('#list_filing').datagrid('getSelections');
             if (rows && rows.length == 1) {
-                $.messager.confirm('警告', '您确定要删除该角色吗?', function (r) {
+                $.messager.confirm('警告', '您确定要删除该记录吗?', function (r) {
                     if (r) {
                         $.ajax({
                             type: "POST",
-                            url: "<%=request.getContextPath()%>/filing/delFiling",
-                            data: {"filingId": rows[0].filingId},
+                            url: "<%=request.getContextPath()%>/app/delPatrolReport",
+                            data: {"prId": rows[0].prId},
                             dataType: "json",
                             success: function (data) {
                                 if (data.tag) {
@@ -174,7 +262,7 @@
                                 }
                             },
                             error: function (data) {
-                                $.messager.alert('提示', '该角色正在使用中，不能被删除，如果疑问，请联系技术支持人员！');
+                                $.messager.alert('提示', '对不起，操作失败！请您联系技术人员！');
                             }
                         });
                     }
@@ -187,6 +275,7 @@
     </script>
 </head>
 <body id="login_bg" align="center">
+
 <%@include file="../../views/loadingDiv.jsp"%>
 
 <!-- 立案申请查询条件 -->
@@ -209,34 +298,167 @@
 <!-- 立案申请列表 -->
 <div id="list_filing"></div>
 
-<!-- 立案申请的弹出窗口 -->
-<div id="filingModule" class="easyui-window" data-options="modal:true,closed:true,iconCls:'icon-save'"
-     style="width:500px;height:450px;padding:5px;">
-    <div style="width:80%;max-width:300px;padding:10px 60px;">
-        <input type="hidden" id="prId" /><!--角色序号，主键，唯一-->
+<!--立案审批表 Examination and approval of case-->
+<div id="examApprovalCaseModule" class="easyui-window" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="width:900px;height:800px;padding:0px;">
+    <div style="width:95%;max-width:700px;padding:10px 60px;">
+        <input type="hidden" id="tag"/><!--标记新增or编辑-->
+        <input type="hidden" id="prId_1"/><!--巡查上报记录编号-->
 
-        <div style="margin-bottom:20px">
-            <input class="easyui-textbox" name="prSiteDescription" id="prSiteDescription" style="width:100%;height:130px;"
-                   data-options="label:'现场描述:',required:false,validType:'maxLength[100]',multiline:true" readonly >
+        <h3>（水行政执法机关名称）</h3>
+        <h2>立 案 审 批 表</h2>
+        <div class="table-top">
+            <!--处罚机关简称-->
+            <input name="ceaAbbreviation" id="ceaAbbreviation" type="text" value="苏" form="examApprovalCaseModuleForm">水立
+            [<input name="ceaYear" id="ceaYear" type="text" value="2018" form="examApprovalCaseModuleForm">]<!--年份-->
+            <input name="ceaSeqno" id="ceaSeqno" type="text" value="1" form="examApprovalCaseModuleForm">号<!--序号-->
         </div>
 
-        <form id="filingModuleForm" method="post">
+        <form class="examApprovalCaseClass" id="examApprovalCaseModuleForm" method="post">
+            <table border="1" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td colspan="2" style="width: 80px;">案件来源</td>
+                    <td colspan="6"><input  name="ceaSource" id="ceaSource" type="hidden">
+                        <input  name="ceaSource_display" id="ceaSource_display" type="text"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">案发地点</td>
+                    <td colspan="2"><input name="ceaPosition" id="ceaPosition" type="text"></td>
+                    <td colspan="2">案发时间</td>
+                    <td colspan="2"><input name="ceaTimeofcase" id="ceaTimeofcase" type="text"></td>
+                </tr>
+                <tr>
+                    <td rowspan="5" width="30">当事人情况</td>
+                    <td rowspan="2" width="30">个人</td>
+                    <td width="80">姓名</td>
+                    <td width="80"><input name="ceaName" id="ceaName" type="text"></td>
+                    <td width="50">性别</td>
+                    <td width="60"><select class="easyui-combobox" name="ceaSex" id="ceaSex" style="width:100%;" data-options="required:false">
+                        <option value="0">女</option>
+                        <option value="1">男</option>
+                    </select></td>
+                    <td width="50">电话</td>
+                    <td width="80"><input name="ceaTelephone" id="ceaTelephone" type="text"></td>
+                </tr>
+                <tr>
+                    <td>住所地</td>
+                    <td colspan="2"><input  name="ceaAddress" id="ceaAddress" type="text"></td>
+                    <td>邮编</td>
+                    <td colspan="2"><input name="ceaZipcode" id="ceaZipcode" type="text"></td>
+                </tr>
+                <tr>
+                    <td rowspan="3">单位</td>
+                    <td>名称</td>
+                    <td colspan="5"><input name="ceaCompanyName" id="ceaCompanyName" type="text"></td>
+                </tr>
+                <tr>
+                    <td>法定代表人（负责人）</td>
+                    <td><input name="ceaCompanyCharge" id="ceaCompanyCharge" type="text"></td>
+                    <td>职务</td>
+                    <td><input name="ceaCompanyJob" id="ceaCompanyJob" type="text"></td>
+                    <td>电话</td>
+                    <td><input name="ceaCompanyTelephone" id="ceaCompanyTelephone" type="text"></td>
+                </tr>
+                <tr>
+                    <td>住所地</td>
+                    <td colspan="2"><input name="ceaCompanyAddress" id="ceaCompanyAddress" type="text"></td>
+                    <td>邮编</td>
+                    <td colspan="2"><input name="ceaCompanyZipcode" id="ceaCompanyZipcode" type="text"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">案情简介<br/>及立案依<br/>据</td>
+                    <td colspan="6">
+                        <textarea  name="ceaCaseSummary" id="ceaCaseSummary" rows="4"></textarea><br>
+                        <div style="text-align: right;margin-right: 50px;">
+                            经办人：<input name="ceaCaseAgent" id="ceaCaseAgent" type="text" style="width: 200px">
+                            时间：<input class="easyui-datetimebox" name="ceaCaseDatetime" id="ceaCaseDatetime" style="width: 150px"
+                                   data-options="required:false,validType:'maxLength[100]'">
+                        </div>
 
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">执法机构<br/>负责人<br/>审核意见</td>
+                    <td colspan="6">
+                        <textarea name="ceaCompanyAuditopinion" id="ceaCompanyAuditopinion"  rows="2" readonly></textarea><br>
+                        <div style="text-align: right;margin-right: 50px;">
+                            签名：<input name="ceaCompanyAutograph" id="ceaCompanyAutograph" type="text" style="width: 200px" readonly>
+                            <input type="text" style="width: 50px;text-align: right" readonly>年<!--时间：ceaCompanyDatetime-->
+                            <input type="text" style="width: 30px;text-align: right" readonly>月
+                            <input type="text" style="width: 30px;text-align: right" readonly>日
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">执法机关<br/>负责人<br/>审批意见</td>
+                    <td colspan="6">
+                        <textarea name="ceaOfficeAuditopinion" id="ceaOfficeAuditopinion" rows="1" readonly></textarea><br>
+                        <p style="text-align: right;margin-right: 50px;">（执法机关印章）</p>
+                        <div style="text-align: right;margin-right: 50px;">
+                            签名：<input name="ceaOfficeAutograph" id="ceaOfficeAutograph" type="text" style="width: 200px" readonly>
+                            <input type="text" style="width: 50px;text-align: right" readonly>年<!--时间：ceaOfficeDatetime-->
+                            <input type="text" style="width: 30px;text-align: right" readonly>月
+                            <input type="text" style="width: 30px;text-align: right" readonly>日
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">备注</td>
+                    <td colspan="6"><textarea name="remark" id="remark_1" ></textarea></td>
+                </tr>
+            </table>
+        </form>
+
+    </div>
+    <div style="text-align:center;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitExamApprovalCase()" style="width:80px">提交</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="cancelExamApprovalCase()" style="width:80px">取消</a>
+    </div>
+    <br/>
+</div>
+
+<!-- 手动添加案件弹出窗口（案件来源管理） -->
+<div id="newCaseModule" class="easyui-window" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="width:500px;height:480px;padding:5px;">
+    <div style="width:80%;max-width:300px;padding:10px 60px;">
+        <input type="hidden" id="prId" /><!--上报记录序号，主键，唯一-->
+
+        <form id="newCaseModuleForm" method="post">
             <div style="margin-bottom:20px">
-                <input class="easyui-textbox" name="applyReason" id="applyReason" style="width:100%;height:130px;"
-                       data-options="label:'申请理由:',required:true,validType:'maxLength[100]',multiline:true">
+                <input class="easyui-textbox" name="prSiteDescription" id="prSiteDescription" style="width:100%;height:110px;"
+                       data-options="label:'现场描述:',required:true,validType:'maxLength[100]',multiline:true" >
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" name="prPosition" id="prPosition" style="width:100%;"
+                       data-options="label:'发生位置:',required:true,validType:'maxLength[100]'">
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-datetimebox" name="prReportTime" id="prReportTime" style="width:100%;"
+                       data-options="label:'发生时间:',required:true,validType:'maxLength[100]'">
+            </div>
+            <div style="margin-bottom:20px">
+                <select class="easyui-combobox" name="source" id="source" style="width:100%;" label="案件来源:" data-options="required:false">
+                    <option value="0">部门移送</option>
+                    <option value="1">上级交办</option>
+                    <option value="2">群众举报</option>
+                </select>
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" name="remark" id="remark" style="width:100%;height:90px;"
+                       data-options="label:'备注:',required:false,validType:'maxLength[100]',multiline:true">
             </div>
 
         </form>
     </div>
     <div style="text-align:center;">
-        <a href="javascript:;" class="easyui-linkbutton" onclick="submitFilingModuleForm()" style="width:80px">提交</a>
-        <a href="javascript:;" class="easyui-linkbutton" onclick="clearFilingModuleForm()" style="width:80px">清空</a>
+        <a href="javascript:;" class="easyui-linkbutton" onclick="submitAddCase()" style="width:80px">提交</a>
+        <a href="javascript:;" class="easyui-linkbutton" onclick="cancelAddCase()" style="width:80px">取消</a>
     </div>
 </div>
 
 <script>
-    //查询
+    //立案申请查询事件
     function submitFilingSearchForm() {
         if ($('#filingSearchForm').form("validate")) {//通过校验
             var search_data = $('#filingSearchForm').serializeObject();
@@ -244,32 +466,29 @@
         }
     }
 
+    //--清空立案申请查询条件清空事件
     function clearFilingSearchForm(){
        $('#filingSearchForm').form('clear');
     }
 
 
     //提交立案申请
-    function submitFilingModuleForm() {
-        if ($('#filingModuleForm').form("validate")) {//通过校验
-
+    function submitExamApprovalCase() {
+        if ($('#examApprovalCaseModuleForm').form("validate")) {//通过校验
             var actionUrl = "";
-            var prId = $("#prId").val();//--巡检上报记录编号
-            //alert(filingId);
-            var form_data = $('#filingModuleForm').serializeObject();
-            actionUrl = "<%=request.getContextPath()%>/caseinfo/applyCase?prId="+$("#prId").val()+"&applyReason="+$("#applyReason").textbox('getValue');
+            var prId = $("#prId_1").val();//--巡检上报记录编号
+            var form_data = $('#examApprovalCaseModuleForm').serializeObject();
+            actionUrl = "<%=request.getContextPath()%>/caseinfo/submitExamApprovalCase?prId="+prId;
             $.ajax({
                 type: "POST",
                 url: actionUrl,
-                data: {
-
-                },
+                data: JSON.stringify(form_data),
                 dataType: "json",
-                contentType : 'application/json',
+                contentType: 'application/json',
                 success: function (data) {
                     if (data.tag) {
                         $.messager.alert('我的提示', '您的操作已成功!');
-                        $('#filingModule').window('close');
+                        $('#examApprovalCaseModule').window('close');
                         loadTable();
                     }
                 },
@@ -279,11 +498,48 @@
             });
         }
     }
-    //--清空
-    function clearFilingModuleForm() {
-        $('#filingModuleForm').form('clear');
+    //--取消立案申请
+    function cancelExamApprovalCase() {
+        $('#examApprovalCaseModule').window('close');
     }
 
+    //--新增案件来源--提交事件
+    function submitAddCase() {
+
+        if ($('#newCaseModuleForm').form("validate")) {//通过校验
+            var tag = $('#tag').val();
+            var actionUrl = "";
+            var form_data = $('#newCaseModuleForm').serializeObject();
+            if (tag && tag == 'add') {
+                actionUrl = "<%=request.getContextPath()%>/app/saveCaseSource";
+            } else if (tag && tag == 'edit') {
+                //actionUrl = "<%=request.getContextPath()%>/uavDevice/updateUAV?prId=" + $("#prId").val();
+            }
+
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: JSON.stringify(form_data),
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.tag) {
+                        $.messager.alert('我的提示', '您的操作已成功!');
+                        $('#newCaseModule').window('close');
+                        loadTable();
+                    }
+                },
+                error: function (data) {
+                    alert("2" + JSON.stringify(data));
+                }
+            });
+        }
+    }
+
+    //--新增案件来源--取消事件
+    function cancelAddCase(){
+        $('#newCaseModule').window('close');//--关闭新增页面
+    }
 
 </script>
 </body>

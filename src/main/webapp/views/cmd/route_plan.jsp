@@ -33,28 +33,28 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/common.js"></script>
 </head>
 <body>
-<div class="header">
-    <div class="logo">
-      <img src="<%=request.getContextPath()%>/resources/cmd/image/zhdd_logo.png" alt="">
-    </div>
-    <div class="logout" onclick="window.location='<%=request.getContextPath()%>/login.jsp'">
-      <img src="<%=request.getContextPath()%>/resources/cmd/image/logout.png" alt="" class="logoutimg">
-    </div>
-    <div class="userinfo">
-      <div class="text">
-        <div class="username">
-          调度员：张婷婷
-        </div>
-        <div id="show">时钟</div>
-      </div>
-      <div class="userimg">
-        <img src="<%=request.getContextPath()%>/resources/cmd/image/hujihua.jpg" alt="" class="usericon" />
-      </div>
-    </div>
-    <div class="nav">
-      <a href="<%=request.getContextPath()%>/main/jump.cmd">首页</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.video">视频监控</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.guiji">历史轨迹</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.route" class="underline">线路预设</a>
-    </div>
-  </div>
+<%--<div class="header">--%>
+    <%--<div class="logo">--%>
+      <%--<img src="<%=request.getContextPath()%>/resources/cmd/image/zhdd_logo.png" alt="">--%>
+    <%--</div>--%>
+    <%--<div class="logout" onclick="window.location='<%=request.getContextPath()%>/login.jsp'">--%>
+      <%--<img src="<%=request.getContextPath()%>/resources/cmd/image/logout.png" alt="" class="logoutimg">--%>
+    <%--</div>--%>
+    <%--<div class="userinfo">--%>
+      <%--<div class="text">--%>
+        <%--<div class="username">--%>
+          <%--调度员：张婷婷--%>
+        <%--</div>--%>
+        <%--<div id="show">时钟</div>--%>
+      <%--</div>--%>
+      <%--<div class="userimg">--%>
+        <%--<img src="<%=request.getContextPath()%>/resources/cmd/image/hujihua.jpg" alt="" class="usericon" />--%>
+      <%--</div>--%>
+    <%--</div>--%>
+    <%--<div class="nav">--%>
+      <%--<a href="<%=request.getContextPath()%>/main/jump.cmd">首页</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.video">视频监控</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.guiji">历史轨迹</a><div>|</div><a href="<%=request.getContextPath()%>/main/jump.route" class="underline">线路预设</a>--%>
+    <%--</div>--%>
+ <%--</div>--%>
 
 <div class="main">
   <div class="xianlu_list">

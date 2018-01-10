@@ -51,9 +51,16 @@
     where PRA_ID = #{praId,jdbcType=INTEGER}
   </delete>
 
+  <!--  根据上报记录编号删除该记录的所有附件 added by lvzhixue 2018/1/4 11:43 -->
+    <delete id="deleteByPrId" parameterType="int" >
+        delete from <include refid="Base_Table" />
+        where PR_ID = #{prId,jdbcType=INTEGER}
+    </delete>
+
+
   <insert id="insert" parameterType="com.sinosoft.wateradmin.app.bean.PatrolReportAttachments" >
       <selectKey resultType="INTEGER" keyProperty="praId" order="BEFORE">
-          　　　select seq_patrolreportattach_praid.Nextval from dual
+          select seq_patrolreportattach_praid.Nextval from dual
       </selectKey>
     insert into <include refid="Base_Table" /> (  <include refid="Base_Column_List" /> )
     values (#{praId,jdbcType=INTEGER}, #{prId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
